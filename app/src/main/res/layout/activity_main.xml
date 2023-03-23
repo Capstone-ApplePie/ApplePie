@@ -15,6 +15,7 @@
         android:orientation="horizontal"
         tools:ignore="MissingConstraints">
 
+<!--    어플 이름    -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,6 +25,7 @@
             android:textColor="@color/black"
             android:textSize="24dp" />
 
+<!--    유저 이미지    -->
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -33,9 +35,6 @@
     </LinearLayout>
 
     <!--        게시글 (스크롤 + 리사이클러)-->
-
-    <!--    팀원 모집 화면 이동 버튼-->
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,6 +66,7 @@
         </LinearLayout>
     </ScrollView>
 
+<!--  팀원 모집 이동 버튼  -->
     <Button
         android:id="@+id/Recruitment"
         android:layout_width="wrap_content"

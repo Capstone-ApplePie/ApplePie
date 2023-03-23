@@ -12,6 +12,7 @@
         android:background="#FFFAF0"
         android:orientation="vertical">
 
+<!--    어플 로고    -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,6 +21,7 @@
             android:src="@drawable/icon">
         </ImageView>
 
+<!--    어플 이름    -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
