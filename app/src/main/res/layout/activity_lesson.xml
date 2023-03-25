@@ -31,9 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
-            android:text="과외"
+            android:text="곧 수정 or 삭제 예정"
             android:textColor="@color/black"
-            android:textSize="24dp" />
+            android:textSize="24sp" />
 
 <!--    사용자 이미지    -->
         <ImageView

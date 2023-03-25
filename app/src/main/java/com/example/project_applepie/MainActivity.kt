@@ -10,27 +10,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // 팀원 모집 화면 이동 처리
-        findViewById<Button>(R.id.Recruitment).setOnClickListener {
-            val intent = Intent(this, Recruit::class.java)
+//      로그인 버튼 클릭 시 로그인 화면으로 이동
+        findViewById<Button>(R.id.signIn).setOnClickListener{
+            val intent = Intent(this, SignIn::class.java)
             startActivity(intent)
         }
 
-        // 외주 화면 이동 처리
-        findViewById<Button>(R.id.Outsourcing).setOnClickListener {
-            val intent = Intent(this, Outsourcing::class.java)
-            startActivity(intent)
-        }
-
-        // 과외 화면 이동 처리
-        findViewById<Button>(R.id.Lesson).setOnClickListener {
-            val intent = Intent(this, Lesson::class.java)
-            startActivity(intent)
-        }
-
-        // 글 작성 이동 처리
-        findViewById<Button>(R.id.writing).setOnClickListener {
-            val intent = Intent(this, Writing::class.java)
+//      회원가입 버튼 클릭 시 회원가입 화면으로 이동
+        findViewById<Button>(R.id.signUp).setOnClickListener{
+            val intent = Intent(this, CompanyCheck::class.java)
             startActivity(intent)
         }
     }

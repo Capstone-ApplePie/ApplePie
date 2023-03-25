@@ -32,7 +32,7 @@
             android:layout_marginLeft="15dp"
             android:text="개인 정보"
             android:textColor="@color/black"
-            android:textSize="24dp" />
+            android:textSize="24sp" />
     </LinearLayout>
 
 <!-- 사용자 이미지   -->
@@ -54,7 +54,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
         android:text="ID34693469"
-        android:textSize="24dp"
+        android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/userImage"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
@@ -67,7 +67,7 @@
         android:layout_marginTop="16dp"
         android:text="현재 소속된 팀"
         android:textColor="@color/black"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userImage" />
 
@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="현재 소속된 팀이 없습니다."
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp">
             </TextView>

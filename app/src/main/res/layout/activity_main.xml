@@ -4,120 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#FFFAF0">
 
-    <!--        상단 바-->
-    <LinearLayout
-        android:id="@+id/linearLayout"
+<!--  로그인/회원가입 카드뷰  -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#FFFAF0"
-        android:orientation="horizontal"
-        tools:ignore="MissingConstraints">
+        android:layout_height="400dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="#DCDCDC"
+        app:strokeWidth="1dp">
 
-<!--    어플 이름    -->
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:text="ApplePie"
-            android:textColor="@color/black"
-            android:textSize="24dp" />
-
-<!--    유저 이미지    -->
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="250dp"
-            android:src="@drawable/user" />
-    </LinearLayout>
-
-    <!--        게시글 (스크롤 + 리사이클러)-->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="156dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        tools:ignore="MissingConstraints">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="500dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="[최근 핫한 글]"
-                android:textColor="@color/black"
-                android:textSize="18dp"></TextView>
+                android:layout_gravity="center"
+                android:text="ApplePie"
+                android:textSize="40sp">
+            </TextView>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp" />
+<!--        아이디 버튼   -->
+            <Button
+                android:id="@+id/signIn"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="70dp"
+                android:text="로그인"
+                android:textSize="24sp">
+            </Button>
+
+<!--        비밀번호 버튼    -->
+            <Button
+                android:id="@+id/signUp"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="회원가입"
+                android:textSize="24sp">
+            </Button>
         </LinearLayout>
-    </ScrollView>
 
-<!--  팀원 모집 이동 버튼  -->
-    <Button
-        android:id="@+id/Recruitment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="80dp"
-        android:text="팀원 모집"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/Outsourcing"
-        app:layout_constraintHorizontal_bias="0.225"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></Button>
-
-    <!--    외주 화면 이동 버튼-->
-    <Button
-        android:id="@+id/Outsourcing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:text="외주"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.541"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!--    과외 화면 이동 버튼 -->
-    <Button
-        android:id="@+id/Lesson"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="80dp"
-        android:text="과외"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.111"
-        app:layout_constraintStart_toEndOf="@+id/Outsourcing"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!--    글 작성 이동 버튼 -->
-    <Button
-        android:id="@+id/writing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="글 작성"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.126"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Recruitment" />
-
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,43 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".Recruit">
 
-    <!--  이전 추가 상단 바-->
-    <LinearLayout
-        android:id="@+id/linearLayout"
+
+
+<!--  https://github.com/material-components/material-components-android/blob/master/docs/components/TopAppBar.md#using-top-app-bars  -->
+<!--  위 사이트 참고해서 만들고 싶은데 잘 안되네...  -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#FFFAF0"
-        android:orientation="horizontal"
-        tools:ignore="MissingConstraints">
+        android:layout_height="match_parent">
 
-<!--    이전 화면 이동 버튼    -->
-        <Button
-            android:id="@+id/back"
-            android:layout_width="50dp"
-            android:layout_height="45dp"
-            android:text="&lt;-"
-            android:textSize="17dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"/>
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#FFFAF0">
 
-<!--    상단 '팀원 모집'    -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:text="팀원 모집"
-            android:textColor="@color/black"
-            android:textSize="24dp" />
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="ApplePie" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-<!--    사용자 이미지    -->
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="195dp"
-            android:src="@drawable/user" />
-    </LinearLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.core.widget.NestedScrollView>
+
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <!--  팀원 검색  -->
     <SearchView
@@ -50,13 +42,13 @@
         android:layout_width="390dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="8dp"
         android:iconifiedByDefault="false"
         android:queryHint="팀원 찾기"
+        android:layout_marginTop="70dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-<!--  공모전/프로젝트/대외 활동 탭(tabs)  -->
+    <!--  공모전/프로젝트/대외 활동 탭(tabs)  -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
@@ -88,8 +80,8 @@
             android:text="대외 활동" />
     </com.google.android.material.tabs.TabLayout>
 
-<!--  RecyclerView 추가 (예상)  -->
-<!--  팀 공고란  -->
+    <!--  RecyclerView 추가 (예상)  -->
+    <!--  팀 공고란  -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -97,7 +89,9 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+        app:strokeColor="#DCDCDC"
+        app:strokeWidth="1dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
