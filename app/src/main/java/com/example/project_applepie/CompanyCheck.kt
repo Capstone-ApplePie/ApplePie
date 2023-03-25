@@ -12,7 +12,7 @@ class CompanyCheck : AppCompatActivity() {
 
 //      회원가입 화면으로 이동
         findViewById<Button>(R.id.next).setOnClickListener {
-            val intent = Intent(this, SignUp::class.java)
+            val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
         }
     }
