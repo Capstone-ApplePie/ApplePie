@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_recruit"
+        android:enabled="true"
+        android:icon="@drawable/noti"
+        android:title="모집공고"/>
+    <item
+        android:id="@+id/item_team"
+        android:icon="@drawable/recruit"
+        android:enabled="true"
+        android:title="팀원모집"/>
+    <item
+        android:id="@+id/item_chat"
+        android:enabled="true"
+        android:icon="@drawable/chat"
+        android:title="채팅"/>
+    <item
+        android:id="@+id/item_profile"
+        android:enabled="true"
+        android:icon="@drawable/profile"
+        android:title="내 정보"/>
+
+
+</menu>
