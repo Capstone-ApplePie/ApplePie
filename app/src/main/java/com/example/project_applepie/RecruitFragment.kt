@@ -1,25 +1,34 @@
 package com.example.project_applepie
 
+import android.content.ClipData
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TableLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.project_applepie.databinding.FragmentRecruitBinding
+import com.example.project_applepie.model.recuit
+import com.example.project_applepie.recyclerview.SearchItemRecyclerViewAdapter
+import com.google.android.material.tabs.TabLayout
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RecruitFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class RecruitFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private lateinit var searchAdapter : SearchItemRecyclerViewAdapter
+    private var _recruitBinding : FragmentRecruitBinding? = null
+    private val recruitBinding get() = _recruitBinding!!
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +38,72 @@ class RecruitFragment : Fragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val basicImg = R.drawable.charmander
+
+        val itemList = arrayListOf(
+            recuit(basicImg,"이상해씨","이상해씨-이상해풀-이상해꽃"),
+            recuit(basicImg,"파이리","파이리-리자드-리자몽"),
+            recuit(basicImg,"꼬부기","꼬부기-어니부기-거북왕"),
+            recuit(basicImg,"이상해씨","이상해씨-이상해풀-이상해꽃")
+        )
+
+        val basicImg2 = R.drawable.bulbasaur
+        val itemList2 = arrayListOf(
+            recuit(basicImg2,"이상해씨","이상해씨-이상해풀-이상해꽃"),
+            recuit(basicImg2,"파이리","파이리-리자드-리자몽"),
+            recuit(basicImg2,"꼬부기","꼬부기-어니부기-거북왕"),
+            recuit(basicImg2,"이상해씨","이상해씨-이상해풀-이상해꽃")
+        )
+
+        searchAdapter = SearchItemRecyclerViewAdapter()
+        searchAdapter.submitList(itemList)
+        recruitBinding.rvRecruit.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
+        recruitBinding.rvRecruit.adapter = searchAdapter
+
+        recruitBinding.tabLayoutRecruit.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when(tab?.position){
+                    0 ->{
+                        bindAdpater(itemList,view.context)
+                    }
+                    1 ->{
+                        bindAdpater(itemList2,view.context)
+                    }
+                    2 ->{
+
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
+
+    }
+    fun bindAdpater(list : ArrayList<recuit>, context : Context){
+        searchAdapter = SearchItemRecyclerViewAdapter()
+        searchAdapter.submitList(list)
+        recruitBinding.rvRecruit.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+        recruitBinding.rvRecruit.adapter = searchAdapter
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recruit, container, false)
+        _recruitBinding = FragmentRecruitBinding.inflate(inflater, container, false)
+        val view = recruitBinding.root
+        return view
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _recruitBinding = null
     }
 
     companion object {

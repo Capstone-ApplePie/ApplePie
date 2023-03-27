@@ -11,11 +11,11 @@ import com.example.project_applepie.model.recuit
 
 class SearchItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
 
-    private val photoImageView = itemView.findViewById<ImageView>(R.id.recruit_imageView)
-    private val recruitTitle = itemView.findViewById<TextView>(R.id.recruit_title)
-    private val recuitDetail = itemView.findViewById<TextView>(R.id.recuit_detail)
+    val photoImageView = itemView.findViewById<ImageView>(R.id.recruit_imageView)
+    val recruitTitle = itemView.findViewById<TextView>(R.id.recruit_title)
+    val recuitDetail = itemView.findViewById<TextView>(R.id.recuit_detail)
 
-    fun bindWithView(recuitItem : recuit){
+    /*fun bindWithView(recuitItem : recuit){
         recruitTitle.text = recuitItem.title
         recuitDetail.text = recuitItem.detail
 
@@ -23,6 +23,6 @@ class SearchItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
             .load(recuitItem.thumbnail)
             .placeholder(R.drawable.baseline_insert_photo_24)
             .into(photoImageView)
-    }
+    }*/
 
 }
