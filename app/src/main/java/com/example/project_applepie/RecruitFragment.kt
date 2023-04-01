@@ -57,6 +57,15 @@ class RecruitFragment : Fragment() {
             recuit(basicImg2,"이상해씨","이상해씨-이상해풀-이상해꽃")
         )
 
+//      3.31 공모전 추가
+        val basicImg3 = R.drawable.turtle
+        val itemList3 = arrayListOf(
+            recuit(basicImg3,"이상해씨","이상해씨-이상해풀-이상해꽃"),
+            recuit(basicImg3,"파이리","파이리-리자드-리자몽"),
+            recuit(basicImg3,"꼬부기","꼬부기-어니부기-거북왕"),
+            recuit(basicImg3,"이상해씨","이상해씨-이상해풀-이상해꽃")
+        )
+
         searchAdapter = SearchItemRecyclerViewAdapter()
         searchAdapter.submitList(itemList)
         recruitBinding.rvRecruit.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
@@ -72,7 +81,7 @@ class RecruitFragment : Fragment() {
                         bindAdpater(itemList2,view.context)
                     }
                     2 ->{
-
+                        bindAdpater(itemList3,view.context)
                     }
                 }
             }

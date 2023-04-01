@@ -10,11 +10,10 @@ class SignIn : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-//      로그인 버튼 클릭 시 팀원 모집 화면으로 이동
-        findViewById<Button>(R.id.Login).setOnClickListener {
-            val intent = Intent(this, Recruit::class.java)
-            finish()
+        findViewById<Button>(R.id.logInUser).setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }

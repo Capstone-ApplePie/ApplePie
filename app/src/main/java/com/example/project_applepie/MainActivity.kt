@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
 
 //      로그인 버튼 클릭 시 로그인 화면으로 이동
         findViewById<Button>(R.id.btn_main_login).setOnClickListener{
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, SignIn::class.java)
             startActivity(intent)
         }
 

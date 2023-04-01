@@ -3,14 +3,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background = "#05d585"
     tools:context=".TeamFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/Writing_Outsourcing"
         android:layout_width="match_parent"
-        android:textSize="48dp"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="65dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:background="@drawable/edge"
+        android:orientation="vertical">
+
+        <!--    팀원 모집글 작성 이동    -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="외주 모집글 작성"
+            android:textSize="20dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/black">
+        </TextView>
+        <!--    팀원 모집글 작성 시 주의사항 등    -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추가 작성"
+            android:layout_marginLeft="10dp">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Writing_Lesson"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginTop="90dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:background="@drawable/edge"
+        android:orientation="vertical">
+
+        <!--    팀원 모집글 작성 이동    -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="과외 모집글 작성"
+            android:textSize="20dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/black">
+        </TextView>
+        <!--    팀원 모집글 작성 시 주의사항 등    -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추가 작성"
+            android:layout_marginLeft="10dp">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Writing_Contest"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginTop="165dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:background="@drawable/edge"
+        android:orientation="vertical">
+
+        <!--    팀원 모집글 작성 이동    -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="공모전 팀원 모집글 작성"
+            android:textSize="20dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/black">
+        </TextView>
+        <!--    팀원 모집글 작성 시 주의사항 등    -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추가 작성"
+            android:layout_marginLeft="10dp">
+        </TextView>
+    </LinearLayout>
 
 </FrameLayout>
