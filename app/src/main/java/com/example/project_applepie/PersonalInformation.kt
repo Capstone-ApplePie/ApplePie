@@ -1,10 +1,13 @@
 package com.example.project_applepie
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.project_applepie.databinding.FragmentPersonalInformationBinding
 import com.example.project_applepie.databinding.FragmentRecruitBinding
 import com.example.project_applepie.model.recuit
 import com.example.project_applepie.recyclerview.SearchItemRecyclerViewAdapter
@@ -38,18 +41,29 @@ class PersonalInformation : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val UserImg = R.drawable.user
+        val basicImg = R.drawable.charmander
+        val basicImg2 = R.drawable.bulbasaur
+        val basicImg3 = R.drawable.turtle
 
         val itemList = arrayListOf(
-            recuit(UserImg, "보낸 사람", "피카츄 라이츄 파이리 꼬부기 버터풀 야도란 피존투 또가스"),
-            recuit(UserImg, "보낸 사람", "서로 생긴 모습은 달라도 우리는 모두 친구 (맞아)"),
-            recuit(UserImg, "보낸 사람", "산에서 들에서 때리고 뒹굴고 사막에서 정글에서 웃다가 울다가"),
-            recuit(UserImg, "보낸 사람", "서로 만나기까지 힘들었어도 우리는 모두 친구(피카피카)")
+            recuit(basicImg,"이상해씨","이상해씨-이상해풀-이상해꽃"),
+            recuit(basicImg3,"파이리","파이리-리자드-리자몽"),
+            recuit(basicImg2,"꼬부기","꼬부기-어니부기-거북왕"),
+            recuit(basicImg3,"이상해씨","이상해씨-이상해풀-이상해꽃")
         )
 
         searchAdapter = SearchItemRecyclerViewAdapter()
         searchAdapter.submitList(itemList)
+        recruitBinding.rvRecruit.layoutManager = LinearLayoutManager(view.context,
+            LinearLayoutManager.VERTICAL,false)
+        recruitBinding.rvRecruit.adapter = searchAdapter
+    }
 
+    fun bindAdpater(list : ArrayList<recuit>, context : Context){
+        searchAdapter = SearchItemRecyclerViewAdapter()
+        searchAdapter.submitList(list)
+        recruitBinding.rvRecruit.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+        recruitBinding.rvRecruit.adapter = searchAdapter
     }
 
     override fun onCreateView(
@@ -57,8 +71,19 @@ class PersonalInformation : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_personal_information, container, false)
+        _recruitBinding = FragmentRecruitBinding.inflate(inflater, container, false)
+        val view = recruitBinding.root
+
+
+        return view
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _recruitBinding = null
+    }
+
+
 
     companion object {
         /**

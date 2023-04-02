@@ -108,7 +108,6 @@
                     android:maxLength="21" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <Button
                 android:id="@+id/logInUser"
                 android:layout_marginTop="24dp"
@@ -116,6 +115,37 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
                 android:text="로그인"/>
+
+<!--        로그인 버튼 하단 아이디/비밀번호 찾기    -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="150dp"
+                    android:src="@drawable/lock_open">
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/findId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="아이디 찾기"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center">
+                </TextView>
+
+
+
+            </LinearLayout>
+
+
+
         </LinearLayout>
     </ScrollView>
 
