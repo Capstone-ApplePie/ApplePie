@@ -1,7 +1,9 @@
 package com.example.project_applepie
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import com.example.project_applepie.databinding.FragmentPersonalInformationBindi
 import com.example.project_applepie.databinding.FragmentRecruitBinding
 import com.example.project_applepie.model.recuit
 import com.example.project_applepie.recyclerview.SearchItemRecyclerViewAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,13 +25,13 @@ private const val ARG_PARAM2 = "param2"
  * Use the [PersonalInformation.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PersonalInformation : Fragment() {
+class PersonalInformation : Fragment(), View.OnClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
     private lateinit var searchAdapter : SearchItemRecyclerViewAdapter
-    private var _recruitBinding : FragmentRecruitBinding? = null
+    private var _recruitBinding : FragmentPersonalInformationBinding? = null
     private val recruitBinding get() = _recruitBinding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +40,8 @@ class PersonalInformation : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,10 +76,8 @@ class PersonalInformation : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _recruitBinding = FragmentRecruitBinding.inflate(inflater, container, false)
+        _recruitBinding = FragmentPersonalInformationBinding.inflate(inflater, container, false)
         val view = recruitBinding.root
-
-
         return view
     }
 
@@ -83,6 +86,29 @@ class PersonalInformation : Fragment() {
         _recruitBinding = null
     }
 
+    // Fragment 클릭 이벤트 (적용이 안돼서 노력중...)
+    override fun onClick(v: View) {
+        when(v.id){
+            R.id.userLogOut -> {
+                Log.d("check", "check")
+                context?.let {
+                    MaterialAlertDialogBuilder(it)
+                        .setTitle(resources.getString(R.string.hello_blank_fragment))
+                        .setMessage(resources.getString(R.string.hello_blank_fragment))
+                        .setNeutralButton(resources.getString(R.string.app_name)) { dialog, which ->
+                            // Respond to neutral button press
+                        }
+                        .setNegativeButton(resources.getString(R.string.app_name)) { dialog, which ->
+                            // Respond to negative button press
+                        }
+                        .setPositiveButton(resources.getString(R.string.app_name)) { dialog, which ->
+                            // Respond to positive button press
+                        }
+                        .show()
+                }
+            }
+        }
+    }
 
 
     companion object {
