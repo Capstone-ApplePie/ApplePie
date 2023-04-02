@@ -53,6 +53,8 @@ class ChatFragment : Fragment() {
         findAdapter.submitFindList(finditemList)
         chatBinding.rvChat.layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
         chatBinding.rvChat.adapter = findAdapter
+
+        bindAdpater(finditemList,view.context)
     }
 
     fun bindAdpater(list : ArrayList<chating>, context : Context){

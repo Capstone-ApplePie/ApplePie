@@ -1,114 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".TeamFragment">
+    tools:context=".RecruitFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/Writing_Outsourcing"
+    <ScrollView
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_margin="8dp"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardCornerRadius="10dp">
-
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout_recruit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="외주"
+                    />
 
-            <!--    팀원 모집글 작성 이동    -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="외주 모집글 작성"
-                android:textSize="20dp"
-                android:layout_marginTop="9dp"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/black">
-            </TextView>
-            <!--    팀원 모집글 작성 시 주의사항 등    -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="추가 작성"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp">
-            </TextView>
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="과제/과외"
+                    />
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="공모전"
+                    />
+            </com.google.android.material.tabs.TabLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_team"
+                android:layout_weight="1"
+                tools:listitem="@layout/layout_profile_item"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </LinearLayout>
+    </ScrollView>
 
-    </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/Writing_Lesson"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_margin="8dp"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardCornerRadius="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!--    팀원 모집글 작성 이동    -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="과외 모집글 작성"
-                android:textSize="20dp"
-                android:layout_marginTop="9dp"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/black">
-            </TextView>
-            <!--    팀원 모집글 작성 시 주의사항 등    -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="추가 작성"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp">
-            </TextView>
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/Writing_Contest"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_margin="8dp"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardCornerRadius="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!--    팀원 모집글 작성 이동    -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="공모전 팀원 모집글 작성"
-                android:textSize="20dp"
-                android:layout_marginTop="9dp"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/black">
-            </TextView>
-            <!--    팀원 모집글 작성 시 주의사항 등    -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="추가 작성"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp">
-            </TextView>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

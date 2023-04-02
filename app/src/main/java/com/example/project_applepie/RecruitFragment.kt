@@ -2,6 +2,7 @@ package com.example.project_applepie
 
 import android.content.ClipData
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -46,7 +47,12 @@ class RecruitFragment : Fragment() {
             recuit(basicImg,"이상해씨","이상해씨-이상해풀-이상해꽃"),
             recuit(basicImg,"파이리","파이리-리자드-리자몽"),
             recuit(basicImg,"꼬부기","꼬부기-어니부기-거북왕"),
+            recuit(basicImg,"이상해씨","이상해씨-이상해풀-이상해꽃"),
+            recuit(basicImg,"이상해씨","이상해씨-이상해풀-이상해꽃"),
+            recuit(basicImg,"파이리","파이리-리자드-리자몽"),
+            recuit(basicImg,"꼬부기","꼬부기-어니부기-거북왕"),
             recuit(basicImg,"이상해씨","이상해씨-이상해풀-이상해꽃")
+
         )
 
         val basicImg2 = R.drawable.bulbasaur

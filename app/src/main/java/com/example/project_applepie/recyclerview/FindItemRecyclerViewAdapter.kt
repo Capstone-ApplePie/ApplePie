@@ -1,15 +1,10 @@
 package com.example.project_applepie.recyclerview
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project_applepie.R
 import com.example.project_applepie.model.chating
-import com.example.project_applepie.model.recuit
-import java.io.FilterReader
-import java.util.logging.Filter
 
 class FindItemRecyclerViewAdapter : RecyclerView.Adapter<FindItemViewHolder>(){
 
@@ -34,6 +29,6 @@ class FindItemRecyclerViewAdapter : RecyclerView.Adapter<FindItemViewHolder>(){
     }
 
     fun submitFindList(searchList : ArrayList<chating>){
-        this.findList = findList
+        this.findList = searchList
     }
 }
