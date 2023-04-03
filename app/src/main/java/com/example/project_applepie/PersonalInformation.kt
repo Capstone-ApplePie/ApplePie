@@ -40,12 +40,24 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+    }
 
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        _recruitBinding = FragmentPersonalInformationBinding.inflate(inflater, container, false)
+        val view = recruitBinding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setOnClickListener()
+
         val basicImg = R.drawable.charmander
         val basicImg2 = R.drawable.bulbasaur
         val basicImg3 = R.drawable.turtle
@@ -71,19 +83,13 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         recruitBinding.rvRecruit.adapter = searchAdapter
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        _recruitBinding = FragmentPersonalInformationBinding.inflate(inflater, container, false)
-        val view = recruitBinding.root
-        return view
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         _recruitBinding = null
+    }
+
+    private fun setOnClickListener(){
+//        val btnSequence = _recruitBinding.container.children
     }
 
     // Fragment 클릭 이벤트 (적용이 안돼서 노력중...)
@@ -91,21 +97,6 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         when(v.id){
             R.id.userLogOut -> {
                 Log.d("check", "check")
-                context?.let {
-                    MaterialAlertDialogBuilder(it)
-                        .setTitle(resources.getString(R.string.hello_blank_fragment))
-                        .setMessage(resources.getString(R.string.hello_blank_fragment))
-                        .setNeutralButton(resources.getString(R.string.app_name)) { dialog, which ->
-                            // Respond to neutral button press
-                        }
-                        .setNegativeButton(resources.getString(R.string.app_name)) { dialog, which ->
-                            // Respond to negative button press
-                        }
-                        .setPositiveButton(resources.getString(R.string.app_name)) { dialog, which ->
-                            // Respond to positive button press
-                        }
-                        .show()
-                }
             }
         }
     }

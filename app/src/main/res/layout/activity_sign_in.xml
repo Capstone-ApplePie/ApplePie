@@ -7,6 +7,7 @@
     tools:context=".SignIn">
 
     <ImageButton
+        android:id="@+id/returnMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -84,7 +85,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="비밀번호 *"
+                android:text="비밀번호"
                 android:layout_marginLeft="24dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
@@ -126,7 +127,7 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginLeft="150dp"
+                    android:layout_marginLeft="80dp"
                     android:src="@drawable/lock_open">
                 </ImageView>
 
@@ -135,17 +136,49 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
-                    android:text="아이디 찾기"
+                    android:text="아이디 "
                     android:textColor="@color/black"
                     android:layout_gravity="center">
                 </TextView>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="/"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center">
+                </TextView>
 
+                <TextView
+                    android:id="@+id/findPw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="비밀번호 찾기"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center">
+                </TextView>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="/"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/goSignUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="회원가입"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center">
+                </TextView>
             </LinearLayout>
-
-
-
         </LinearLayout>
     </ScrollView>
 
