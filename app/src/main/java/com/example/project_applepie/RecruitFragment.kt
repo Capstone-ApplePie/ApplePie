@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.ListAdapter
 import android.widget.TableLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentRecruitBinding
@@ -98,11 +99,25 @@ class RecruitFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+        searchAdapter.setOnItemClickListener(object : SearchItemRecyclerViewAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: recuit, pos: Int) {
+                val intent = Intent(context, RecruitTeamActivity::class.java)
+                intent.putExtra("data",data);
+                startActivity(intent)
+            }
+        })
 
     }
     fun bindAdpater(list : ArrayList<recuit>, context : Context){
         searchAdapter = SearchItemRecyclerViewAdapter()
         searchAdapter.submitList(list)
+        searchAdapter.setOnItemClickListener(object : SearchItemRecyclerViewAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: recuit, pos: Int) {
+                val intent = Intent(context, RecruitTeamActivity::class.java)
+                intent.putExtra("data",data);
+                startActivity(intent)
+            }
+        })
         recruitBinding.rvRecruit.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         recruitBinding.rvRecruit.adapter = searchAdapter
     }

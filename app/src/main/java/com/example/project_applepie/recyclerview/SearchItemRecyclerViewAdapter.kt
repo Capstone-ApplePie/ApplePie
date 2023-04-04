@@ -1,7 +1,9 @@
 package com.example.project_applepie.recyclerview
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
@@ -30,9 +32,22 @@ class SearchItemRecyclerViewAdapter : RecyclerView.Adapter<SearchItemViewHolder>
         holder.recruitTitle.text = searchList.get(position).title
         holder.recuitDetail.text = searchList.get(position).detail
 
+        if(position!=RecyclerView.NO_POSITION){
+            holder.itemView.setOnClickListener {
+                listener?.onItemClick(holder.itemView, searchList[position], position)
+            }
+        }
     }
 
     fun submitList(searchList : ArrayList<recuit>){
         this.searchList = searchList
+    }
+
+    interface OnItemClickListener{
+        fun onItemClick(v:View, data: recuit, pos : Int)
+    }
+    private var listener : OnItemClickListener? = null
+    fun setOnItemClickListener(listener : OnItemClickListener) {
+        this.listener = listener
     }
 }
