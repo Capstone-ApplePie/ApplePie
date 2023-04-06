@@ -15,6 +15,7 @@
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/returnMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -64,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="이름 *"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginLeft="24dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
@@ -77,9 +78,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
-                android:padding="10dp">
+                android:padding="10dp"
+                app:helperText=" "
+                app:helperTextTextColor="#FF0000">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -88,8 +91,9 @@
                     android:maxLength="21"
                     tools:ignore="SpeakableTextPresentCheck"/>
             </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="이메일 주소 *"
@@ -105,23 +109,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
-                android:padding="10dp">
+                android:padding="10dp"
+                app:helperText=" "
+                app:helperTextTextColor="#FF0000">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_usermail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="이메일 주소를 입력해주세요"
+                    android:hint="이메일 주소를 입력해주세요."
                     android:inputType="text"
                     android:maxLength="21"
                     tools:ignore="SpeakableTextPresentCheck"/>
             </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
-                android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="비밀번호 *"
                 android:layout_marginLeft="24dp"
+                android:layout_marginTop="7dp"
+                android:text="비밀번호 *"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="16dp"
@@ -133,19 +140,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
-                android:padding="10dp">
+                android:padding="10dp"
+                app:helperText=" "
+                app:helperTextTextColor="#FF0000">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_userpw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="영문, 숫자, 특수문자 2가지 조합 6 ~ 15자"
-                    android:inputType="text"
+                    android:hint="6 ~ 15자 영문, 숫자, 특수문자를 사용하세요"
+                    android:inputType="textPassword"
                     android:maxLength="21"
                     tools:ignore="SpeakableTextPresentCheck"/>
             </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="비밀번호 확인 *"
@@ -161,19 +171,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
-                android:padding="10dp">
+                android:padding="10dp"
+                app:helperText=""
+                app:helperTextTextColor="#FF0000">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_userpwcheck"
                     android:layout_width="match_parent"
                     android:hint="비밀번호를 한번 더 입력해주세요."
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:maxLength="21"
                     tools:ignore="SpeakableTextPresentCheck"/>
             </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="기업여부"
@@ -189,11 +202,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RadioButton
+                    android:id="@+id/compYes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="예"/>
                 <RadioButton
+                    android:id="@+id/compNo"
                     android:layout_width="wrap_content"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -201,6 +216,7 @@
             </RadioGroup>
 
             <Button
+                android:id="@+id/signUpBtn"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"

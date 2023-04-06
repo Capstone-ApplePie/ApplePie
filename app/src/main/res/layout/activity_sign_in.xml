@@ -85,7 +85,7 @@
                     tools:ignore="SpeakableTextPresentCheck"/>
             </com.google.android.material.textfield.TextInputLayout>
             <TextView
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="비밀번호"
@@ -107,7 +107,7 @@
                     android:id="@+id/et_userpw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="영문, 숫자, 특수문자 2가지 조합 6 ~ 15자"
+                    android:hint="비밀번호를 입력해주세요"
                     android:inputType="text"
                     android:maxLength="21"
                     tools:ignore="SpeakableTextPresentCheck"/>

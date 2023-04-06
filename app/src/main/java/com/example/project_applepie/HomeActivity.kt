@@ -66,7 +66,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     // 뒤로 가기를 일정 시간 내에 두번 입력하는 것을 감지하는 함수
-    fun runDelayed(millis: Long, function: () -> Unit){
+    private fun runDelayed(millis: Long, function: () -> Unit){
         Handler(Looper.getMainLooper()).postDelayed(function, millis)
     }
 }

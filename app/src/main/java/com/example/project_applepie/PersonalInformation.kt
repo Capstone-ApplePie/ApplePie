@@ -74,6 +74,13 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         recruitBinding.rvRecruit.layoutManager = LinearLayoutManager(view.context,
             LinearLayoutManager.VERTICAL,false)
         recruitBinding.rvRecruit.adapter = searchAdapter
+
+        // 로그아웃 버튼 클릭 시 처음 화면으로 이동
+        recruitBinding.userLogOut.setOnClickListener {
+//            var intent = Intent(context, MainActivity::class.java)
+//            startActivity(intent)
+            activity?.finish()
+        }
     }
 
     fun bindAdpater(list : ArrayList<recuit>, context : Context){
