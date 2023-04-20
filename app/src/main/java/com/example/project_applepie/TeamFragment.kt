@@ -1,6 +1,7 @@
 package com.example.project_applepie
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -48,7 +49,7 @@ class TeamFragment : Fragment() {
             AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
             AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
             AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
-            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
+            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","가나다라마바사아"),
             AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
             AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
             AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
@@ -83,11 +84,25 @@ class TeamFragment : Fragment() {
             }
 
         })
+        searchAdapter.setOnItemClickListener(object :SearchTeamRecyclerViewAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: AuerProfile, pos: Int) {
+                val intent = Intent(context, UserProfileSearchActivity::class.java)
+                intent.putExtra("data",data)
+                startActivity(intent)
+            }
+        })
 
     }
     fun bindAdpater(list : ArrayList<AuerProfile>, context : Context){
         searchAdapter = SearchTeamRecyclerViewAdapter()
         searchAdapter.submitList(list)
+        searchAdapter.setOnItemClickListener(object : SearchTeamRecyclerViewAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: AuerProfile, pos: Int) {
+                val intent = Intent(context, UserProfileSearchActivity::class.java)
+                intent.putExtra("data",data)
+                startActivity(intent)
+            }
+        })
         teamBinding.rvTeam.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         teamBinding.rvTeam.adapter = searchAdapter
     }

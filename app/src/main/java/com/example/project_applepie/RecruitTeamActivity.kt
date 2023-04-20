@@ -14,7 +14,9 @@ class RecruitTeamActivity : AppCompatActivity() {
         val intent = intent
         val recruitData = intent.getSerializableExtra("data") as recuit?
 
-        rtBinding.sample.text = recruitData?.title;
-        rtBinding.sampleDetail.text = recruitData?.detail;
+        rtBinding.ivRtImg.setImageResource(recruitData?.thumbnail!!)
+        rtBinding.tvRtTitle.text = recruitData.title
+        rtBinding.tvRtDetail.text = recruitData.detail
+
     }
 }

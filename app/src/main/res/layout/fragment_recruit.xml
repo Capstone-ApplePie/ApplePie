@@ -43,10 +43,20 @@
                 tools:listitem="@layout/layout_recruit_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/extended_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginVertical="48dp"
+                app:layout_anchor="@id/rv_recruit"
+                app:layout_anchorGravity="bottom|right"
+                android:backgroundTint="#ffd180"
+                android:elevation="6dp"
+                android:text="팀 생성하기"
+                app:icon="@drawable/baseline_add_24"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </ScrollView>
-
-
 
 </LinearLayout>

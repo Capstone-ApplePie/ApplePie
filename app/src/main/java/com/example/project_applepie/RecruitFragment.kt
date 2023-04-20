@@ -107,6 +107,11 @@ class RecruitFragment : Fragment() {
             }
         })
 
+        recruitBinding.extendedFab.setOnClickListener {
+            val intent = Intent(context, CreateTeamActivity::class.java)
+            startActivity(intent)
+        }
+
     }
     fun bindAdpater(list : ArrayList<recuit>, context : Context){
         searchAdapter = SearchItemRecyclerViewAdapter()
