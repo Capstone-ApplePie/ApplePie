@@ -8,8 +8,13 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import com.example.project_applepie.databinding.ActivitySignupBinding
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.util.*
 
 // 회원가입 절차를 위한 변수
 var namePass = 1
@@ -46,8 +51,29 @@ class SignupActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-    }
 
+        //날짜 버튼 클릭
+        binding.btnBirth.setOnClickListener {
+            //calendar Constraint Builder 선택할수있는 날짜 구간설정
+            val calendarConstraintBulder = CalendarConstraints.Builder()
+            //오늘 이전만 선택가능하게 하는 코드
+            calendarConstraintBulder.setValidator(DateValidatorPointBackward.now())
+
+            val builder = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("생일을 선택해주세요")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .setCalendarConstraints(calendarConstraintBulder.build())
+            val datePicker = builder.build()
+
+            datePicker.addOnPositiveButtonClickListener {
+                val calendar = Calendar.getInstance()
+                calendar.time = Date(it)
+                val calendarMilli = calendar.timeInMillis
+                binding.tvBirth.setText("${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.YEAR)}")
+            }
+            datePicker.show(supportFragmentManager,datePicker.toString())
+        }
+    }
 
 
     // 이메일 유효성 검증
