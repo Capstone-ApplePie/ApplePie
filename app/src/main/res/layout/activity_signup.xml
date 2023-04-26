@@ -51,10 +51,10 @@
         android:layout_height="wrap_content"/>
 
     <ScrollView
-        app:layout_constraintTop_toTopOf="@id/divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toTopOf="@id/divider">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,9 +64,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="이름 *"
-                android:layout_marginTop="24dp"
                 android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
+                android:text="이름 *"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="16dp"
@@ -87,37 +87,41 @@
                     android:hint="이름을 입력해주세요."
                     android:inputType="text"
                     android:maxLength="21"
-                    tools:ignore="SpeakableTextPresentCheck"/>
+                    tools:ignore="SpeakableTextPresentCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:layout_marginTop="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="성별*"
                 android:layout_marginLeft="24dp"
+                android:layout_marginTop="7dp"
+                android:text="성별*"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="33dp" />
+
             <RadioGroup
-                android:layout_marginTop="8dp"
-                android:layout_marginHorizontal="24dp"
-                android:orientation="horizontal"
+                android:id="@+id/checkSex"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
                 <RadioButton
                     android:id="@+id/rb_men"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="남성"/>
+                    android:text="남성" />
+
                 <RadioButton
                     android:id="@+id/rb_women"
                     android:layout_width="wrap_content"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="여성"/>
+                    android:layout_weight="1"
+                    android:text="여성" />
             </RadioGroup>
 
             <LinearLayout
@@ -125,12 +129,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
                 android:orientation="horizontal">
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tf_birth"
-                    android:layout_weight="1"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:enabled="false"
                     android:padding="10dp">
 
@@ -140,23 +145,26 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:maxLength="21"
-                        tools:ignore="SpeakableTextPresentCheck"/>
+                        tools:ignore="SpeakableTextPresentCheck" />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <Button
                     android:id="@+id/btn_birth"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:text="날짜 선택"/>
+                    android:text="날짜 선택" />
             </LinearLayout>
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="닉네임 *"
-                android:layout_marginTop="24dp"
                 android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
+                android:text="닉네임 *"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="16dp"
@@ -177,15 +185,15 @@
                     android:hint="닉네임을 입력해주세요."
                     android:inputType="text"
                     android:maxLength="21"
-                    tools:ignore="SpeakableTextPresentCheck"/>
+                    tools:ignore="SpeakableTextPresentCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:layout_marginTop="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="이메일 주소 *"
                 android:layout_marginLeft="24dp"
+                android:layout_marginTop="7dp"
+                android:text="이메일 주소 *"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="16dp"
@@ -206,7 +214,7 @@
                     android:hint="이메일 주소를 입력해주세요."
                     android:inputType="text"
                     android:maxLength="21"
-                    tools:ignore="SpeakableTextPresentCheck"/>
+                    tools:ignore="SpeakableTextPresentCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -235,15 +243,15 @@
                     android:hint="6 ~ 15자 영문, 숫자, 특수문자를 사용하세요"
                     android:inputType="textPassword"
                     android:maxLength="21"
-                    tools:ignore="SpeakableTextPresentCheck"/>
+                    tools:ignore="SpeakableTextPresentCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:layout_marginTop="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="비밀번호 확인 *"
                 android:layout_marginLeft="24dp"
+                android:layout_marginTop="7dp"
+                android:text="비밀번호 확인 *"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="16dp"
@@ -260,51 +268,55 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_userpwcheck"
                     android:layout_width="match_parent"
-                    android:hint="비밀번호를 한번 더 입력해주세요."
                     android:layout_height="wrap_content"
+                    android:hint="비밀번호를 한번 더 입력해주세요."
                     android:inputType="textPassword"
                     android:maxLength="21"
-                    tools:ignore="SpeakableTextPresentCheck"/>
+                    tools:ignore="SpeakableTextPresentCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:layout_marginTop="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="기업여부"
                 android:layout_marginLeft="24dp"
+                android:layout_marginTop="7dp"
+                android:text="기업여부"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="33dp" />
+
             <RadioGroup
-                android:layout_marginTop="8dp"
-                android:layout_marginHorizontal="24dp"
-                android:orientation="horizontal"
+                android:id="@+id/checkCorp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
                 <RadioButton
                     android:id="@+id/compYes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="예"/>
+                    android:text="예" />
+
                 <RadioButton
                     android:id="@+id/compNo"
                     android:layout_width="wrap_content"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="아니요"/>
+                    android:layout_weight="1"
+                    android:text="아니요" />
             </RadioGroup>
 
             <Button
                 android:id="@+id/signUpBtn"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
-                android:text="회원가입"/>
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="20dp"
+                android:text="회원가입" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

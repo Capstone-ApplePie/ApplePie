@@ -1,12 +1,15 @@
 package com.example.project_applepie
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.project_applepie.databinding.ActivitySignupBinding
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
@@ -14,6 +17,15 @@ import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 // 회원가입 절차를 위한 변수
@@ -26,6 +38,7 @@ class SignupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupBinding
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignupBinding.inflate(layoutInflater)
@@ -36,20 +49,71 @@ class SignupActivity : AppCompatActivity() {
         passwordFocusListener()
         pwCheckFocusListener()
 
+        // Retrofit 연동
+//        val url = "여기에 서버 주소 입력"
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl(url)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//
+//        var server = retrofit.create(ApiService::class.java)
+
         // 기본 설정 = 회사 아님
         binding.compNo.isChecked = true
+        var uAge : Int = 1
+        var uGender : String = "m"
+        var uCorp : Boolean = false
+        // 날짜 임시 처리
+        var uBirth : Date = Date.from(Instant.now())
 
         // 상단 X 버튼
         binding.returnMain.setOnClickListener {
             finish()
         }
 
+        binding.checkSex.setOnCheckedChangeListener{ _, checked ->
+            when(checked){
+                R.id.rb_men -> uGender = "m"
+                R.id.rb_women -> uGender = "f"
+            }
+        }
+
+        binding.checkCorp.setOnCheckedChangeListener{ _, checked ->
+            when(checked){
+                R.id.compNo -> uCorp = false
+                R.id.compYes -> uCorp = true
+            }
+        }
+
         // 회원가입 버튼 클릭
         binding.signUpBtn.setOnClickListener {
-            var intent = Intent(this, SignIn::class.java)
-            Toast.makeText(this@SignupActivity, "회원가입이 완료되었습니다.", Toast.LENGTH_LONG).show()
-            startActivity(intent)
-            finish()
+            if(namePass == 0 && emailPass == 0 && pwPass == 0 && pwCheck == 0){
+//                val uName : String = binding.etUsername.text.toString()
+//                val uDate : String = binding.tvBirth.text.toString()
+//                val uNickname : String = binding.etUserNickname.text.toString()
+//                val uEmail : String = binding.etUsermail.text.toString()
+//                val uPw : String = binding.etUserpw.text.toString()
+//
+//                server.signUp(uEmail, uPw, uName, uNickname, uCorp, uBirth, uAge, uGender).enqueue(object :
+//                    Callback<LoginData>{
+//                        override fun onFailure(call: Call<LoginData>, t: Throwable) {
+//                            Log.d("회원가입 실패", "회원가입 실패")
+//                            Toast.makeText(this@SignupActivity, "서버 오류! 회원가입 실패", Toast.LENGTH_LONG).show()
+//                        }
+//
+//                        override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
+//                            TODO("Not yet implemented")
+//                        }
+//                    })
+
+                var intent = Intent(this, SignIn::class.java)
+                Toast.makeText(this@SignupActivity, "회원가입이 완료되었습니다.", Toast.LENGTH_LONG).show()
+                startActivity(intent)
+                finish()
+            }
+            else {
+                Toast.makeText(this, "빈칸을 모두 제대로 채워주세요!", Toast.LENGTH_LONG).show()
+            }
         }
 
         //날짜 버튼 클릭
@@ -70,11 +134,37 @@ class SignupActivity : AppCompatActivity() {
                 calendar.time = Date(it)
                 val calendarMilli = calendar.timeInMillis
                 binding.tvBirth.setText("${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.YEAR)}")
+                // 나이 계산
+//                uAge = calendar.get(Calendar.YEAR)
+                Log.d("날짜 테스트", calendar.time.toString())
             }
             datePicker.show(supportFragmentManager,datePicker.toString())
         }
     }
 
+    // 이름 확인
+    private fun nameFocusListener(){
+        binding.etUsername.setOnFocusChangeListener { _, focused ->
+            if(!focused){
+                binding.tlUsername.helperText = validName()
+            }
+        }
+    }
+    private fun validName(): String?
+    {
+        val nameText = binding.etUsername.text.toString()
+        if(nameText.length < 2){
+            namePass = 1
+            return "최소 2자 이상 입력해주세요."
+        } else { namePass = 0}
+
+        if(!nameText.matches("^[a-zA-Zㄱ-ㅎ가-힣]*\$".toRegex())){
+            namePass = 1
+            return "한글 및 영어만 입력해주세요."
+        } else { namePass = 0 }
+
+        return null
+    }
 
     // 이메일 유효성 검증
     private fun emailFocusListener() {
@@ -118,6 +208,7 @@ class SignupActivity : AppCompatActivity() {
         return null
     }
 
+    // 비밀번호 확인 유효성 검증
     private fun pwCheckFocusListener(){
         binding.etUserpwcheck.setOnFocusChangeListener { _, focused ->
             if(!focused){
@@ -125,7 +216,6 @@ class SignupActivity : AppCompatActivity() {
             }
         }
     }
-
     private fun validPwCheck(): String? {
         val psText = binding.etUserpw.text.toString()
         val psCheckText = binding.etUserpwcheck.text.toString()

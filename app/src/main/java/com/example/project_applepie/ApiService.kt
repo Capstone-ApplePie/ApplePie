@@ -1,11 +1,11 @@
 package com.example.project_applepie
 
-import org.intellij.lang.annotations.Language
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import java.util.*
 
 data class ResponseDc(var result:String? = null)
 
@@ -17,20 +17,29 @@ public interface ApiService {
     // 1. 회원가입
     @POST("/users/signup") // 임시 작업
     @FormUrlEncoded
-    fun logUp(@Field("name") name : String,
-              @Field("email") email : String,
-              @Field("password") password : String,
-              @Field("nickname") nickname : String,
-              @Field("corp") corp : Boolean
-    ) : Call<Login>
+    fun signUp(
+        @Field("email") email: String,
+        @Field("password") password: String,
+        @Field("name") name: String,
+        @Field("nickname") nickname: String,
+        @Field("corp") corp: Boolean,
+        @Field("birth") birth: Date,
+        @Field("age") age: Int,
+        @Field("gender") gender: String
+        ): Call<LoginData>
+}
 
+public interface LoginService {
     // 2. 로그인
     @POST("/users/login")
     @FormUrlEncoded
-    fun logIn(@Field("email") email: String,
-              @Field("password") password: String
-    )
+    fun logIn(
+        @Field("email") email: String,
+        @Field("password") password: String
+    ): Call<LoginData>
+}
 
+public interface ProfileService{
     // 4. 회원 프로필 생성
     @POST("/users/profile/{id}")
     @FormUrlEncoded
