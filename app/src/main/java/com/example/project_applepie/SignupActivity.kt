@@ -45,6 +45,7 @@ class SignupActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // 입력란 확인 코드
+        nameFocusListener()
         emailFocusListener()
         passwordFocusListener()
         pwCheckFocusListener()
@@ -135,8 +136,7 @@ class SignupActivity : AppCompatActivity() {
                 val calendarMilli = calendar.timeInMillis
                 binding.tvBirth.setText("${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.YEAR)}")
                 // 나이 계산
-//                uAge = calendar.get(Calendar.YEAR)
-                Log.d("날짜 테스트", calendar.time.toString())
+                Log.d("날짜 테스트", calendar.toString())
             }
             datePicker.show(supportFragmentManager,datePicker.toString())
         }

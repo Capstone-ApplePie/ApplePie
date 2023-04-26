@@ -60,4 +60,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation("io.coil-kt:coil:2.0.0-rc03")
 }

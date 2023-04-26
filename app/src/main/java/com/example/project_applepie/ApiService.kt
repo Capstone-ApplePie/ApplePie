@@ -9,10 +9,6 @@ import java.util.*
 
 data class ResponseDc(var result:String? = null)
 
-data class Login(
-    var code: Int
-)
-
 public interface ApiService {
     // 1. 회원가입
     @POST("/users/signup") // 임시 작업
@@ -39,31 +35,37 @@ public interface LoginService {
     ): Call<LoginData>
 }
 
-public interface ProfileService{
+public interface ProfileService {
     // 4. 회원 프로필 생성
     @POST("/users/profile/{id}")
     @FormUrlEncoded
-    fun createProfile(@Field("area") area : String,
-                      @Field("college") college : String,
-                      @Field("grade") grade : Float,
-                      @Field("grader") grader : String,
-                      @Field("github") github : String,
-                      @Field("devLanguage") devLanguage: String,
-                      @Field("devFramework") devFramework : String
+    fun createProfile(
+        @Field("area") area: String,
+        @Field("college") college: String,
+        @Field("grade") grade: Float,
+        @Field("grader") grader: String,
+        @Field("github") github: String,
+        @Field("devLanguage") devLanguage: String,
+        @Field("devFramework") devFramework: String
     )
+}
 
+public interface ProfileModify {
     // 5. 회원 프로필 수정
     @PUT("/users/profile/{id}")
     @FormUrlEncoded
-    fun modifyProfile(@Field("area") area : String,
-                      @Field("college") college : String,
-                      @Field("grade") grade : Float,
-                      @Field("grader") grader : String,
-                      @Field("github") github : String,
-                      @Field("devLanguage") devLanguage: String,
-                      @Field("devFramework") devFramework : String
+    fun modifyProfile(
+        @Field("area") area: String,
+        @Field("college") college: String,
+        @Field("grade") grade: Float,
+        @Field("grader") grader: String,
+        @Field("github") github: String,
+        @Field("devLanguage") devLanguage: String,
+        @Field("devFramework") devFramework: String
     )
+}
 
+public interface Writing{
     // 7. 글 작성
 //    @POST("/boards")
 //    @FormUrlEncoded
