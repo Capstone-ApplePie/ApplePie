@@ -61,7 +61,6 @@ class SignupActivity : AppCompatActivity() {
 
         // 기본 설정 = 회사 아님
         binding.compNo.isChecked = true
-        var uAge : Int = 1
         var uGender : String = "m"
         var uCorp : Boolean = false
         // 날짜 임시 처리
@@ -95,7 +94,7 @@ class SignupActivity : AppCompatActivity() {
 //                val uEmail : String = binding.etUsermail.text.toString()
 //                val uPw : String = binding.etUserpw.text.toString()
 //
-//                server.signUp(uEmail, uPw, uName, uNickname, uCorp, uBirth, uAge, uGender).enqueue(object :
+//                server.signUp(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender).enqueue(object :
 //                    Callback<LoginData>{
 //                        override fun onFailure(call: Call<LoginData>, t: Throwable) {
 //                            Log.d("회원가입 실패", "회원가입 실패")

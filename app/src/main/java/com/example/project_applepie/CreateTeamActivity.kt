@@ -11,11 +11,13 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import coil.load
+import com.bumptech.glide.Glide
 import com.example.project_applepie.databinding.ActivityCreateTeamBinding
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
@@ -40,8 +42,27 @@ class CreateTeamActivity : AppCompatActivity() {
         }
     }
 
-    private val readImage = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
-        ctBinding.imgLoad.load(uri)
+    // 사진 가져오기 (1)
+//    private val readImage = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
+//        ctBinding.imgLoad.load(uri)
+//    }
+
+    // 사진 가져오기 (2)
+    private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()){
+
+        // 결과 코드 OK, 결과값 null 아니면
+        if(it.resultCode == RESULT_OK && it.data != null){
+            // 값 담기
+            val uri = it.data!!.data
+
+            // val basicImg = R.drawable.charmander
+
+            // 화면에 보여주기
+            Glide.with(this)
+                .load(uri) // 이미지
+                .into(ctBinding.imgLoad)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,12 +85,21 @@ class CreateTeamActivity : AppCompatActivity() {
 
         checkPermission.launch(permissionList)
 
-        // 현재 예외 처리가 안됨 ㅠ
+
+        // 사진 가져오기 (1)
+//         ctBinding.btnUpload.setOnClickListener {
+//             readImage.launch("image/*")
+//         }
+
+        // 사진 가져오기 (2)
         ctBinding.btnUpload.setOnClickListener {
-            readImage.launch("image/*")
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            activityResult.launch(intent)
         }
 
-        //날짜 버튼 클릭
+
+        // 날짜 버튼 클릭
         ctBinding.btnDeadline.setOnClickListener {
             //calendar Constraint Builder 선택할수있는 날짜 구간설정
             val calendarConstraintBulder = CalendarConstraints.Builder()

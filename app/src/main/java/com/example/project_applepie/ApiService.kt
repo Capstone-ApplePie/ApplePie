@@ -20,7 +20,6 @@ public interface ApiService {
         @Field("nickname") nickname: String,
         @Field("corp") corp: Boolean,
         @Field("birth") birth: Date,
-        @Field("age") age: Int,
         @Field("gender") gender: String
         ): Call<LoginData>
 }
