@@ -5,27 +5,20 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.project_applepie.databinding.ActivitySignupBinding
+import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.utils.API
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
-import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 // 회원가입 절차를 위한 변수
@@ -88,28 +81,40 @@ class SignupActivity : AppCompatActivity() {
         // 회원가입 버튼 클릭
         binding.signUpBtn.setOnClickListener {
             if(namePass == 0 && emailPass == 0 && pwPass == 0 && pwCheck == 0){
-//                val uName : String = binding.etUsername.text.toString()
-//                val uDate : String = binding.tvBirth.text.toString()
-//                val uNickname : String = binding.etUserNickname.text.toString()
-//                val uEmail : String = binding.etUsermail.text.toString()
-//                val uPw : String = binding.etUserpw.text.toString()
-//
-//                server.signUp(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender).enqueue(object :
-//                    Callback<LoginData>{
-//                        override fun onFailure(call: Call<LoginData>, t: Throwable) {
-//                            Log.d("회원가입 실패", "회원가입 실패")
-//                            Toast.makeText(this@SignupActivity, "서버 오류! 회원가입 실패", Toast.LENGTH_LONG).show()
-//                        }
-//
-//                        override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
-//                            TODO("Not yet implemented")
-//                        }
-//                    })
+                val uName : String = binding.etUsername.text.toString()
+                val uDate : String = binding.tvBirth.text.toString()
+                val uNickname : String = binding.etUserNickname.text.toString()
+                val uEmail : String = binding.etUsermail.text.toString()
+                val uPw : String = binding.etUserpw.text.toString()
 
-                var intent = Intent(this, SignIn::class.java)
-                Toast.makeText(this@SignupActivity, "회원가입이 완료되었습니다.", Toast.LENGTH_LONG).show()
+                /*var retrofit = Retrofit.Builder()
+                    .baseUrl(API.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                var apiService = retrofit.create(ApiService::class.java)*/
+
+
+                /*apiService.signUp(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender).enqueue(object :
+                    Callback<LoginData> {
+                        override fun onFailure(call: Call<LoginData>, t: Throwable) {
+                            Log.d("회원가입 실패", "회원가입 실패")
+                            Toast.makeText(this@SignupActivity, "서버 오류! 회원가입 실패", Toast.LENGTH_LONG).show()
+                        }
+
+                        override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
+                            TODO("Not yet implemented")
+                        }
+                    })*/
+
+                var intent = Intent(this, CreateProfile::class.java)
+                intent.putExtra("uName",uName)
+                intent.putExtra("uDate",uDate)
+                intent.putExtra("uNickname",uNickname)
+                intent.putExtra("uEmail",uEmail)
+                intent.putExtra("uPw",uPw)
+                //Toast.makeText(this@SignupActivity, "회원가입이 완료되었습니다.", Toast.LENGTH_LONG).show()
                 startActivity(intent)
-                finish()
+                //finish()
             }
             else {
                 Toast.makeText(this, "빈칸을 모두 제대로 채워주세요!", Toast.LENGTH_LONG).show()

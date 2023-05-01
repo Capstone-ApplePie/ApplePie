@@ -13,10 +13,6 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
-import coil.load
 import com.bumptech.glide.Glide
 import com.example.project_applepie.databinding.ActivityCreateTeamBinding
 import com.google.android.material.datepicker.CalendarConstraints
