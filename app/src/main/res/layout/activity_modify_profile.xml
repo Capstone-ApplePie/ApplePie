@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ModifyProfileActivity">
+
+<com.google.android.material.appbar.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        app:titleCentered="true"
+        app:title="프로필 수정하기"
+        app:navigationIcon="@drawable/baseline_arrow_back_24"
+        app:menu="@menu/create_team" />
+
+</com.google.android.material.appbar.AppBarLayout>
+
+
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="지역"
+            android:textColor="@color/black"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_cp_region"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="20">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:hint="서울"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:inputType="text"
+                android:maxLines="1"
+                android:maxLength="20"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="학교"
+            android:textColor="@color/black"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_cp_college"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="20">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:hint="단국대학교"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:inputType="text"
+                android:maxLines="1"
+                android:maxLength="20"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="학점"
+            android:textColor="@color/black"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/et_grade"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:hint="서울"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:inputType="text"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="40dp"
+                android:text="/"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_total_grade"
+                android:layout_gravity="center_horizontal"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:hint="서울"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:inputType="text"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="학년 선택"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="12dp"/>
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleButton"
+            android:layout_marginTop="12dp"
+            app:selectionRequired="true"
+            app:singleSelection="true"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                style="?attr/materialButtonOutlinedStyle"
+                android:id="@+id/btn_grade1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1학년"
+                />
+            <Button
+                style="?attr/materialButtonOutlinedStyle"
+                android:id="@+id/btn_grade2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2학년"
+                />
+            <Button
+                style="?attr/materialButtonOutlinedStyle"
+                android:id="@+id/btn_grade3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3학년"
+                />
+            <Button
+                style="?attr/materialButtonOutlinedStyle"
+                android:id="@+id/btn_grade4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4학년"
+                />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="언어 선택"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="12dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+            <AutoCompleteTextView
+                android:id="@+id/ac_language"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:inputType="none"
+                tools:text="Java" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="프레임워크 선택"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="12dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+            <AutoCompleteTextView
+                android:id="@+id/ac_framework"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:inputType="none"
+                tools:text="Spring Boot" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="깃허브 주소"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="12dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_cp_github"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:inputType="text"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:layout_width="match_parent"
+            style="@style/Widget.Material3.Button.Icon"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="24dp"
+            android:textSize="16dp"
+            android:text="생성하기"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

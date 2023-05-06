@@ -1,4 +1,4 @@
-package com.example.project_applepie.recyclerview
+package com.example.project_applepie.recyclerview.homeRecycle
 
 import android.view.View
 import android.widget.ImageView

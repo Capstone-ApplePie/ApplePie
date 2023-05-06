@@ -1,6 +1,5 @@
 package com.example.project_applepie
 
-import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,13 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.ListAdapter
-import android.widget.TableLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentRecruitBinding
 import com.example.project_applepie.model.recuit
-import com.example.project_applepie.recyclerview.SearchItemRecyclerViewAdapter
+import com.example.project_applepie.recyclerview.homeRecycle.SearchItemRecyclerViewAdapter
 import com.google.android.material.tabs.TabLayout
 
 // TODO: Rename parameter arguments, choose names that match

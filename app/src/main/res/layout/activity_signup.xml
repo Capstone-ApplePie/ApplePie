@@ -155,7 +155,7 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:text="날짜 선택" />
+                    android:text="생년월일" />
             </LinearLayout>
 
 

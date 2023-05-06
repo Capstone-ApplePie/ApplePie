@@ -10,9 +10,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentTeamBinding
 import com.example.project_applepie.model.AuerProfile
-import com.example.project_applepie.model.recuit
-import com.example.project_applepie.recyclerview.SearchItemRecyclerViewAdapter
-import com.example.project_applepie.recyclerview.SearchTeamRecyclerViewAdapter
+import com.example.project_applepie.recyclerview.homeRecycle.SearchTeamRecyclerViewAdapter
 import com.google.android.material.tabs.TabLayout
 
 // TODO: Rename parameter arguments, choose names that match
@@ -84,7 +82,7 @@ class TeamFragment : Fragment() {
             }
 
         })
-        searchAdapter.setOnItemClickListener(object :SearchTeamRecyclerViewAdapter.OnItemClickListener{
+        searchAdapter.setOnItemClickListener(object : SearchTeamRecyclerViewAdapter.OnItemClickListener{
             override fun onItemClick(v: View, data: AuerProfile, pos: Int) {
                 val intent = Intent(context, UserProfileSearchActivity::class.java)
                 intent.putExtra("data",data)

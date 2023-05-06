@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentChatBinding
 import com.example.project_applepie.model.chating
-import com.example.project_applepie.recyclerview.FindItemRecyclerViewAdapter
+import com.example.project_applepie.recyclerview.homeRecycle.FindItemRecyclerViewAdapter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

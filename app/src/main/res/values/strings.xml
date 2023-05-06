@@ -3,6 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="create_team_count">
+        <item>0명</item>
         <item>1명</item>
         <item>2명</item>
         <item>3명</item>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewTeamActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            app:titleCentered="true"
+            app:title="팀원"
+            app:navigationIcon="@drawable/baseline_arrow_back_24"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="백엔드"
+                android:textColor="@color/black"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_recruit"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_marginTop="5dp"
+                tools:listitem="@layout/layout_my_team">
+            </androidx.recyclerview.widget.RecyclerView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="프론트엔드"
+                android:textColor="@color/black"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_recruit2"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_marginTop="5dp"
+                tools:listitem="@layout/layout_my_team">
+            </androidx.recyclerview.widget.RecyclerView>
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                app:dividerInsetStart="16dp"
+                app:dividerInsetEnd="16dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="지원자"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="백엔드"
+                android:textColor="@color/black"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_apply1"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_marginTop="5dp"
+                tools:listitem="@layout/layout_my_team">
+            </androidx.recyclerview.widget.RecyclerView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="프론트엔드"
+                android:textColor="@color/black"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_apply2"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_marginTop="5dp"
+                tools:listitem="@layout/layout_my_team">
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+        </LinearLayout>
+
+
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -10,10 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentPersonalInformationBinding
-import com.example.project_applepie.databinding.FragmentRecruitBinding
+import com.example.project_applepie.model.myBoard
+import com.example.project_applepie.model.myTeam
 import com.example.project_applepie.model.recuit
-import com.example.project_applepie.recyclerview.SearchItemRecyclerViewAdapter
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.example.project_applepie.recyclerview.homeRecycle.SearchItemRecyclerViewAdapter
+import com.example.project_applepie.recyclerview.profileRecycle.MyTeamAdapter
+import com.example.project_applepie.recyclerview.profileRecycle.myBoardAdapter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,6 +33,8 @@ class PersonalInformation : Fragment(), View.OnClickListener {
     private var param2: String? = null
 
     private lateinit var searchAdapter : SearchItemRecyclerViewAdapter
+    private lateinit var teamAdapter : MyTeamAdapter
+    private lateinit var boardAdapter : myBoardAdapter
     private var _recruitBinding : FragmentPersonalInformationBinding? = null
     private val recruitBinding get() = _recruitBinding!!
 
@@ -68,6 +72,18 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             recuit(basicImg2,"꼬부기","꼬부기-어니부기-거북왕"),
             recuit(basicImg3,"이상해씨","이상해씨-이상해풀-이상해꽃")
         )
+        val itemList2 = arrayListOf(
+            myTeam(basicImg,"이상해씨"),
+            myTeam(basicImg3,"파이리"),
+            myTeam(basicImg2,"꼬부기"),
+            myTeam(basicImg3,"이상해씨")
+        )
+        val itemList3 = arrayListOf(
+            myBoard(basicImg,"이상해씨"),
+            myBoard(basicImg3,"파이리"),
+            myBoard(basicImg2,"꼬부기"),
+            myBoard(basicImg3,"이상해씨")
+        )
 
         searchAdapter = SearchItemRecyclerViewAdapter()
         searchAdapter.submitList(itemList)
@@ -75,21 +91,62 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             LinearLayoutManager.VERTICAL,false)
         recruitBinding.rvRecruit.adapter = searchAdapter
 
+        teamAdapter = MyTeamAdapter()
+        teamAdapter.submitList(itemList2)
+        recruitBinding.rvMyTeam.layoutManager = LinearLayoutManager(view.context,
+        LinearLayoutManager.VERTICAL,false)
+        recruitBinding.rvMyTeam.adapter = teamAdapter
+
+        teamAdapter.setOnItemClickListener(object : MyTeamAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: myTeam, pos: Int) {
+                val intent = Intent(context, ViewTeamActivity::class.java)
+                intent.putExtra("data",data)
+                startActivity(intent)
+            }
+        })
+
+        boardAdapter = myBoardAdapter()
+        boardAdapter.submitList(itemList3)
+        recruitBinding.rvMyBoard.layoutManager = LinearLayoutManager(view.context,
+            LinearLayoutManager.VERTICAL,false)
+        recruitBinding.rvMyBoard.adapter = boardAdapter
+
+        recruitBinding.btnModifyProfile.setOnClickListener {
+            val intent = Intent(context,ModifyProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        recruitBinding.swOutsourcing.setOnCheckedChangeListener { buttonView, idChecked ->
+            if(buttonView.isChecked){
+                Log.d("로그","외주 on")
+            }else{
+                Log.d("로그","외주 off")
+            }
+        }
+        recruitBinding.swAssignment.setOnCheckedChangeListener { buttonView, idChecked ->
+            if(buttonView.isChecked){
+                Log.d("로그","과제/과외 on")
+            }else{
+                Log.d("로그","과제/과외 off")
+            }
+        }
+        recruitBinding.swCompetition.setOnCheckedChangeListener { buttonView, idChecked ->
+            if(buttonView.isChecked){
+                Log.d("로그","공모전 on")
+            }else{
+                Log.d("로그","공모전 off")
+            }
+        }
+
+
         // 로그아웃 버튼 클릭 시 처음 화면으로 이동
         recruitBinding.userLogOut.setOnClickListener {
 //            var intent = Intent(context, MainActivity::class.java)
 //            startActivity(intent)
             activity?.finish()
         }
-    }
 
-    fun bindAdpater(list : ArrayList<recuit>, context : Context){
-        searchAdapter = SearchItemRecyclerViewAdapter()
-        searchAdapter.submitList(list)
-        recruitBinding.rvRecruit.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-        recruitBinding.rvRecruit.adapter = searchAdapter
     }
-
     override fun onDestroy() {
         super.onDestroy()
         _recruitBinding = null

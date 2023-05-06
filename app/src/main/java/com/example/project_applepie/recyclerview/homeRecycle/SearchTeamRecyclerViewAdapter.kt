@@ -1,4 +1,4 @@
-package com.example.project_applepie.recyclerview
+package com.example.project_applepie.recyclerview.homeRecycle
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project_applepie.R
 import com.example.project_applepie.model.AuerProfile
-import com.example.project_applepie.model.recuit
 
 class SearchTeamRecyclerViewAdapter : RecyclerView.Adapter<SearchTeamViewHolder>(){
 

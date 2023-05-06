@@ -77,7 +77,8 @@ class CreateTeamActivity : AppCompatActivity() {
 
         val getTeamCount = resources.getStringArray(R.array.create_team_count)
         val arrayAdapter = ArrayAdapter(this,R.layout.dropdown_item, getTeamCount)
-        ctBinding.autoCompleteTextView.setAdapter(arrayAdapter)
+        ctBinding.actvBackend.setAdapter(arrayAdapter)
+        ctBinding.actvFrontend.setAdapter(arrayAdapter)
 
         checkPermission.launch(permissionList)
 

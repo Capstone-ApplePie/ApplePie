@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/lpi_img"
+            android:id="@+id/lmb_img"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:src="@drawable/baseline_insert_photo_24"
@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/lpi_name"
+            android:id="@+id/lmb_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -31,11 +31,11 @@
             android:text="글 이름"
             android:textSize="18dp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/lpi_img"
+            app:layout_constraintStart_toEndOf="@+id/lmb_img"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/lmb_delete"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginStart="202dp"
@@ -46,10 +46,11 @@
             android:src="@drawable/baseline_delete_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/lpi_img"
+            app:layout_constraintStart_toEndOf="@+id/lmb_img"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
+            android:id="@+id/lmb_modi"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginStart="145dp"
@@ -59,8 +60,8 @@
             android:backgroundTint="#00ff0000"
             android:src="@drawable/baseline_mode_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton"
-            app:layout_constraintStart_toEndOf="@+id/lpi_img"
+            app:layout_constraintEnd_toStartOf="@+id/lmb_delete"
+            app:layout_constraintStart_toEndOf="@+id/lmb_img"
             app:layout_constraintTop_toTopOf="parent" />
 
 
