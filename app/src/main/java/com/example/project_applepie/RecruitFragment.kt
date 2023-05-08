@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentRecruitBinding
 import com.example.project_applepie.model.recuit
 import com.example.project_applepie.recyclerview.homeRecycle.SearchItemRecyclerViewAdapter
+import com.example.project_applepie.retrofit.ApiService
 import com.google.android.material.tabs.TabLayout
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,6 +42,17 @@ class RecruitFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val basicImg = R.drawable.charmander
+
+        // Retrofit 연동
+//        val url = "여기에 서버 주소 입력"
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl(url)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//
+//        var server = retrofit.create(ApiService::class.java)
+
+
 
         val itemList = arrayListOf(
             recuit(basicImg,"이상해씨","이상해씨-이상해풀-이상해꽃"),

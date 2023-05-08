@@ -9,12 +9,14 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.example.project_applepie.databinding.ActivityCreateTeamBinding
+import com.example.project_applepie.retrofit.ApiService
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -38,6 +40,15 @@ class CreateTeamActivity : AppCompatActivity() {
         }
     }
 
+    // Retrofit 연동
+//        val url = "여기에 서버 주소 입력"
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl(url)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//
+//        var server = retrofit.create(ApiService::class.java)
+
     // 사진 가져오기 (1)
 //    private val readImage = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
 //        ctBinding.imgLoad.load(uri)
@@ -52,8 +63,6 @@ class CreateTeamActivity : AppCompatActivity() {
             // 값 담기
             val uri = it.data!!.data
 
-            // val basicImg = R.drawable.charmander
-
             // 화면에 보여주기
             Glide.with(this)
                 .load(uri) // 이미지
@@ -66,21 +75,14 @@ class CreateTeamActivity : AppCompatActivity() {
         val ctBinding = ActivityCreateTeamBinding.inflate(layoutInflater)
         setContentView(ctBinding.root)
 
-        // Retrofit 연동
-//        val url = "여기에 서버 주소 입력"
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(url)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//        var server = retrofit.create(Writing::class.java)
-
         val getTeamCount = resources.getStringArray(R.array.create_team_count)
         val arrayAdapter = ArrayAdapter(this,R.layout.dropdown_item, getTeamCount)
+
         ctBinding.actvBackend.setAdapter(arrayAdapter)
         ctBinding.actvFrontend.setAdapter(arrayAdapter)
 
         checkPermission.launch(permissionList)
+
 
 
         // 사진 가져오기 (1)
@@ -94,6 +96,22 @@ class CreateTeamActivity : AppCompatActivity() {
             intent.type = "image/*"
             activityResult.launch(intent)
         }
+
+
+        // 카테고리 기본값 : 외주
+        var uCategory : String = "Outsourcing"
+        ctBinding.toggleButton.check(R.id.button1)
+        ctBinding.button1.setOnClickListener {
+            uCategory = "Outsourcing"
+        }
+        ctBinding.button2.setOnClickListener {
+            uCategory = "lesson"
+        }
+        ctBinding.button3.setOnClickListener {
+            uCategory = "project"
+        }
+
+//        ctBinding.backEnd.
 
 
         // 날짜 버튼 클릭
@@ -119,6 +137,25 @@ class CreateTeamActivity : AppCompatActivity() {
                 Log.d("날짜 테스트", calendar.toString())
             }
             datePicker.show(supportFragmentManager,datePicker.toString())
+        }
+
+        ctBinding.creating.setOnClickListener {
+            // Retrofit 연동
+//            val url = "여기에 서버 주소 입력"
+//            val retrofit = Retrofit.Builder()
+//                .baseUrl(url)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build()
+//
+//            var server = retrofit.create(ApiService::class.java)
+
+//            val uTitle : String = ctBinding.title.text.toString()
+//            val uText : String = ctBinding.writeText.text.toString()
+
+            val intent = Intent(this@CreateTeamActivity, HomeActivity::class.java)
+            Toast.makeText(this, "글 작성이 완료되었습니다.", Toast.LENGTH_LONG).show()
+            startActivity(intent)
+            finish()
         }
     }
 }

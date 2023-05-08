@@ -54,6 +54,7 @@ class SignupActivity : AppCompatActivity() {
 
         // 기본 설정 = 회사 아님
         binding.compNo.isChecked = true
+        binding.rbMen.isChecked = true
         var uGender : String = "m"
         var uCorp : Boolean = false
         // 날짜 임시 처리
@@ -64,7 +65,7 @@ class SignupActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.checkSex.setOnCheckedChangeListener{ _, checked ->
+        binding.checkGender.setOnCheckedChangeListener{ _, checked ->
             when(checked){
                 R.id.rb_men -> uGender = "m"
                 R.id.rb_women -> uGender = "f"

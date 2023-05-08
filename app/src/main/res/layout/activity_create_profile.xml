@@ -51,6 +51,7 @@
                 app:counterMaxLength="20">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/area"
                     android:layout_width="match_parent"
                     android:hint="서울"
                     android:layout_height="wrap_content"
@@ -80,6 +81,7 @@
                 app:counterMaxLength="20">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/school"
                     android:layout_width="match_parent"
                     android:hint="단국대학교"
                     android:layout_height="wrap_content"
@@ -113,6 +115,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/myScore"
                         android:layout_width="match_parent"
                         android:hint="서울"
                         android:layout_height="wrap_content"
@@ -138,6 +141,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/maxScore"
                         android:layout_width="match_parent"
                         android:hint="서울"
                         android:layout_height="wrap_content"
@@ -256,6 +260,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/writeGit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
@@ -264,6 +269,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
             <Button
+                android:id="@+id/createProfile"
                 android:layout_width="match_parent"
                 style="@style/Widget.Material3.Button.Icon"
                 android:layout_height="wrap_content"

@@ -102,7 +102,7 @@
                 tools:layout_editor_absoluteY="33dp" />
 
             <RadioGroup
-                android:id="@+id/checkSex"
+                android:id="@+id/checkGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
