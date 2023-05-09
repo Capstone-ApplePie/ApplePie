@@ -51,6 +51,7 @@
                 app:counterMaxLength="20">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:hint="최대 20자까지 입력해주세요"
                     android:layout_height="wrap_content"
@@ -157,7 +158,9 @@
                 android:textColor="@color/black"
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="12dp"/>
+
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/backEnd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
@@ -179,7 +182,9 @@
                 android:textColor="@color/black"
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="12dp"/>
+
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/frontEnd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
@@ -272,6 +277,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="12dp"/>
             <EditText
+                android:id="@+id/writeText"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:background="@drawable/round_text_view"
