@@ -2,6 +2,13 @@
     <string name="app_name">Project_ApplePie</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="select_role">
+        <item>기획자</item>
+        <item>디자이너</item>
+        <item>웹 개발자</item>
+        <item>프론트엔드</item>
+        <item>백엔드</item>
+    </string-array>
     <string-array name="create_team_count">
         <item>0명</item>
         <item>1명</item>

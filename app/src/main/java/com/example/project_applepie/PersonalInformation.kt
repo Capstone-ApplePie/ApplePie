@@ -34,6 +34,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 
     private lateinit var searchAdapter : SearchItemRecyclerViewAdapter
     private lateinit var teamAdapter : MyTeamAdapter
+    private lateinit var valunteerAdapter: MyTeamAdapter
     private lateinit var boardAdapter : myBoardAdapter
     private var _recruitBinding : FragmentPersonalInformationBinding? = null
     private val recruitBinding get() = _recruitBinding!!
@@ -93,11 +94,25 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 
         teamAdapter = MyTeamAdapter()
         teamAdapter.submitList(itemList2)
-        recruitBinding.rvMyTeam.layoutManager = LinearLayoutManager(view.context,
+        recruitBinding.rvCreateMyTeam.layoutManager = LinearLayoutManager(view.context,
         LinearLayoutManager.VERTICAL,false)
-        recruitBinding.rvMyTeam.adapter = teamAdapter
+        recruitBinding.rvCreateMyTeam.adapter = teamAdapter
 
         teamAdapter.setOnItemClickListener(object : MyTeamAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: myTeam, pos: Int) {
+                val intent = Intent(context, ViewVolunteerAcitviy::class.java)
+                intent.putExtra("data",data)
+                startActivity(intent)
+            }
+        })
+
+        valunteerAdapter = MyTeamAdapter()
+        valunteerAdapter.submitList(itemList2)
+        recruitBinding.rvApplyMyTeam.layoutManager = LinearLayoutManager(view.context,
+            LinearLayoutManager.VERTICAL,false)
+        recruitBinding.rvApplyMyTeam.adapter = valunteerAdapter
+
+        valunteerAdapter.setOnItemClickListener(object : MyTeamAdapter.OnItemClickListener{
             override fun onItemClick(v: View, data: myTeam, pos: Int) {
                 val intent = Intent(context, ViewTeamActivity::class.java)
                 intent.putExtra("data",data)
@@ -144,6 +159,17 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 //            var intent = Intent(context, MainActivity::class.java)
 //            startActivity(intent)
             activity?.finish()
+        }
+
+        //switch 체크 유무
+        recruitBinding.swOutsourcing.setOnCheckedChangeListener { compoundButton, b ->
+            Log.d("로그","외주 체크 유무 : $b")
+        }
+        recruitBinding.swCompetition.setOnCheckedChangeListener { compoundButton, b ->
+            Log.d("로그","공모전 체크 유무 : $b")
+        }
+        recruitBinding.swAssignment.setOnCheckedChangeListener { compoundButton, b ->
+            Log.d("로그","과외/과제 체크 유무 : $b")
         }
 
     }

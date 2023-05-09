@@ -9,6 +9,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -26,6 +27,8 @@ import java.util.*
 class CreateTeamActivity : AppCompatActivity() {
 
     private lateinit var ctBinding : ActivityCreateTeamBinding
+
+
 
     // 갤러리에서 사진 가져오기
     private val permissionList = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -75,10 +78,34 @@ class CreateTeamActivity : AppCompatActivity() {
 //
 //        var server = retrofit.create(Writing::class.java)
 
+        //드롭박스
         val getTeamCount = resources.getStringArray(R.array.create_team_count)
         val arrayAdapter = ArrayAdapter(this,R.layout.dropdown_item, getTeamCount)
         ctBinding.actvBackend.setAdapter(arrayAdapter)
         ctBinding.actvFrontend.setAdapter(arrayAdapter)
+        ctBinding.actvPm.setAdapter(arrayAdapter)
+        ctBinding.actvDesigner.setAdapter(arrayAdapter)
+        ctBinding.actvWebDeveloper.setAdapter(arrayAdapter)
+
+
+        //드롭박스 선택 인원수 확인
+        ctBinding.actvBackend.setOnItemClickListener { adapterView, view, i, l ->
+            Log.d("로그","백엔드 인원 : $i")
+        }
+
+        ctBinding.toggleButton.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            var clickText = ""
+            if(isChecked){
+                when(checkedId){
+                    2131296374 -> clickText = "외주"
+                    2131296375 -> clickText = "과제/과외"
+                    2131296376 -> clickText = "공모전"
+                }
+            }
+            Log.d("로그","clickText : $clickText")
+        }
+
+
 
         checkPermission.launch(permissionList)
 

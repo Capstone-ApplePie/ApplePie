@@ -6,16 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project_applepie.R
+import com.example.project_applepie.model.AuerProfile
 import com.example.project_applepie.model.myTeam
 
-class MyTeamAdapter : RecyclerView.Adapter<MyTeamHolder>(){
+class viewTeamAdapter : RecyclerView.Adapter<viewTeamHolder>(){
 
-    private var searchList = ArrayList<myTeam>()
+    private var searchList = ArrayList<AuerProfile>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyTeamHolder {
-        val teamHolder = MyTeamHolder(LayoutInflater
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewTeamHolder {
+        val teamHolder = viewTeamHolder(LayoutInflater
             .from(parent.context)
-            .inflate(R.layout.layout_create_my_team,parent,false)
+            .inflate(R.layout.layout_profile_item,parent,false)
         )
         return teamHolder
     }
@@ -24,16 +25,11 @@ class MyTeamAdapter : RecyclerView.Adapter<MyTeamHolder>(){
         return searchList.size
     }
 
-    override fun onBindViewHolder(holder: MyTeamHolder, position: Int) {
-        holder.teamImg.setImageResource(searchList.get(position).thumbnail)
-        holder.teamTitle.text = searchList.get(position).title
-
-        holder.teamDelete.setOnClickListener {
-            Log.d("로그","삭제")
-        }
-        holder.teamDone.setOnClickListener {
-            Log.d("로그","모집완료")
-        }
+    override fun onBindViewHolder(holder: viewTeamHolder, position: Int) {
+        holder.teamImg.setImageResource(searchList.get(position).img)
+        holder.teamTitle.text = searchList.get(position).uname
+        holder.teamTag.text = searchList.get(position).tag
+        holder.teamDetail.text = searchList.get(position).udetail
 
         if(position!=RecyclerView.NO_POSITION){
             holder.itemView.setOnClickListener {
@@ -42,11 +38,11 @@ class MyTeamAdapter : RecyclerView.Adapter<MyTeamHolder>(){
         }
     }
 
-    fun submitList(searchList : ArrayList<myTeam>){
+    fun submitList(searchList : ArrayList<AuerProfile>){
         this.searchList = searchList
     }
     interface OnItemClickListener{
-        fun onItemClick(v: View, data: myTeam, pos : Int)
+        fun onItemClick(v: View, data: AuerProfile, pos : Int)
     }
     private var listener : OnItemClickListener? = null
     fun setOnItemClickListener(listener : OnItemClickListener) {

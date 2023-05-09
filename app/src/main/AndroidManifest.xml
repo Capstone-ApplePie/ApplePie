@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Project_ApplePie"
         tools:targetApi="31">
         <activity
+            android:name=".ViewVolunteerAcitviy"
+            android:exported="false" />
+        <activity
             android:name=".ViewTeamActivity"
             android:exported="false" />
         <activity
