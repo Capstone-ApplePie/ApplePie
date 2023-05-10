@@ -79,6 +79,9 @@ class CreateTeamActivity : AppCompatActivity() {
         val arrayAdapter = ArrayAdapter(this,R.layout.dropdown_item, getTeamCount)
         ctBinding.actvBackend.setAdapter(arrayAdapter)
         ctBinding.actvFrontend.setAdapter(arrayAdapter)
+        ctBinding.actvDesigner.setAdapter(arrayAdapter)
+        ctBinding.actvPm.setAdapter(arrayAdapter)
+        ctBinding.actvWebDeveloper.setAdapter(arrayAdapter)
 
         checkPermission.launch(permissionList)
 
