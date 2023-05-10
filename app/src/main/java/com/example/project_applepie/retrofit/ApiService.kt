@@ -22,7 +22,7 @@ interface ApiService {
         @Field("name") name: String,
         @Field("nickname") nickname: String,
         @Field("corp") corp: Boolean,
-        @Field("birth") birth: Date,
+        @Field("birth") birth: String,
         @Field("gender") gender: String,
         @Field("area") area: String,
         @Field("college") college: String,
@@ -52,7 +52,7 @@ interface ApiService {
         @Field("github") github: String,
         @Field("devLanguage") devLanguage: String,
         @Field("devFramework") devFramework: String
-    )
+    ): Call<LoginData>
 
     // 7. 글 작성
 //    @POST("/boards")

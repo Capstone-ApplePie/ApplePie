@@ -19,6 +19,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.Instant
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 // 회원가입 절차를 위한 변수
@@ -58,7 +60,7 @@ class SignupActivity : AppCompatActivity() {
         var uGender : String = "m"
         var uCorp : Boolean = false
         // 날짜 임시 처리
-        var uBirth : Date = Date.from(Instant.now())
+        var uBirth : String = " "
 
         // 상단 X 버튼
         binding.returnMain.setOnClickListener {
@@ -81,9 +83,8 @@ class SignupActivity : AppCompatActivity() {
 
         // 회원가입 버튼 클릭
         binding.signUpBtn.setOnClickListener {
-            if(namePass == 0 && emailPass == 0 && pwPass == 0 && pwCheck == 0){
+//            if(namePass == 0 && emailPass == 0 && pwPass == 0 && pwCheck == 0 && uBirth != " "){
                 val uName : String = binding.etUsername.text.toString()
-                val uDate : String = binding.tvBirth.text.toString()
                 val uNickname : String = binding.etUserNickname.text.toString()
                 val uEmail : String = binding.etUsermail.text.toString()
                 val uPw : String = binding.etUserpw.text.toString()
@@ -108,18 +109,24 @@ class SignupActivity : AppCompatActivity() {
                     })*/
 
                 var intent = Intent(this, CreateProfile::class.java)
-                intent.putExtra("uName",uName)
-                intent.putExtra("uDate",uDate)
-                intent.putExtra("uNickname",uNickname)
+
+                // 프로필 생성화면 이동 시 넘겨지는 데이터
+                // 이메일, 비밀번호, 이름, 닉네임, 회사판별, 생일, 성별
                 intent.putExtra("uEmail",uEmail)
                 intent.putExtra("uPw",uPw)
+                intent.putExtra("uName",uName)
+                intent.putExtra("uNickname",uNickname)
+                intent.putExtra("uCorp", uCorp)
+                intent.putExtra("uBirth",uBirth)
+                intent.putExtra("uGender", uGender)
+
                 //Toast.makeText(this@SignupActivity, "회원가입이 완료되었습니다.", Toast.LENGTH_LONG).show()
                 startActivity(intent)
                 //finish()
-            }
-            else {
-                Toast.makeText(this, "빈칸을 모두 제대로 채워주세요!", Toast.LENGTH_LONG).show()
-            }
+//            }
+//            else {
+//                Toast.makeText(this, "빈칸을 모두 제대로 채워주세요!", Toast.LENGTH_LONG).show()
+//            }
         }
 
         //날짜 버튼 클릭
@@ -140,8 +147,8 @@ class SignupActivity : AppCompatActivity() {
                 calendar.time = Date(it)
                 val calendarMilli = calendar.timeInMillis
                 binding.tvBirth.setText("${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.YEAR)}")
-                // 나이 계산
-                Log.d("날짜 테스트", calendar.toString())
+
+                uBirth = "${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.MONTH) + 1}-${calendar.get(Calendar.DAY_OF_MONTH)}"
             }
             datePicker.show(supportFragmentManager,datePicker.toString())
         }

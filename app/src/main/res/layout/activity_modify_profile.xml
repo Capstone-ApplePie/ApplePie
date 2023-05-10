@@ -51,6 +51,7 @@ tools:context=".ModifyProfileActivity">
             app:counterMaxLength="20">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/modArea"
                 android:layout_width="match_parent"
                 android:hint="서울"
                 android:layout_height="wrap_content"
@@ -80,6 +81,7 @@ tools:context=".ModifyProfileActivity">
             app:counterMaxLength="20">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/modColleage"
                 android:layout_width="match_parent"
                 android:hint="단국대학교"
                 android:layout_height="wrap_content"
@@ -113,6 +115,7 @@ tools:context=".ModifyProfileActivity">
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/modMyScore"
                     android:layout_width="match_parent"
                     android:hint="서울"
                     android:layout_height="wrap_content"
@@ -138,6 +141,7 @@ tools:context=".ModifyProfileActivity">
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/modMaxScore"
                     android:layout_width="match_parent"
                     android:hint="서울"
                     android:layout_height="wrap_content"
@@ -256,6 +260,7 @@ tools:context=".ModifyProfileActivity">
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/uGithub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
@@ -264,6 +269,7 @@ tools:context=".ModifyProfileActivity">
 
         </com.google.android.material.textfield.TextInputLayout>
         <Button
+            android:id="@+id/modSuccessBtn"
             android:layout_width="match_parent"
             style="@style/Widget.Material3.Button.Icon"
             android:layout_height="wrap_content"

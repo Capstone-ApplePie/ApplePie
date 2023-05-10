@@ -3,43 +3,83 @@ package com.example.project_applepie
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import com.example.project_applepie.databinding.ActivityCreateProfileBinding
 import com.example.project_applepie.retrofit.ApiService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CreateProfile : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val cpBinding = ActivityCreateProfileBinding.inflate(layoutInflater)
         setContentView(cpBinding.root)
 
+        // 회원가입 정보
+        val uEmail= intent.getStringExtra("uEmail")
+        val uPw = intent.getStringExtra("uPw")
+        val uName = intent.getStringExtra("uName")
+        val uNickname = intent.getStringExtra("uNickname")
+        val uCorp = intent.getBooleanExtra("uCorp", false)
+        val uBirth = intent.getStringExtra("uBirth")
+        val uGender = intent.getStringExtra("uGender")
 
+        // 사용자 지역
+        val uArea : String = cpBinding.area.toString()
+        // 사용자 출신 대학교
+        val uCollege : String = cpBinding.colleague.toString()
 
+        // 사용자가 대학교에서 받은 학점 (숫자로만 입력 받도록 수정 필요) <------------------------------------------------------------
+        val uGrade = cpBinding.myScore.toString().toFloat()
+
+        // 학년 선택 -> 기본값 : 2학년 (나중에 비우고 선택 안하면 넘어가지 않도록 수정 필요) <-------------------------------------------
+        var uGrader : String = "2학년"
+        cpBinding.toggleButton.check(R.id.btn_grade2)
+        cpBinding.btnGrade1.setOnClickListener {
+            uGrader = "1학년"
+        }
+        cpBinding.btnGrade2.setOnClickListener {
+            uGrader = "2학년"
+        }
+        cpBinding.btnGrade3.setOnClickListener {
+            uGrader = "3학년"
+        }
+        cpBinding.btnGrade4.setOnClickListener {
+            uGrader = "4학년"
+        }
+
+        // 사용자 깃허브 주소 (주소 형태로 받아오도록 수정 필요) <--------------------------------------------------------------------
+        val uGit : String = cpBinding.writeGit.toString()
+
+        // 사용자가 사용하는 프로그램 언어 선택
         val getLanguage = resources.getStringArray(R.array.create_profile_language)
         val arrayAdapter = ArrayAdapter(this,R.layout.dropdown_item, getLanguage)
         cpBinding.acLanguage.setAdapter(arrayAdapter)
 
-        val getFramework = resources.getStringArray(R.array.create_profile_language)
-        val arrayAdapter2 = ArrayAdapter(this,R.layout.dropdown_item, getFramework)
-        cpBinding.acLanguage.setAdapter(arrayAdapter)
+        var uLanguage : String = "None"
+        cpBinding.acLanguage.setOnItemClickListener { adapterView, view, position, id ->
+            uLanguage = getLanguage[position].toString()
+//            Toast.makeText(this, "$uLanguage", Toast.LENGTH_SHORT).show()
+        }
 
-        // 학년 기본값 : 2학년
-        var uGrade : String = "2학년"
-        cpBinding.toggleButton.check(R.id.btn_grade2)
-        cpBinding.btnGrade1.setOnClickListener {
-            uGrade = "1학년"
-        }
-        cpBinding.btnGrade2.setOnClickListener {
-            uGrade = "2학년"
-        }
-        cpBinding.btnGrade3.setOnClickListener {
-            uGrade = "3학년"
-        }
-        cpBinding.btnGrade4.setOnClickListener {
-            uGrade = "4학년"
+        // 사용자가 사용하는 프로그램 선택
+        val getFramework = resources.getStringArray(R.array.create_profile_framework)
+        val arrayAdapter2 = ArrayAdapter(this,R.layout.dropdown_item, getFramework)
+        cpBinding.acFramework.setAdapter(arrayAdapter2)
+
+        var uFramework : String = "None"
+        cpBinding.acFramework.setOnItemClickListener { adapterView, view, position, id ->
+            uFramework = getFramework[position].toString()
+//            Toast.makeText(this, "$uFramework", Toast.LENGTH_SHORT).show()
         }
 
         cpBinding.createProfile.setOnClickListener {
@@ -52,7 +92,26 @@ class CreateProfile : AppCompatActivity() {
 //
 //            var server = retrofit.create(ApiService::class.java)
 
+            // 회원가입 정보 null 처리 필요 <-------------------------------------------------------------------------------
+//            server.signUp(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender,
+//                uArea, uCollege, uGrade, uGrader, uGit, uLanguage, uFramework).enqueue(object :
+//                Callback<LoginData> {
+//                        override fun onFailure(call: Call<LoginData>, t: Throwable) {
+//                            Log.d("회원가입 실패", "회원가입 실패")
+//                            Toast.makeText(this@CreateProfile, "서버 오류! 회원가입 실패", Toast.LENGTH_LONG).show()
+//                        }
+//
+//                        override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
+//                            Toast.makeText(this, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()
+//                            val intent = Intent(this@CreateProfile, SignIn::class.java)
+//                            startActivity(intent)
+//                            finish()
+//                        }
+//                    } )
+
             Toast.makeText(this, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this@CreateProfile, SignIn::class.java)
+            startActivity(intent)
             finish()
         }
     }
