@@ -10,9 +10,11 @@ import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import coil.load
 import com.bumptech.glide.Glide
 import com.example.project_applepie.databinding.ActivityCreateTeamBinding
 import com.google.android.material.datepicker.CalendarConstraints
@@ -39,27 +41,28 @@ class CreateTeamActivity : AppCompatActivity() {
     }
 
     // 사진 가져오기 (1)
-//    private val readImage = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
-//        ctBinding.imgLoad.load(uri)
-//    }
+    private val readImage = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
+        findViewById<ImageView>(R.id.img_load).load(uri)
+    }
+
 
     // 사진 가져오기 (2)
-    private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()){
-
-        // 결과 코드 OK, 결과값 null 아니면
-        if(it.resultCode == RESULT_OK && it.data != null){
-            // 값 담기
-            val uri = it.data!!.data
-
-            // val basicImg = R.drawable.charmander
-
-            // 화면에 보여주기
-            Glide.with(this)
-                .load(uri) // 이미지
-                .into(ctBinding.imgLoad)
-        }
-    }
+//    private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
+//        ActivityResultContracts.StartActivityForResult()){
+//
+//        // 결과 코드 OK, 결과값 null 아니면
+//        if(it.resultCode == RESULT_OK && it.data != null){
+//            // 값 담기
+//            val uri = it.data!!.data
+//
+//            // val basicImg = R.drawable.charmander
+//
+//            // 화면에 보여주기
+//            Glide.with(this)
+//                .load(uri) // 이미지
+//                .into(ctBinding.imgLoad)
+//        }
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,19 +88,19 @@ class CreateTeamActivity : AppCompatActivity() {
 
         checkPermission.launch(permissionList)
 
-
         // 사진 가져오기 (1)
-//         ctBinding.btnUpload.setOnClickListener {
-//             readImage.launch("image/*")
-//         }
-
-        // 사진 가져오기 (2)
         ctBinding.btnUpload.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            activityResult.launch(intent)
+            if(readImage != null){
+                readImage.launch("image/*")
+            }
         }
 
+        // 사진 가져오기 (2)
+//        ctBinding.btnUpload.setOnClickListener {
+//            val intent = Intent(Intent.ACTION_PICK)
+//            intent.type = "image/*"
+//            activityResult.launch(intent)
+//        }
 
         // 날짜 버튼 클릭
         ctBinding.btnDeadline.setOnClickListener {
