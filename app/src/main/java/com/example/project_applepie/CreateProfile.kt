@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import com.example.project_applepie.databinding.ActivityCreateProfileBinding
+import com.example.project_applepie.databinding.ActivitySignInBinding
 import com.example.project_applepie.retrofit.ApiService
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,12 +18,25 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+// 프로필 생성 절차를 위한 변수
+var createProfile_regionPass = 1
+var createProfile_collegePass = 1
+var createProfile_emailPass = 1
+
+
 class CreateProfile : AppCompatActivity() {
+
+    private lateinit var cpBinding: ActivityCreateProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val cpBinding = ActivityCreateProfileBinding.inflate(layoutInflater)
         setContentView(cpBinding.root)
+
+        // 입력란 확인 코드
+//        regionFocusListener()
+//        collegeFocusListener()
+//        emailFocusListener()
 
         // 회원가입 정보
         val uEmail= intent.getStringExtra("uEmail")
@@ -34,12 +48,26 @@ class CreateProfile : AppCompatActivity() {
         val uGender = intent.getStringExtra("uGender")
 
         // 사용자 지역
-        val uArea : String = cpBinding.area.toString()
+        var uArea : String = cpBinding.area.toString()
         // 사용자 출신 대학교
-        val uCollege : String = cpBinding.colleague.toString()
+        var uCollege : String = cpBinding.colleague.toString()
 
         // 사용자가 대학교에서 받은 학점 (숫자로만 입력 받도록 수정 필요) <------------------------------------------------------------
-        val uGrade = cpBinding.myScore.toString().toFloat()
+        var uGrade : Float
+        try{
+            uGrade = cpBinding.myScore.toString().toFloat()
+        } catch (e: NumberFormatException){
+            // 예외 처리 필요
+        }
+
+        // 사용자가 다니는 대학의 총 학점 (숫자로만 입력 받도록 수정 필요) <-----------------------------------------------------------
+        var uTotalGrade : Float
+        try{
+            uTotalGrade = cpBinding.maxScore.toString().toFloat()
+        } catch (e: java.lang.NumberFormatException){
+            // 예외 처리 필요
+        }
+
 
         // 학년 선택 -> 기본값 : 2학년 (나중에 비우고 선택 안하면 넘어가지 않도록 수정 필요) <-------------------------------------------
         var uGrader : String = "2학년"
@@ -58,16 +86,16 @@ class CreateProfile : AppCompatActivity() {
         }
 
         // 사용자 깃허브 주소 (주소 형태로 받아오도록 수정 필요) <--------------------------------------------------------------------
-        val uGit : String = cpBinding.writeGit.toString()
+        var uGit : String = cpBinding.writeGit.toString()
 
         // 사용자가 사용하는 프로그램 언어 선택
         val getLanguage = resources.getStringArray(R.array.create_profile_language)
         val arrayAdapter = ArrayAdapter(this,R.layout.dropdown_item, getLanguage)
         cpBinding.acLanguage.setAdapter(arrayAdapter)
 
-        var uLanguage : String = "None"
+        var uLanguage : Int = -1
         cpBinding.acLanguage.setOnItemClickListener { adapterView, view, position, id ->
-            uLanguage = getLanguage[position].toString()
+            uLanguage = position
 //            Toast.makeText(this, "$uLanguage", Toast.LENGTH_SHORT).show()
         }
 
@@ -92,9 +120,10 @@ class CreateProfile : AppCompatActivity() {
 //
 //            var server = retrofit.create(ApiService::class.java)
 
+
             // 회원가입 정보 null 처리 필요 <-------------------------------------------------------------------------------
 //            server.signUp(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender,
-//                uArea, uCollege, uGrade, uGrader, uGit, uLanguage, uFramework).enqueue(object :
+//                uArea, uCollege, uGrade, uTotalGrade, uGrader, uGit, uLanguage, uFramework).enqueue(object :
 //                Callback<LoginData> {
 //                        override fun onFailure(call: Call<LoginData>, t: Throwable) {
 //                            Log.d("회원가입 실패", "회원가입 실패")
@@ -115,4 +144,68 @@ class CreateProfile : AppCompatActivity() {
             finish()
         }
     }
+
+
+    // -------------------------------------------------------------------------------------------------------------------------------------------------
+
+    // 이거 웨 않됌?
+    // 지역 확인
+//    private fun regionFocusListener(){
+//        cpBinding.area.setOnFocusChangeListener { _, focused ->
+//            if(!focused){
+//                cpBinding.etCpRegion.helperText = validRegion()
+//            }
+//        }
+//    }
+//    private fun validRegion(): String?
+//    {
+//        val nameText = cpBinding.area.text.toString()
+//
+//        if(!nameText.matches("^[ㄱ-ㅎ가-힣]*\$".toRegex())){
+//            createProfile_regionPass = 1
+//            return "한글만 입력해주세요."
+//        } else { createProfile_regionPass = 0 }
+//
+//        return null
+//    }
+//
+//    // 대학교 확인
+//    private fun collegeFocusListener(){
+//        cpBinding.colleague.setOnFocusChangeListener { _, focused ->
+//            if(!focused){
+//                cpBinding.etCpCollege.helperText = validName()
+//            }
+//        }
+//    }
+//    private fun validName(): String?
+//    {
+//        val nameText = cpBinding.colleague.text.toString()
+//
+//        if(!nameText.matches("^[ㄱ-ㅎ가-힣]*\$".toRegex())){
+//            createProfile_collegePass = 1
+//            return "한글만 입력해주세요."
+//        } else { createProfile_collegePass = 0 }
+//
+//        return null
+//    }
+//
+//    // 이메일 유효성 검증
+//    private fun emailFocusListener() {
+//        cpBinding.writeGit.setOnFocusChangeListener{ _, focused ->
+//            if(!focused){
+//                cpBinding.etCpGithub.helperText = validEmail()
+//            }
+//        }
+//    }
+//
+//    private fun validEmail(): String? {
+//        val emailText = cpBinding.writeGit.text.toString()
+//        if(!emailText.matches("^[a-zA-X0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+$".toRegex())){
+//            createProfile_emailPass = 1
+//            return "잘못된 이메일 형식입니다."
+//        }
+//        else {
+//            createProfile_emailPass = 0 }
+//        return null
+//    }
 }

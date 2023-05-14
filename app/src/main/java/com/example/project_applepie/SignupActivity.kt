@@ -154,6 +154,10 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
+
+    // -------------------------------------------------------------------------------------------------------------------------------------------------
+
+
     // 이름 확인
     private fun nameFocusListener(){
         binding.etUsername.setOnFocusChangeListener { _, focused ->
@@ -212,7 +216,7 @@ class SignupActivity : AppCompatActivity() {
             return "6자 이상, 15자 이하로 입력해주세요."
         } else { pwPass = 0 }
 
-        if(!passwordText.matches(".*[@#\$%^&+=].*".toRegex())) {
+        if(!passwordText.matches(".*[!@#\$%^&+=].*".toRegex())) {
             pwPass = 1
             return "특수문자 1개 이상을 포함해야합니다. (@#\$%^&+=)"
         } else { pwPass = 0 }

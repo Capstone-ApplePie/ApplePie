@@ -27,9 +27,10 @@ interface ApiService {
         @Field("area") area: String,
         @Field("college") college: String,
         @Field("grade") grade: Float,
+        @Field("totalGrade") totalGrade: Float,
         @Field("grader") grader: String,
         @Field("github") github: String,
-        @Field("devLanguage") devLanguage: String,
+        @Field("devLanguage") devLanguage: Int,
         @Field("devFramework") devFramework: String
         ): Call<LoginData>
 
@@ -41,6 +42,13 @@ interface ApiService {
         @Field("password") password: String
     ): Call<LoginData>
 
+    // 3. 회원 정보 조회
+    @POST
+    @FormUrlEncoded
+    fun inquireUserInfo(
+        
+    )
+
     // 5. 회원 프로필 수정
     @PUT(API.MODIFY_PROFILE)
     @FormUrlEncoded
@@ -48,9 +56,10 @@ interface ApiService {
         @Field("area") area: String,
         @Field("college") college: String,
         @Field("grade") grade: Float,
+        @Field("totalGrade") totalGrade: Float,
         @Field("grader") grader: String,
         @Field("github") github: String,
-        @Field("devLanguage") devLanguage: String,
+        @Field("devLanguage") devLanguage: Int,
         @Field("devFramework") devFramework: String
     ): Call<LoginData>
 
