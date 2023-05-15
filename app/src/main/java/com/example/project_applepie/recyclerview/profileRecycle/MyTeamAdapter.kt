@@ -31,9 +31,6 @@ class MyTeamAdapter : RecyclerView.Adapter<MyTeamHolder>(){
         holder.teamDelete.setOnClickListener {
             Log.d("로그","삭제")
         }
-        holder.teamDone.setOnClickListener {
-            Log.d("로그","모집완료")
-        }
 
         if(position!=RecyclerView.NO_POSITION){
             holder.itemView.setOnClickListener {

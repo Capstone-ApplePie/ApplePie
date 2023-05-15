@@ -44,6 +44,20 @@
                 android:layout_marginTop="5dp"
                 tools:listitem="@layout/layout_volunteer_item">
             </androidx.recyclerview.widget.RecyclerView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="나의 팀원"
+                android:textColor="@color/black"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_teamMember"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                tools:listitem="@layout/layout_volunteer_item">
+            </androidx.recyclerview.widget.RecyclerView>
 
 
         </LinearLayout>

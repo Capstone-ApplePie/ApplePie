@@ -35,17 +35,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/lmt_done"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="22dp"
-            android:backgroundTint="#00ff0000"
-            android:src="@drawable/baseline_flag_24"
-            app:layout_constraintBottom_toBottomOf="@+id/lmt_delete"
-            app:layout_constraintEnd_toStartOf="@+id/lmt_delete"
-            app:layout_constraintTop_toTopOf="@+id/lmt_delete" />
-
-        <ImageButton
             android:id="@+id/lmt_delete"
             android:layout_width="48dp"
             android:layout_height="48dp"

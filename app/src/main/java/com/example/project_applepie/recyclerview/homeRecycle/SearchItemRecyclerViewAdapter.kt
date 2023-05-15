@@ -1,8 +1,10 @@
 package com.example.project_applepie.recyclerview.homeRecycle
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project_applepie.R
 import com.example.project_applepie.model.recuit
@@ -26,6 +28,10 @@ class SearchItemRecyclerViewAdapter : RecyclerView.Adapter<SearchItemViewHolder>
         holder.photoImageView.setImageResource(searchList.get(position).thumbnail)
         holder.recruitTitle.text = searchList.get(position).title
         holder.recuitDetail.text = searchList.get(position).detail
+
+        if(position < 3){
+            holder.recuritBackground.setBackgroundColor(Color.parseColor("#FFE4C4"))
+        }
 
         if(position!=RecyclerView.NO_POSITION){
             holder.itemView.setOnClickListener {

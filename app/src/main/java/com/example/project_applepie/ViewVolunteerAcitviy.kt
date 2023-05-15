@@ -10,9 +10,11 @@ import com.example.project_applepie.model.myTeam
 import com.example.project_applepie.model.recuit
 import com.example.project_applepie.recyclerview.profileRecycle.MyTeamAdapter
 import com.example.project_applepie.recyclerview.profileRecycle.myVolunteerAdapter
+import com.example.project_applepie.recyclerview.profileRecycle.viewTeamAdapter
 
 class ViewVolunteerAcitviy : AppCompatActivity() {
     private lateinit var volunteerAdapter : myVolunteerAdapter
+    private lateinit var viewTeamAdapter: viewTeamAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val vvBinding = ActivityViewVolunteerAcitviyBinding.inflate(layoutInflater)
@@ -29,5 +31,11 @@ class ViewVolunteerAcitviy : AppCompatActivity() {
         vvBinding.rvVolunteer.layoutManager = LinearLayoutManager(this,
             LinearLayoutManager.VERTICAL,false)
         vvBinding.rvVolunteer.adapter = volunteerAdapter
+
+        viewTeamAdapter = viewTeamAdapter()
+        viewTeamAdapter.submitList(itemList)
+        vvBinding.rvTeamMember.layoutManager = LinearLayoutManager(this,
+            LinearLayoutManager.VERTICAL,false)
+        vvBinding.rvTeamMember.adapter = viewTeamAdapter
     }
 }

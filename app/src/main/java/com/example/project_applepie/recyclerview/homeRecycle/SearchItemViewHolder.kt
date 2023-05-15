@@ -15,6 +15,7 @@ class SearchItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
     val photoImageView = itemView.findViewById<ImageView>(R.id.recruit_imageView)
     val recruitTitle = itemView.findViewById<TextView>(R.id.recruit_title)
     val recuitDetail = itemView.findViewById<TextView>(R.id.recuit_detail)
+    val recuritBackground = itemView.findViewById<ConstraintLayout>(R.id.recruit_card)
 
     /*fun bindWithView(recuitItem : recuit){
         recruitTitle.text = recuitItem.title
