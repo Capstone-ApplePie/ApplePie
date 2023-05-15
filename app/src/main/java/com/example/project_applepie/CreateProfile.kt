@@ -90,14 +90,8 @@ class CreateProfile : AppCompatActivity() {
         var uGit : String = cpBinding.writeGit.toString()
 
         // 사용자가 사용하는 프로그램 언어 선택
-        val getLanguage = resources.getStringArray(R.array.create_profile_language)
-        val arrayAdapter = ArrayAdapter(this,R.layout.dropdown_item, getLanguage)
-        cpBinding.acLanguage.setAdapter(arrayAdapter)
-
-        var uLanguage : Int = -1
-        cpBinding.acLanguage.setOnItemClickListener { adapterView, view, position, id ->
-            uLanguage = position
-//            Toast.makeText(this, "$uLanguage", Toast.LENGTH_SHORT).show()
+        cpBinding.chLang.setOnCheckedStateChangeListener { group, checkedIds ->
+            Log.d("test", "Click: $checkedIds")
         }
 
         // 사용자가 사용하는 프로그램 선택
