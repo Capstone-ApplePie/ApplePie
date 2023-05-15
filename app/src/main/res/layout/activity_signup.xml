@@ -78,6 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
+                app:helperTextTextColor="@android:color/holo_red_dark"
                 android:padding="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -176,6 +177,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
+                app:helperTextTextColor="@android:color/holo_red_dark"
                 android:padding="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -205,6 +207,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
+                app:helperTextTextColor="@android:color/holo_red_dark"
                 android:padding="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -243,6 +246,7 @@
                     android:hint="6 ~ 15자 영문, 숫자, 특수문자를 사용하세요"
                     android:inputType="textPassword"
                     android:maxLength="21"
+                    app:helperTextTextColor="@android:color/holo_red_dark"
                     tools:ignore="SpeakableTextPresentCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -272,6 +276,7 @@
                     android:hint="비밀번호를 한번 더 입력해주세요."
                     android:inputType="textPassword"
                     android:maxLength="21"
+                    app:helperTextTextColor="@android:color/holo_red_dark"
                     tools:ignore="SpeakableTextPresentCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -22,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 var createProfile_regionPass = 1
 var createProfile_collegePass = 1
 var createProfile_emailPass = 1
+var createProfile_gradePass = 1
 
 
 class CreateProfile : AppCompatActivity() {
@@ -30,13 +31,13 @@ class CreateProfile : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val cpBinding = ActivityCreateProfileBinding.inflate(layoutInflater)
+        cpBinding = ActivityCreateProfileBinding.inflate(layoutInflater)
         setContentView(cpBinding.root)
 
         // 입력란 확인 코드
-//        regionFocusListener()
-//        collegeFocusListener()
-//        emailFocusListener()
+        regionFocusListener()
+        collegeFocusListener()
+        emailFocusListener()
 
         // 회원가입 정보
         val uEmail= intent.getStringExtra("uEmail")
@@ -148,64 +149,78 @@ class CreateProfile : AppCompatActivity() {
 
     // -------------------------------------------------------------------------------------------------------------------------------------------------
 
-    // 이거 웨 않됌?
+
     // 지역 확인
-//    private fun regionFocusListener(){
-//        cpBinding.area.setOnFocusChangeListener { _, focused ->
+    private fun regionFocusListener(){
+        cpBinding.area.setOnFocusChangeListener { _, focused ->
+            if(!focused){
+                cpBinding.etCpRegion.helperText = validRegion()
+            }
+        }
+    }
+    private fun validRegion(): String?
+    {
+        val nameText = cpBinding.area.text.toString()
+
+        if(!nameText.matches("^[ㄱ-ㅎ가-힣]*\$".toRegex())){
+            createProfile_regionPass = 1
+            return "한글만 입력해주세요."
+        } else { createProfile_regionPass = 0 }
+
+        return null
+    }
+
+    // 대학교 확인
+    private fun collegeFocusListener(){
+        cpBinding.colleague.setOnFocusChangeListener { _, focused ->
+            if(!focused){
+                cpBinding.etCpCollege.helperText = validName()
+            }
+        }
+    }
+    private fun validName(): String?
+    {
+        val nameText = cpBinding.colleague.text.toString()
+
+        if(!nameText.matches("^[ㄱ-ㅎ가-힣]*\$".toRegex())){
+            createProfile_collegePass = 1
+            return "한글만 입력해주세요."
+        } else { createProfile_collegePass = 0 }
+
+        return null
+    }
+
+    // 학점 검증
+//    private fun gradeFocusListener() {
+//        cpBinding.myScore.setOnFocusChangeListener{ _, focused ->
 //            if(!focused){
-//                cpBinding.etCpRegion.helperText = validRegion()
+//                cpBinding.helperTextGrade.helperText = validGrade()
 //            }
 //        }
 //    }
-//    private fun validRegion(): String?
-//    {
-//        val nameText = cpBinding.area.text.toString()
 //
-//        if(!nameText.matches("^[ㄱ-ㅎ가-힣]*\$".toRegex())){
-//            createProfile_regionPass = 1
-//            return "한글만 입력해주세요."
-//        } else { createProfile_regionPass = 0 }
-//
-//        return null
+//    private fun validGrade(): String? {
+//        val gradeText = cpBinding.myScore.text.toString()
+//        if()
 //    }
-//
-//    // 대학교 확인
-//    private fun collegeFocusListener(){
-//        cpBinding.colleague.setOnFocusChangeListener { _, focused ->
-//            if(!focused){
-//                cpBinding.etCpCollege.helperText = validName()
-//            }
-//        }
-//    }
-//    private fun validName(): String?
-//    {
-//        val nameText = cpBinding.colleague.text.toString()
-//
-//        if(!nameText.matches("^[ㄱ-ㅎ가-힣]*\$".toRegex())){
-//            createProfile_collegePass = 1
-//            return "한글만 입력해주세요."
-//        } else { createProfile_collegePass = 0 }
-//
-//        return null
-//    }
-//
-//    // 이메일 유효성 검증
-//    private fun emailFocusListener() {
-//        cpBinding.writeGit.setOnFocusChangeListener{ _, focused ->
-//            if(!focused){
-//                cpBinding.etCpGithub.helperText = validEmail()
-//            }
-//        }
-//    }
-//
-//    private fun validEmail(): String? {
-//        val emailText = cpBinding.writeGit.text.toString()
-//        if(!emailText.matches("^[a-zA-X0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+$".toRegex())){
-//            createProfile_emailPass = 1
-//            return "잘못된 이메일 형식입니다."
-//        }
-//        else {
-//            createProfile_emailPass = 0 }
-//        return null
-//    }
+
+    // 이메일 유효성 검증
+    private fun emailFocusListener() {
+        cpBinding.writeGit.setOnFocusChangeListener{ _, focused ->
+            if(!focused){
+                cpBinding.etCpGithub.helperText = validEmail()
+            }
+        }
+    }
+
+    private fun validEmail(): String? {
+        val emailText = cpBinding.writeGit.text.toString()
+        if(!emailText.matches("^[a-zA-X0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+$".toRegex())){
+            createProfile_emailPass = 1
+            return "잘못된 이메일 형식입니다."
+        }
+        else {
+            createProfile_emailPass = 0 }
+        return null
+    }
 }

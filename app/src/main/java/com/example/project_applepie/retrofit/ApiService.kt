@@ -1,12 +1,10 @@
 package com.example.project_applepie.retrofit
 
+import android.util.Log
 import com.example.project_applepie.LoginData
 import com.example.project_applepie.utils.API
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
-import retrofit2.http.PUT
+import retrofit2.http.*
 import java.util.*
 
 //data class ResponseDc(var result:String? = null)
@@ -43,11 +41,10 @@ interface ApiService {
     ): Call<LoginData>
 
     // 3. 회원 정보 조회
-    @POST
+    @GET(API.SEARCH_PROFILE)
     @FormUrlEncoded
     fun inquireUserInfo(
-        
-    )
+    ): Call<LoginData>
 
     // 5. 회원 프로필 수정
     @PUT(API.MODIFY_PROFILE)
@@ -63,8 +60,14 @@ interface ApiService {
         @Field("devFramework") devFramework: String
     ): Call<LoginData>
 
-    // 7. 글 작성
-//    @POST("/boards")
-//    @FormUrlEncoded
+    // 6. 회원 탈퇴
+    @GET(API.DELETE_ACCOUNT)
+    fun deleteUser()
+
+
+    // 13. 글 작성
+    @POST(API.WRITE_BOARD)
+    @FormUrlEncoded
+    fun writeBoard()
 }
 
