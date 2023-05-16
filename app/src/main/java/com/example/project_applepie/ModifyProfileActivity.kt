@@ -48,15 +48,7 @@ class ModifyProfileActivity : AppCompatActivity() {
         val uGit : String = mpBinding.uGithub.toString()
 
         // 사용자가 사용하는 프로그램 언어 선택
-        val getLanguage = resources.getStringArray(R.array.create_profile_language)
-        val arrayAdapter = ArrayAdapter(this,R.layout.dropdown_item, getLanguage)
-        mpBinding.acLanguage.setAdapter(arrayAdapter)
 
-        var uLanguage : String = "None"
-        mpBinding.acLanguage.setOnItemClickListener { adapterView, view, position, id ->
-            uLanguage = getLanguage[position].toString()
-//            Toast.makeText(this, "$uLanguage", Toast.LENGTH_SHORT).show()
-        }
 
         // 사용자가 사용하는 프로그램 선택
         val getFramework = resources.getStringArray(R.array.create_profile_framework)
