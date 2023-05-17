@@ -3,6 +3,7 @@ package com.example.project_applepie.retrofit
 import android.util.Log
 import com.example.project_applepie.LoginData
 import com.example.project_applepie.utils.API
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 import java.util.*
@@ -65,9 +66,11 @@ interface ApiService {
     fun deleteUser()
 
 
-    // 13. 글 작성
+    // 13. 글 작성 https://ducksever.tistory.com/28
+    @Multipart
     @POST(API.WRITE_BOARD)
-    @FormUrlEncoded
-    fun writeBoard()
+    fun writeBoard(
+        @Part imageList : List<MultipartBody.Part?>
+    ): Call<LoginData>
 }
 

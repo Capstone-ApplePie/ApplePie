@@ -1,8 +1,11 @@
 package com.example.project_applepie
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -40,29 +43,14 @@ class CreateTeamActivity : AppCompatActivity() {
         }
     }
 
+    // 임시 (확실 치 않음)
+    var file = File("")
+
     // 사진 가져오기 (1)
     private val readImage = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
         findViewById<ImageView>(R.id.img_load).load(uri)
+        file = File("uri")
     }
-
-
-    // 사진 가져오기 (2)
-//    private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
-//        ActivityResultContracts.StartActivityForResult()){
-//
-//        // 결과 코드 OK, 결과값 null 아니면
-//        if(it.resultCode == RESULT_OK && it.data != null){
-//            // 값 담기
-//            val uri = it.data!!.data
-//
-//            // val basicImg = R.drawable.charmander
-//
-//            // 화면에 보여주기
-//            Glide.with(this)
-//                .load(uri) // 이미지
-//                .into(ctBinding.imgLoad)
-//        }
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,13 +83,6 @@ class CreateTeamActivity : AppCompatActivity() {
             }
         }
 
-        // 사진 가져오기 (2)
-//        ctBinding.btnUpload.setOnClickListener {
-//            val intent = Intent(Intent.ACTION_PICK)
-//            intent.type = "image/*"
-//            activityResult.launch(intent)
-//        }
-
         // 날짜 버튼 클릭
         ctBinding.btnDeadline.setOnClickListener {
             //calendar Constraint Builder 선택할수있는 날짜 구간설정
@@ -127,4 +108,16 @@ class CreateTeamActivity : AppCompatActivity() {
             datePicker.show(supportFragmentManager,datePicker.toString())
         }
     }
+}
+
+// 사진 전송을 위한 절대경로 변환 https://onedaycodeing.tistory.com/168
+fun absolutePath(path: Uri?, context: Context): String {
+    var proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+    var c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
+    var index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+    c?.moveToFirst()
+
+    var result = c?.getString(index!!)
+
+    return result!!
 }
