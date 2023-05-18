@@ -29,7 +29,7 @@ interface ApiService {
         @Field("totalGrade") totalGrade: Float,
         @Field("grader") grader: String,
         @Field("github") github: String,
-        @Field("devLanguage") devLanguage: Int,
+        @Field("devLanguage") devLanguage: List<Int>,
         @Field("devFramework") devFramework: String
         ): Call<LoginData>
 
