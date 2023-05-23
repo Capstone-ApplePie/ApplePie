@@ -2,6 +2,7 @@ package com.example.project_applepie.retrofit
 
 import android.util.Log
 import com.example.project_applepie.LoginData
+import com.example.project_applepie.model.dao.sinup
 import com.example.project_applepie.utils.API
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -14,23 +15,7 @@ import java.util.*
 interface ApiService {
     // 1. 회원가입
     @POST(API.SIGN_UP) // 임시 작업
-    @FormUrlEncoded
-    fun signUp(
-        @Field("email") email: String,
-        @Field("password") password: String,
-        @Field("name") name: String,
-        @Field("nickname") nickname: String,
-        @Field("corp") corp: Boolean,
-        @Field("birth") birth: String,
-        @Field("gender") gender: String,
-        @Field("area") area: String,
-        @Field("college") college: String,
-        @Field("grade") grade: Float,
-        @Field("totalGrade") totalGrade: Float,
-        @Field("grader") grader: String,
-        @Field("github") github: String,
-        @Field("devLanguage") devLanguage: List<Int>,
-        @Field("devFramework") devFramework: String
+    fun signUp(@Body signUpModel : sinup?
         ): Call<LoginData>
 
     // 2. 로그인
