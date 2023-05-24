@@ -32,7 +32,7 @@ class SignIn : AppCompatActivity() {
         signInPasswordFocusListener()
 
         // Retrofit 연동
-        val url = "http://13.125.234.75:8080"
+        val url = ""
         val retrofit = Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())

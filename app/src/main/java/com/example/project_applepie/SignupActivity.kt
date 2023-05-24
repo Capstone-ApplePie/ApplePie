@@ -20,6 +20,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -40,10 +41,10 @@ class SignupActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // 입력란 확인 코드
-        nameFocusListener()
-        emailFocusListener()
-        passwordFocusListener()
-        pwCheckFocusListener()
+//        nameFocusListener()
+//        emailFocusListener()
+//        passwordFocusListener()
+//        pwCheckFocusListener()
 
         // Retrofit 연동
 //        val url = "여기에 서버 주소 입력"
@@ -145,10 +146,15 @@ class SignupActivity : AppCompatActivity() {
             datePicker.addOnPositiveButtonClickListener {
                 val calendar = Calendar.getInstance()
                 calendar.time = Date(it)
-                val calendarMilli = calendar.timeInMillis
-                binding.tvBirth.setText("${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.YEAR)}")
 
-                uBirth = "${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.MONTH) + 1}-${calendar.get(Calendar.DAY_OF_MONTH)}"
+                val calendarMilli = calendar.timeInMillis
+                val calendarDateTime = Instant.ofEpochMilli(calendarMilli).atZone(ZoneId.systemDefault()).toLocalDateTime()
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val formatted = calendarDateTime.format(formatter)
+
+                binding.tvBirth.setText("${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.YEAR)}")
+                uBirth = formatted
+//                Toast.makeText(this@SignupActivity, "$formatted", Toast.LENGTH_LONG).show()
             }
             datePicker.show(supportFragmentManager,datePicker.toString())
         }
