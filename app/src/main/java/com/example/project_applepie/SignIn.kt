@@ -32,13 +32,13 @@ class SignIn : AppCompatActivity() {
         signInPasswordFocusListener()
 
         // Retrofit 연동
-        val url = ""
-        val retrofit = Retrofit.Builder()
-            .baseUrl(url)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        var server = retrofit.create(ApiService::class.java)
+//        val url = "http://:8080"
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl(url)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//
+//        var server = retrofit.create(ApiService::class.java)
 
         // 아이디 찾기 버튼 클릭 시
         binding.findId.setOnClickListener {

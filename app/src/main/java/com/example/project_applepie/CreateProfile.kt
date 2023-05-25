@@ -46,14 +46,14 @@ class CreateProfile : AppCompatActivity() {
         val uGender = intent.getStringExtra("uGender")
 
         // 사용자 지역
-        var uArea : String = cpBinding.area.toString()
+        var uArea : String = "korea"
         // 사용자 출신 대학교
-        var uCollege : String = cpBinding.colleague.toString()
+        var uCollege : String = "DKU"
 
         // 사용자가 대학교에서 받은 학점 (숫자로만 입력 받도록 수정 필요) <------------------------------------------------------------
         var uGrade : Float = 4.5F
         try{
-            uGrade = cpBinding.myScore.toString().toFloat()
+//            uGrade = cpBinding.myScore.toString().toFloat()
         } catch (e: NumberFormatException){
             // 예외 처리 필요
         }
@@ -61,7 +61,7 @@ class CreateProfile : AppCompatActivity() {
         // 사용자가 다니는 대학의 총 학점 (숫자로만 입력 받도록 수정 필요) <-----------------------------------------------------------
         var uTotalGrade : Float = 4.5F
         try{
-            uTotalGrade = cpBinding.maxScore.toString().toFloat()
+//            uTotalGrade = cpBinding.maxScore.toString().toFloat()
         } catch (e: java.lang.NumberFormatException){
             // 예외 처리 필요
         }
@@ -84,10 +84,18 @@ class CreateProfile : AppCompatActivity() {
         }
 
         // 사용자 깃허브 주소
-        var uGit : String = cpBinding.writeGit.toString()
+        var uGit : String = "www.XXX.xxx"
+        var it = 0
 
         // 사용자가 사용하는 프로그램 언어 선택
-        cpBinding.chLang.setOnCheckedStateChangeListener { _, checked ->
+        cpBinding.chLang.setOnCheckedStateChangeListener { group, checked ->
+            when(group.id){
+                R.id.ch_lang -> {
+                    when(checked){
+
+                    }
+                }
+            }
 
             Log.d("test", "Click: $checked")
         }
@@ -107,23 +115,29 @@ class CreateProfile : AppCompatActivity() {
 
         cpBinding.createProfile.setOnClickListener {
             // Retrofit 연동
-//            val url = ""
+//            val url = "http://:8080"
 //            val retrofit = Retrofit.Builder()
 //                .baseUrl(url)
 //                .addConverterFactory(GsonConverterFactory.create())
 //                .build()
 //
 //            var server = retrofit.create(ApiService::class.java)
-//
-//            val signupModal: sinup = sinup(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender,
-//                uArea, uCollege, uGrade, uTotalGrade, uGrader, uGit, uLanguage, uFramework)
-//
-//            Log.d("로그","signupModel : $signupModal")
-//
-//            // 회원가입 정보 null 처리 필요 <-------------------------------------------------------------------------------
-//            if (uEmail != null && uPw != null && uName != null && uNickname!=null && uBirth!=null && uGender!=null
-//                && uGrade != null && uTotalGrade != null) {
-//
+
+            uArea = cpBinding.area.text.toString()
+            uCollege = cpBinding.colleague.text.toString()
+            uGit = cpBinding.writeGit.text.toString()
+            uTotalGrade = cpBinding.maxScore.text.toString().toFloat()
+            uTotalGrade = cpBinding.maxScore.text.toString().toFloat()
+
+            val signupModal: sinup = sinup(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender,
+                uArea, uCollege, uGrade, uTotalGrade, uGrader, uGit, uLanguage, uFramework)
+
+            Log.d("로그","signupModel : $signupModal")
+
+            // 회원가입 정보 null 처리 필요 <-------------------------------------------------------------------------------
+            if (uEmail != null && uPw != null && uName != null && uNickname!=null && uBirth!=null && uGender!=null
+                && uGrade != null && uTotalGrade != null) {
+
 //                server.signUp(signupModal).enqueue(object :
 //                    Callback<LoginData> {
 //                    override fun onFailure(call: Call<LoginData>, t: Throwable) {
@@ -141,12 +155,12 @@ class CreateProfile : AppCompatActivity() {
 //                        finish()
 //                    }
 //                } )
-//            }
+            }
 
-            Toast.makeText(this, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this@CreateProfile, SignIn::class.java)
-            startActivity(intent)
-            finish()
+//            Toast.makeText(this, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()
+//            val intent = Intent(this@CreateProfile, SignIn::class.java)
+//            startActivity(intent)
+//            finish()
         }
     }
 
