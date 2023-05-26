@@ -90,27 +90,27 @@ class SignIn : AppCompatActivity() {
             val uEmail: String = binding.etUsermail.text.toString()
             val uPw: String = binding.etUserpw.text.toString()
 
-            server.logIn(uEmail, uPw).enqueue(object : Callback<LoginData>{
-                override fun onFailure(call: Call<LoginData>, t: Throwable) {
-                    Log.d("로그인 실패", "로그인 실패")
-                    Log.d("회원가입 실패", "$t")
-                    Toast.makeText(this@SignIn, "서버 오류! 로그인 실패", Toast.LENGTH_LONG).show()
-                }
-                override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
-                    val userLogin = response.body()
-                    if(userLogin?.status == 201){
-                        Log.d("로그인 성공", "로그인 성공 $uEmail, $uPw")
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        Toast.makeText(this@SignIn, "가입된 계정이 아닙니다!", Toast.LENGTH_LONG).show()
-                        Log.d("웨안됨", "$response")
-                    }
-                }
-            })
+//            server.logIn(uEmail, uPw).enqueue(object : Callback<LoginData>{
+//                override fun onFailure(call: Call<LoginData>, t: Throwable) {
+//                    Log.d("로그인 실패", "로그인 실패")
+//                    Log.d("회원가입 실패", "$t")
+//                    Toast.makeText(this@SignIn, "서버 오류! 로그인 실패", Toast.LENGTH_LONG).show()
+//                }
+//                override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
+//                    val userLogin = response.body()
+//                    if(userLogin?.status == 201){
+//                        Log.d("로그인 성공", "로그인 성공 $uEmail, $uPw")
+//                        startActivity(intent)
+//                        finish()
+//                    } else {
+//                        Toast.makeText(this@SignIn, "가입된 계정이 아닙니다!", Toast.LENGTH_LONG).show()
+//                        Log.d("웨안됨", "$response")
+//                    }
+//                }
+//            })
 
-//            startActivity(intent)
-//            finish()
+            startActivity(intent)
+            finish()
         }
 
         // 회원가입 문구 클릭 시

@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.forEach
 import com.example.project_applepie.databinding.ActivityCreateProfileBinding
 import com.example.project_applepie.model.dao.sinup
 import com.example.project_applepie.retrofit.ApiService
+import com.google.android.material.chip.Chip
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,6 +37,7 @@ class CreateProfile : AppCompatActivity() {
         regionFocusListener()
         collegeFocusListener()
         emailFocusListener()
+        gradeFocusListener()
 
         // 회원가입 정보
         val uEmail= intent.getStringExtra("uEmail")
@@ -88,19 +91,38 @@ class CreateProfile : AppCompatActivity() {
         var it = 0
 
         // 사용자가 사용하는 프로그램 언어 선택
-        cpBinding.chLang.setOnCheckedStateChangeListener { group, checked ->
-            when(group.id){
-                R.id.ch_lang -> {
-                    when(checked){
+//        cpBinding.chLang.setOnCheckedStateChangeListener { group, checked ->
+//            Log.d("test", "Click: $checked")
+//        }
 
-                    }
+        // 사용자가 사용하는 프로그램 언어 선택
+        var uLanguage : List<Int> = listOf()
+        cpBinding.chLang.forEach { child ->
+            (child as? Chip)?.setOnCheckedChangeListener{ _, _ ->
+                val ids = cpBinding.chLang.checkedChipIds
+                var titles = listOf<Int>()
+
+                ids.forEach { id ->
+                    if(cpBinding.chLang.findViewById<Chip>(id).text == "C"){
+                        titles += 0
+                    } else if(cpBinding.chLang.findViewById<Chip>(id).text == "C++"){
+                        titles += 1
+                    } else if(cpBinding.chLang.findViewById<Chip>(id).text == "C#"){
+                        titles += 2
+                    } else if(cpBinding.chLang.findViewById<Chip>(id).text == "Python"){
+                        titles += 3
+                    } else if(cpBinding.chLang.findViewById<Chip>(id).text == "Kotlin"){
+                        titles += 4
+                    } else if(cpBinding.chLang.findViewById<Chip>(id).text == "Swift"){
+                        titles += 5
+                    } else if(cpBinding.chLang.findViewById<Chip>(id).text == "Dart"){
+                        titles += 6
+                    } else { titles += 7 }
                 }
+                Log.d("test", "Click: $titles")
+                uLanguage = titles
             }
-
-            Log.d("test", "Click: $checked")
         }
-
-        var uLanguage : List<Int> = listOf(0)
 
         // 사용자가 사용하는 프로그램 선택
         val getFramework = resources.getStringArray(R.array.create_profile_framework)
@@ -123,20 +145,22 @@ class CreateProfile : AppCompatActivity() {
 //
 //            var server = retrofit.create(ApiService::class.java)
 
-            uArea = cpBinding.area.text.toString()
-            uCollege = cpBinding.colleague.text.toString()
-            uGit = cpBinding.writeGit.text.toString()
-            uTotalGrade = cpBinding.maxScore.text.toString().toFloat()
-            uTotalGrade = cpBinding.maxScore.text.toString().toFloat()
+//            uArea = cpBinding.area.text.toString()
+//            uCollege = cpBinding.colleague.text.toString()
+//            uGit = cpBinding.writeGit.text.toString()
+//            uTotalGrade = cpBinding.maxScore.text.toString().toFloat()
+//            uTotalGrade = cpBinding.maxScore.text.toString().toFloat()
 
-            val signupModal: sinup = sinup(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender,
-                uArea, uCollege, uGrade, uTotalGrade, uGrader, uGit, uLanguage, uFramework)
 
-            Log.d("로그","signupModel : $signupModal")
+
+//            val signupModal: sinup = sinup(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender,
+//                uArea, uCollege, uGrade, uTotalGrade, uGrader, uGit, uLanguage, uFramework)
+//
+//            Log.d("로그","signupModel : $signupModal")
 
             // 회원가입 정보 null 처리 필요 <-------------------------------------------------------------------------------
-            if (uEmail != null && uPw != null && uName != null && uNickname!=null && uBirth!=null && uGender!=null
-                && uGrade != null && uTotalGrade != null) {
+//            if (uEmail != null && uPw != null && uName != null && uNickname!=null && uBirth!=null && uGender!=null
+//                && uGrade != null && uTotalGrade != null) {
 
 //                server.signUp(signupModal).enqueue(object :
 //                    Callback<LoginData> {
@@ -155,8 +179,8 @@ class CreateProfile : AppCompatActivity() {
 //                        finish()
 //                    }
 //                } )
-            }
-
+//            }
+            Log.d("test", "Click: $uLanguage")
 //            Toast.makeText(this, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()
 //            val intent = Intent(this@CreateProfile, SignIn::class.java)
 //            startActivity(intent)
@@ -209,18 +233,21 @@ class CreateProfile : AppCompatActivity() {
     }
 
     // 학점 검증
-//    private fun gradeFocusListener() {
-//        cpBinding.myScore.setOnFocusChangeListener{ _, focused ->
-//            if(!focused){
-//                cpBinding.helperTextGrade.helperText = validGrade()
-//            }
-//        }
-//    }
-//
-//    private fun validGrade(): String? {
-//        val gradeText = cpBinding.myScore.text.toString()
-//        if()
-//    }
+    private fun gradeFocusListener() {
+        cpBinding.myScore.setOnFocusChangeListener{ _, focused ->
+            if(!focused){
+                cpBinding.helperTextGrade.helperText = validGrade()
+            }
+        }
+    }
+    private fun validGrade(): String? {
+        val gradeText = cpBinding.myScore.text.toString()
+        if(!gradeText.matches("^|d*\$^".toRegex())||!gradeText.matches("^|d*|.|d*\$^".toRegex())) {
+            createProfile_gradePass = 1
+            return "ㅎㅇ."
+        } else { createProfile_gradePass = 0 }
+        return null
+    }
 
     // 이메일 유효성 검증
     private fun emailFocusListener() {
@@ -233,7 +260,7 @@ class CreateProfile : AppCompatActivity() {
 
     private fun validEmail(): String? {
         val emailText = cpBinding.writeGit.text.toString()
-        if(!emailText.matches("^[a-zA-X0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+$".toRegex())){
+        if(!emailText.matches("^[|w]+@[|w]+.[|w]+$".toRegex())){
             createProfile_emailPass = 1
             return "잘못된 이메일 형식입니다."
         }
