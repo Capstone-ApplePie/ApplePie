@@ -46,15 +46,6 @@ class SignupActivity : AppCompatActivity() {
 //        passwordFocusListener()
 //        pwCheckFocusListener()
 
-        // Retrofit 연동
-//        val url = "여기에 서버 주소 입력"
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(url)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//        var server = retrofit.create(ApiService::class.java)
-
         // 기본 설정 = 회사 아님
         binding.compNo.isChecked = true
         binding.rbMen.isChecked = true
@@ -89,25 +80,6 @@ class SignupActivity : AppCompatActivity() {
                 val uNickname : String = binding.etUserNickname.text.toString()
                 val uEmail : String = binding.etUsermail.text.toString()
                 val uPw : String = binding.etUserpw.text.toString()
-
-                /*var retrofit = Retrofit.Builder()
-                    .baseUrl(API.BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                var apiService = retrofit.create(ApiService::class.java)*/
-
-
-                /*apiService.signUp(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender).enqueue(object :
-                    Callback<LoginData> {
-                        override fun onFailure(call: Call<LoginData>, t: Throwable) {
-                            Log.d("회원가입 실패", "회원가입 실패")
-                            Toast.makeText(this@SignupActivity, "서버 오류! 회원가입 실패", Toast.LENGTH_LONG).show()
-                        }
-
-                        override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
-                            TODO("Not yet implemented")
-                        }
-                    })*/
 
                 var intent = Intent(this, CreateProfile::class.java)
 

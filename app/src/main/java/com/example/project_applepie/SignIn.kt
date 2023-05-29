@@ -9,6 +9,7 @@ import android.text.style.UnderlineSpan
 import android.util.Log
 import android.widget.*
 import com.example.project_applepie.databinding.ActivitySignInBinding
+import com.example.project_applepie.model.dao.js_signIn
 import com.example.project_applepie.retrofit.ApiService
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,13 +33,13 @@ class SignIn : AppCompatActivity() {
         signInPasswordFocusListener()
 
         // Retrofit 연동
-//        val url = "http://:8080"
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(url)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//        var server = retrofit.create(ApiService::class.java)
+        val url = "http://13.125.234.75:8080"
+        val retrofit = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        var server = retrofit.create(ApiService::class.java)
 
         // 아이디 찾기 버튼 클릭 시
         binding.findId.setOnClickListener {
@@ -61,56 +62,35 @@ class SignIn : AppCompatActivity() {
             val intent = Intent(this, HomeActivity::class.java)
 
 //            if(login_emailPass == 0 && login_pwPass == 0){
-//                // 로그인 시 ID & PW 얻기
-//                val uEmail: String = binding.etUsermail.text.toString()
-//                val uPw: String = binding.etUserpw.text.toString()
-//
-////             server.logIn(uEmail, uPw).enqueue(object : Callback<LoginData>{
-////                override fun onFailure(call: Call<LoginData>, t: Throwable) {
-////                    Log.d("로그인 실패", "로그인 실패")
-////                    Toast.makeText(this@SignIn, "서버 오류! 로그인 실패", Toast.LENGTH_LONG).show()
-////                }
-////                override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
-////                    val userLogin = response.body()
-////                    if(userLogin?.status == 201){
-////                        Log.d("로그인 성공", "로그인 성공 $uId, $uPw")
-////                        startActivity(intent)
-////                        finish()
-////                    } else {
-////                        Toast.makeText(this@SignIn, "가입된 계정이 아닙니다!", Toast.LENGTH_LONG).show()
-////                    }
-////                }
-////            })
-//
+                // 로그인 시 ID & PW 얻기
+                val uEmail: String = binding.etUsermail.text.toString()
+                val uPw: String = binding.etUserpw.text.toString()
+
+                val logInModel : js_signIn = js_signIn(uEmail, uPw)
+
+                server.logIn(logInModel).enqueue(object : Callback<LoginData>{
+                    override fun onFailure(call: Call<LoginData>, t: Throwable) {
+                        Log.d("로그인 실패", "로그인 실패")
+                        Toast.makeText(this@SignIn, "서버 오류! 로그인 실패", Toast.LENGTH_LONG).show()
+                    }
+                    override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
+                        val userLogin = response.body()
+                        if(userLogin?.status == 200){
+                            SharedPref.setUserId(this@SignIn, uEmail)
+
+                            Log.d("로그인 성공", "로그인 성공 $uEmail, $uPw")
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this@SignIn, "가입된 계정이 아닙니다!", Toast.LENGTH_LONG).show()
+                            Log.d("회원가입 실패", "${userLogin?.status}")
+                        }
+                    }
+                })
+
 //                startActivity(intent)
 //                finish()
 //            }
-
-            // 로그인 시 ID & PW 얻기
-            val uEmail: String = binding.etUsermail.text.toString()
-            val uPw: String = binding.etUserpw.text.toString()
-
-//            server.logIn(uEmail, uPw).enqueue(object : Callback<LoginData>{
-//                override fun onFailure(call: Call<LoginData>, t: Throwable) {
-//                    Log.d("로그인 실패", "로그인 실패")
-//                    Log.d("회원가입 실패", "$t")
-//                    Toast.makeText(this@SignIn, "서버 오류! 로그인 실패", Toast.LENGTH_LONG).show()
-//                }
-//                override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
-//                    val userLogin = response.body()
-//                    if(userLogin?.status == 201){
-//                        Log.d("로그인 성공", "로그인 성공 $uEmail, $uPw")
-//                        startActivity(intent)
-//                        finish()
-//                    } else {
-//                        Toast.makeText(this@SignIn, "가입된 계정이 아닙니다!", Toast.LENGTH_LONG).show()
-//                        Log.d("웨안됨", "$response")
-//                    }
-//                }
-//            })
-
-            startActivity(intent)
-            finish()
         }
 
         // 회원가입 문구 클릭 시
