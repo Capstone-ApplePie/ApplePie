@@ -125,7 +125,7 @@ class CreateProfile : AppCompatActivity() {
 
         cpBinding.createProfile.setOnClickListener {
             // Retrofit 연동
-            val url = "http://13.125.234.75:8080"
+            val url = "http://:8080"
             val retrofit = Retrofit.Builder()
                 .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
