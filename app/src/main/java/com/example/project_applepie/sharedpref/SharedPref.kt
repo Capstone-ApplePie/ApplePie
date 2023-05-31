@@ -1,8 +1,7 @@
-package com.example.project_applepie
+package com.example.project_applepie.sharedpref
 
 import android.content.Context
 import android.content.SharedPreferences
-import retrofit2.Callback
 
 object SharedPref {
     private val MY_ACCOUNT : String = "account"
