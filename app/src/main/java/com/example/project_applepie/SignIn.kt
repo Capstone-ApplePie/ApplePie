@@ -1,16 +1,15 @@
 package com.example.project_applepie
 
 import android.content.Intent
-import android.os.Build.VERSION_CODES.O
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
 import android.util.Log
 import android.widget.*
 import com.example.project_applepie.databinding.ActivitySignInBinding
 import com.example.project_applepie.model.dao.js_signIn
 import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.retrofit.domain.LoginData
+import com.example.project_applepie.sharedpref.SharedPref
 import com.example.project_applepie.utils.Url
 import retrofit2.Call
 import retrofit2.Callback
@@ -71,20 +70,21 @@ class SignIn : AppCompatActivity() {
 
                 server.logIn(logInModel).enqueue(object : Callback<LoginData>{
                     override fun onFailure(call: Call<LoginData>, t: Throwable) {
-                        Log.d("로그인 실패", "로그인 실패")
+                        Log.d("서버 연동", "로그인 실패")
+                        Log.d("서버 연동","${t.message}")
                         Toast.makeText(this@SignIn, "서버 오류! 로그인 실패", Toast.LENGTH_LONG).show()
                     }
                     override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
                         val userLogin = response.body()
+                        Log.d("로그","${response.body().toString()}")
                         if(userLogin?.status == 200){
-                            SharedPref.setUserId(this@SignIn, uEmail)
-
+                            SharedPref.setUserId(this@SignIn, userLogin.pid)
                             Log.d("로그인 성공", "로그인 성공 $uEmail, $uPw")
                             startActivity(intent)
                             finish()
                         } else {
                             Toast.makeText(this@SignIn, "가입된 계정이 아닙니다!", Toast.LENGTH_LONG).show()
-                            Log.d("회원가입 실패", "${userLogin?.status}")
+                            Log.d("로그인 실패", "$response")
                         }
                     }
                 })

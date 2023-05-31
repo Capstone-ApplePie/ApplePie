@@ -10,6 +10,8 @@ import androidx.core.view.forEach
 import com.example.project_applepie.databinding.ActivityCreateProfileBinding
 import com.example.project_applepie.model.dao.sinup
 import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.retrofit.domain.LoginData
+import com.example.project_applepie.retrofit.domain.SignUpResponse
 import com.example.project_applepie.utils.Url
 import com.google.android.material.chip.Chip
 import retrofit2.Call
@@ -150,17 +152,15 @@ class CreateProfile : AppCompatActivity() {
                 && uGrade != null && uTotalGrade != null) {
 
                 server.signUp(signupModal).enqueue(object :
-                    Callback<LoginData> {
-                    override fun onFailure(call: Call<LoginData>, t: Throwable) {
+                    Callback<SignUpResponse> {
+                    override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
                         Log.d("회원가입 실패", "회원가입 실패")
                         Log.d("회원가입 실패", "$t")
                         Toast.makeText(this@CreateProfile, "서버 오류! 회원가입 실패", Toast.LENGTH_LONG).show()
                     }
 
-                    override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
+                    override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
                         Log.d("로그","response : $response")
-                        Log.d("로그","call : $call")
-                        Log.d("로그","전달내용 : $signupModal")
 
                         Toast.makeText(this@CreateProfile, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@CreateProfile, SignIn::class.java)

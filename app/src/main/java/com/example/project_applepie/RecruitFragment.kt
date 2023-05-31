@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentRecruitBinding
+import com.example.project_applepie.model.dao.board
 import com.example.project_applepie.model.recuit
 import com.example.project_applepie.recyclerview.homeRecycle.SearchItemRecyclerViewAdapter
 import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.utils.Url
 import com.google.android.material.tabs.TabLayout
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -44,13 +46,19 @@ class RecruitFragment : Fragment() {
         val basicImg = R.drawable.charmander
 
         // Retrofit 연동
-//        val url = "여기에 서버 주소 입력"
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(url)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//        var server = retrofit.create(ApiService::class.java)
+        val url = Url.BASE_URL
+        val retrofit = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        var server = retrofit.create(ApiService::class.java)
+
+        var id = ""
+        var category = 1
+        var title = "";
+        var size = 10
+        val boardModel = board(category,"","",size)
 
 
 
