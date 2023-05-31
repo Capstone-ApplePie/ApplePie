@@ -5,16 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.core.view.forEach
 import com.example.project_applepie.databinding.ActivityModifyProfileBinding
 import com.example.project_applepie.model.dao.js_modProfile
 import com.example.project_applepie.retrofit.ApiService
 import com.example.project_applepie.utils.Url
 import com.google.android.material.chip.Chip
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

@@ -1,7 +1,5 @@
 package com.example.project_applepie.model.dao
 
-import retrofit2.http.Field
-
 data class js_modProfile(
     var area: String,
     var collegue: String,
