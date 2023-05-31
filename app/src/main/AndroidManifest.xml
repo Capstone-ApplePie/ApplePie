@@ -42,7 +42,7 @@
             android:name=".CreateProfile"
             android:exported="false" />
         <activity
-            android:name=".CreateTeamActivity"
+            android:name=".CreateBoardActivity"
             android:exported="false" />
         <activity
             android:name=".UserProfileSearchActivity"

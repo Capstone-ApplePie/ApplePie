@@ -3,32 +3,38 @@ package com.example.project_applepie
 import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.text.TextUtils
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import coil.load
-import com.bumptech.glide.Glide
-import com.example.project_applepie.databinding.ActivityCreateTeamBinding
-import com.example.project_applepie.model.dao.sinup
+import com.example.project_applepie.databinding.ActivityCreateBoardBinding
+import com.example.project_applepie.model.dao.js_createBoard
 import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.retrofit.domain.WriteBoardResponse
+import com.example.project_applepie.sharedpref.SharedPref
 import com.example.project_applepie.utils.Url
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
@@ -37,9 +43,9 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class CreateTeamActivity : AppCompatActivity() {
+class CreateBoardActivity : AppCompatActivity() {
 
-    private lateinit var ctBinding : ActivityCreateTeamBinding
+    private lateinit var ctBinding : ActivityCreateBoardBinding
 
     // 갤러리에서 사진 가져오기
     private val permissionList = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -58,13 +64,14 @@ class CreateTeamActivity : AppCompatActivity() {
     // 사진 가져오기 (1)
     private val readImage = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
         findViewById<ImageView>(R.id.img_load).load(uri)
-        file = File("uri")
+//        Log.d("uri 확인", uri.toString())
+        file = File(absolutePath(uri, this))
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val ctBinding = ActivityCreateTeamBinding.inflate(layoutInflater)
+        val ctBinding = ActivityCreateBoardBinding.inflate(layoutInflater)
         setContentView(ctBinding.root)
 
         val getTeamCount = resources.getStringArray(R.array.create_team_count)
@@ -85,38 +92,41 @@ class CreateTeamActivity : AppCompatActivity() {
         }
 
         // 날짜 버튼 클릭
-        ctBinding.btnDeadline.setOnClickListener {
-            //calendar Constraint Builder 선택할수있는 날짜 구간설정
-            val calendarConstraintBulder = CalendarConstraints.Builder()
-            //오늘 이전만 선택가능하게 하는 코드
-            calendarConstraintBulder.setValidator(DateValidatorPointBackward.now())
-
-            val builder = MaterialDatePicker.Builder.datePicker()
-                .setTitleText("생일을 선택해주세요")
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .setCalendarConstraints(calendarConstraintBulder.build())
-            val datePicker = builder.build()
-
-            datePicker.addOnPositiveButtonClickListener {
-                val calendar = Calendar.getInstance()
-                calendar.time = Date(it)
-                val calendarMilli = calendar.timeInMillis
-                ctBinding.tvBirth.setText("${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(
-                    Calendar.YEAR)}")
-                // 나이 계산
-                Log.d("날짜 테스트", calendar.toString())
-            }
-            datePicker.show(supportFragmentManager,datePicker.toString())
-        }
+//        ctBinding.btnDeadline.setOnClickListener {
+//            //calendar Constraint Builder 선택할수있는 날짜 구간설정
+//            val calendarConstraintBulder = CalendarConstraints.Builder()
+//            //오늘 이전만 선택가능하게 하는 코드
+//            calendarConstraintBulder.setValidator(DateValidatorPointBackward.now())
+//
+//            val builder = MaterialDatePicker.Builder.datePicker()
+//                .setTitleText("생일을 선택해주세요")
+//                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+//                .setCalendarConstraints(calendarConstraintBulder.build())
+//            val datePicker = builder.build()
+//
+//            datePicker.addOnPositiveButtonClickListener {
+//                val calendar = Calendar.getInstance()
+//                calendar.time = Date(it)
+//                val calendarMilli = calendar.timeInMillis
+//                ctBinding.tvBirth.setText("${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(
+//                    Calendar.YEAR)}")
+//                // 나이 계산
+//                Log.d("날짜 테스트", calendar.toString())
+//            }
+//            datePicker.show(supportFragmentManager,datePicker.toString())
+//        }
 
         // 변수 설정
-        var uCategory : String = "과제/과외"
+        val uid = SharedPref.getUserId(this@CreateBoardActivity)
+        var uCategory : Int = 1
         var uDeadline : String = ""
-        var uBackend : Int
-        var uFrontend : Int
-        var uPm : Int
-        var uDesigner : Int
-        var uWebDev : Int
+        var uBackend : Int = 0
+        var uFrontend : Int = 0
+        var uPm : Int = 0
+        var uDesigner : Int = 0
+        var uWebDev : Int = 0
+        var uContent : String = "" // TODO: 글자 제한 같은 세부사항 생각 필요
+
 
         //날짜 버튼 클릭
         ctBinding.btnDeadline.setOnClickListener {
@@ -162,22 +172,26 @@ class CreateTeamActivity : AppCompatActivity() {
 
         // 사용자 설정 (순서대로) -> 백 / 프론트 / 디자이너 / 기획 / 웹개발
         ctBinding.actvBackend.setOnItemClickListener{ adapterView, view, position, id ->
-            uBackend = position
-//            Log.d("숫자 확인", "$uBackend")
-        }
-
-        ctBinding.actvFrontend.setOnItemClickListener { adapterView, view, position, id ->  }
+            uBackend = position }
+        ctBinding.actvFrontend.setOnItemClickListener { adapterView, view, position, id ->
+            uFrontend = position }
+        ctBinding.actvDesigner.setOnItemClickListener { adapterView, view, position, id ->
+            uDesigner = position }
+        ctBinding.actvPm.setOnItemClickListener { adapterView, view, position, id ->
+            uPm = position }
+        ctBinding.actvWebDeveloper.setOnItemClickListener { adapterView, view, position, id ->
+            uWebDev = position }
 
 
         ctBinding.toggleButton.check(R.id.button2)
         ctBinding.button1.setOnClickListener {
-            uCategory = "외주" // TODO: 회사가 아니면 선택 불가능하도록
+            uCategory = 0 // TODO: 회사가 아니면 선택 불가능하도록
         }
         ctBinding.button2.setOnClickListener {
-            uCategory = "과제/과외"
+            uCategory = 1
         }
         ctBinding.button3.setOnClickListener {
-            uCategory = "공모전"
+            uCategory = 2
         }
 
         // 글 작성 버튼 클릭
@@ -192,7 +206,27 @@ class CreateTeamActivity : AppCompatActivity() {
             var server = retrofit.create(ApiService::class.java)
 
             val uTitle : String = ctBinding.title.text.toString()
+            uContent = ctBinding.writeText.text.toString()
+            val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+            val body: MultipartBody.Part = MultipartBody.Part.createFormData("photo", file.name, requestFile)
+//            val createBoardModel = js_createBoard(body, uid, uTitle, uContent, uCategory, uDeadline)
 
+            server.writeBoard(body, uid, uTitle, uContent, uCategory, uDeadline).enqueue(object : Callback<WriteBoardResponse>{
+                override fun onFailure(call: Call<WriteBoardResponse>, t: Throwable) {
+//                    Log.d("글 작성 실패", "글 작성 실패")
+                    Log.d("글 작성 실패", "$t")
+                }
+
+                override fun onResponse(
+                    call: Call<WriteBoardResponse>,
+                    response: Response<WriteBoardResponse>
+                ) {
+                    Toast.makeText(this@CreateBoardActivity, "글 생성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@CreateBoardActivity, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            })
         }
     }
 }

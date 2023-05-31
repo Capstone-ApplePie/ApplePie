@@ -10,7 +10,6 @@ import androidx.core.view.forEach
 import com.example.project_applepie.databinding.ActivityCreateProfileBinding
 import com.example.project_applepie.model.dao.sinup
 import com.example.project_applepie.retrofit.ApiService
-import com.example.project_applepie.retrofit.domain.LoginData
 import com.example.project_applepie.retrofit.domain.SignUpResponse
 import com.example.project_applepie.utils.Url
 import com.google.android.material.chip.Chip
@@ -142,7 +141,7 @@ class CreateProfile : AppCompatActivity() {
             uGrade = cpBinding.myScore.text.toString().toFloat()
             uTotalGrade = cpBinding.maxScore.text.toString().toFloat()
 
-            val signupModal: sinup = sinup(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender,
+            val signupModel: sinup = sinup(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender,
                 uArea, uCollege, uGrade, uTotalGrade, uGrader, uGit, uLanguage, uFramework)
 
 //            Log.d("로그","signupModel : $signupModal")
@@ -151,7 +150,7 @@ class CreateProfile : AppCompatActivity() {
             if (uEmail != null && uPw != null && uName != null && uNickname!=null && uBirth!=null && uGender!=null
                 && uGrade != null && uTotalGrade != null) {
 
-                server.signUp(signupModal).enqueue(object :
+                server.signUp(signupModel).enqueue(object :
                     Callback<SignUpResponse> {
                     override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
                         Log.d("회원가입 실패", "회원가입 실패")

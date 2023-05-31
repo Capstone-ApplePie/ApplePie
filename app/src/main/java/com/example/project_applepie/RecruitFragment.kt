@@ -126,7 +126,7 @@ class RecruitFragment : Fragment() {
         })
 
         recruitBinding.extendedFab.setOnClickListener {
-            val intent = Intent(context, CreateTeamActivity::class.java)
+            val intent = Intent(context, CreateBoardActivity::class.java)
             startActivity(intent)
         }
 
