@@ -20,6 +20,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import coil.load
 import com.bumptech.glide.Glide
 import com.example.project_applepie.databinding.ActivityCreateTeamBinding
+import com.example.project_applepie.model.dao.sinup
+import com.example.project_applepie.retrofit.ApiService
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -58,13 +60,12 @@ class CreateTeamActivity : AppCompatActivity() {
         setContentView(ctBinding.root)
 
         // Retrofit 연동
-//        val url = "여기에 서버 주소 입력"
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(url)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//        var server = retrofit.create(Writing::class.java)
+        val url = "여기에 서버 주소 입력"
+        val retrofit = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        var server = retrofit.create(ApiService::class.java)
 
         val getTeamCount = resources.getStringArray(R.array.create_team_count)
         val arrayAdapter = ArrayAdapter(this,R.layout.dropdown_item, getTeamCount)

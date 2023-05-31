@@ -10,6 +10,7 @@ import androidx.core.view.forEach
 import com.example.project_applepie.databinding.ActivityModifyProfileBinding
 import com.example.project_applepie.model.dao.js_modProfile
 import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.utils.Url
 import com.google.android.material.chip.Chip
 import retrofit2.Call
 import retrofit2.Callback
@@ -94,7 +95,7 @@ class ModifyProfileActivity : AppCompatActivity() {
 
         mpBinding.modSuccessBtn.setOnClickListener {
             // Retrofit 연동
-            val url = ""
+            val url = Url.BASE_URL
             val retrofit = Retrofit.Builder()
                 .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())

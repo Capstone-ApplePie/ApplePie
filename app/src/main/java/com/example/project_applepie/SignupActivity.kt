@@ -124,7 +124,21 @@ class SignupActivity : AppCompatActivity() {
                 val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                 val formatted = calendarDateTime.format(formatter)
 
-                binding.tvBirth.setText("${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.YEAR)}")
+                val sb = StringBuilder()
+                sb.append(calendar.get(Calendar.YEAR))
+                sb.append("-")
+                if(Integer.parseInt((calendar.get(Calendar.MONTH)+1).toString()) < 10){
+                    sb.append("0")
+
+                }
+                sb.append(calendar.get(Calendar.MONTH)+1)
+                sb.append("-")
+                if(Integer.parseInt((calendar.get(Calendar.DAY_OF_MONTH)).toString()) < 10){
+                    sb.append("0")
+                }
+                sb.append(calendar.get(Calendar.DAY_OF_MONTH))
+
+                binding.tvBirth.setText(sb.toString())
                 uBirth = formatted
 //                Toast.makeText(this@SignupActivity, "$formatted", Toast.LENGTH_LONG).show()
             }
