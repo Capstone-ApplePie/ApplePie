@@ -12,4 +12,5 @@ data class boardDetailBoard(
     var deadline : String,
     var files : List<MultipartBody.Part>,
     var status : Boolean
+    //set
 )
