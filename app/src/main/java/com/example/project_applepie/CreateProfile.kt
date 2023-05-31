@@ -10,6 +10,7 @@ import androidx.core.view.forEach
 import com.example.project_applepie.databinding.ActivityCreateProfileBinding
 import com.example.project_applepie.model.dao.sinup
 import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.utils.Url
 import com.google.android.material.chip.Chip
 import retrofit2.Call
 import retrofit2.Callback
@@ -125,7 +126,7 @@ class CreateProfile : AppCompatActivity() {
 
         cpBinding.createProfile.setOnClickListener {
             // Retrofit 연동
-            val url = "http://:8080"
+            val url = Url.BASE_URL
             val retrofit = Retrofit.Builder()
                 .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
