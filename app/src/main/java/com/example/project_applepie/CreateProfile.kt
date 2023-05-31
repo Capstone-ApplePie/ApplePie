@@ -10,8 +10,7 @@ import androidx.core.view.forEach
 import com.example.project_applepie.databinding.ActivityCreateProfileBinding
 import com.example.project_applepie.model.dao.sinup
 import com.example.project_applepie.retrofit.ApiService
-import com.example.project_applepie.retrofit.domain.LoginData
-import com.example.project_applepie.retrofit.domain.SignUpResponse
+import com.example.project_applepie.retrofit.domain.BasicResponse
 import com.example.project_applepie.utils.Url
 import com.google.android.material.chip.Chip
 import retrofit2.Call
@@ -152,14 +151,14 @@ class CreateProfile : AppCompatActivity() {
                 && uGrade != null && uTotalGrade != null) {
 
                 server.signUp(signupModal).enqueue(object :
-                    Callback<SignUpResponse> {
-                    override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
+                    Callback<BasicResponse> {
+                    override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                         Log.d("회원가입 실패", "회원가입 실패")
                         Log.d("회원가입 실패", "$t")
                         Toast.makeText(this@CreateProfile, "서버 오류! 회원가입 실패", Toast.LENGTH_LONG).show()
                     }
 
-                    override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
+                    override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                         Log.d("로그","response : $response")
 
                         Toast.makeText(this@CreateProfile, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()

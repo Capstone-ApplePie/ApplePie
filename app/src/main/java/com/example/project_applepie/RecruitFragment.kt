@@ -3,6 +3,7 @@ package com.example.project_applepie
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +14,12 @@ import com.example.project_applepie.model.dao.board
 import com.example.project_applepie.model.recuit
 import com.example.project_applepie.recyclerview.homeRecycle.SearchItemRecyclerViewAdapter
 import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.retrofit.domain.BoardResponse
 import com.example.project_applepie.utils.Url
 import com.google.android.material.tabs.TabLayout
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -58,7 +63,46 @@ class RecruitFragment : Fragment() {
         var category = 1
         var title = "";
         var size = 10
-        val boardModel = board(category,"","",size)
+        val boardModel1 = board(category,"","",size)
+        val boardModel2 = board(category + 1,"","",size)
+        val boardModel3 = board(category + 2,"","",size)
+
+        //cate1번 가져오기
+        server.searchBoard(boardModel1).enqueue(object :Callback<BoardResponse>{
+            override fun onResponse(call: Call<BoardResponse>, response: Response<BoardResponse>) {
+                Log.d("로그","${response.body().toString()}")
+            }
+
+            override fun onFailure(call: Call<BoardResponse>, t: Throwable) {
+                Log.d("서버 연동", "글 가져오기 실패")
+                Log.d("서버 연동","${t.message}")
+            }
+
+        })
+        //cate2번 가져오기
+        server.searchBoard(boardModel2).enqueue(object :Callback<BoardResponse>{
+            override fun onResponse(call: Call<BoardResponse>, response: Response<BoardResponse>) {
+                Log.d("로그","${response.body().toString()}")
+            }
+
+            override fun onFailure(call: Call<BoardResponse>, t: Throwable) {
+                Log.d("서버 연동", "글 가져오기 실패")
+                Log.d("서버 연동","${t.message}")
+            }
+
+        })
+        //cate3번 가져오기
+        server.searchBoard(boardModel3).enqueue(object :Callback<BoardResponse>{
+            override fun onResponse(call: Call<BoardResponse>, response: Response<BoardResponse>) {
+                Log.d("로그","${response.body().toString()}")
+            }
+
+            override fun onFailure(call: Call<BoardResponse>, t: Throwable) {
+                Log.d("서버 연동", "글 가져오기 실패")
+                Log.d("서버 연동","${t.message}")
+            }
+
+        })
 
 
 
