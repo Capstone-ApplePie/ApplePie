@@ -1,11 +1,8 @@
 package com.example.project_applepie
 
 import android.content.Intent
-import android.os.Build.VERSION_CODES.O
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
 import android.util.Log
 import android.widget.*
 import com.example.project_applepie.databinding.ActivitySignInBinding

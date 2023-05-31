@@ -54,13 +54,13 @@ class CreateProfile : AppCompatActivity() {
         // 사용자 출신 대학교
         var uCollege : String = "DKU"
 
-        // 사용자가 대학교에서 받은 학점 (숫자로만 입력 받도록 수정 필요) <------------------------------------------------------------
+        // 사용자가 대학교에서 받은 학점  TODO: 숫자로만 입력 받도록 수정 필요
         var uGrade : Float = 0F
 
-        // 사용자가 다니는 대학의 총 학점 (숫자로만 입력 받도록 수정 필요) <-----------------------------------------------------------
+        // 사용자가 다니는 대학의 총 학점 TODO: 숫자로만 입력 받도록 수정 필요
         var uTotalGrade : Float = 4.5F
 
-        // 학년 선택 -> 기본값 : 2학년 (나중에 비우고 선택 안하면 넘어가지 않도록 수정 필요) <-------------------------------------------
+        // 학년 선택 -> 기본값 : 2학년 TODO: 나중에 비우고 선택 안하면 넘어가지 않도록 수정 필요
         var uGrader : String = "2학년"
         cpBinding.toggleButton.check(R.id.btn_grade2)
         cpBinding.btnGrade1.setOnClickListener {
@@ -145,7 +145,7 @@ class CreateProfile : AppCompatActivity() {
 
 //            Log.d("로그","signupModel : $signupModal")
 
-            // 회원가입 정보 null 처리 필요 <-------------------------------------------------------------------------------
+            // 회원가입 정보
             if (uEmail != null && uPw != null && uName != null && uNickname!=null && uBirth!=null && uGender!=null
                 && uGrade != null && uTotalGrade != null) {
 
@@ -168,6 +168,8 @@ class CreateProfile : AppCompatActivity() {
                         finish()
                     }
                 } )
+            } else {
+                Toast.makeText(this@CreateProfile, "빈칸을 모두 채워주세요!", Toast.LENGTH_LONG).show()
             }
             Log.d("test", "Click: $uLanguage")
 //            Toast.makeText(this, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()
