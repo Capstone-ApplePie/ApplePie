@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
@@ -19,6 +18,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import coil.load
 import com.example.project_applepie.databinding.ActivityCreateBoardBinding
+import com.example.project_applepie.model.dao.WriteBoardBoard
+import com.example.project_applepie.model.dao.createBoard
+import com.example.project_applepie.model.dao.createTeam
 import com.example.project_applepie.model.dao.js_createBoard
 import com.example.project_applepie.retrofit.ApiService
 import com.example.project_applepie.retrofit.domain.WriteBoardResponse
@@ -35,6 +37,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody
+import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -62,24 +66,39 @@ class CreateBoardActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var body: MultipartBody.Part
+
     // 임시 (확실 치 않음)
-    var file = File("")
-    var uBody = MultipartBody.Part.createFormData("image", file.name)
+    private val imageResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ){ result ->
+        if(result.resultCode == Activity.RESULT_OK){
+            val imageUri = result.data?.data ?: return@registerForActivityResult
+
+            val file = File(absolutePath(imageUri, this))
+            val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
+            body = MultipartBody.Part.createFormData("profile", file.name, requestFile)
+
+            Log.d("testt",file.name)
+        }
+    }
+    //var file = File(absolutePath())
+    //var uBody = MultipartBody.Part.createFormData("image", file.name)
 
     // 사진 전송을 위한 코드
-    private val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            result -> if(result.resultCode == Activity.RESULT_OK){
-        val imageUri = result.data?.data ?: return@registerForActivityResult
-        val uFile = File(absolutePath(imageUri, this))
-        val requestFile = uFile.asRequestBody("image/*".toMediaTypeOrNull())
-        val body: MultipartBody.Part = MultipartBody.Part.createFormData("photo", uFile.name, requestFile)
-
-        Log.d("body", "body 확인: $body")
-
-        uBody = body
-
-        ctBinding.imgLoad.setImageURI(imageUri)
-    } }
+//    private val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+//            result -> if(result.resultCode == Activity.RESULT_OK){
+//        val imageUri = result.data?.data ?: return@registerForActivityResult
+//        val uFile = File(absolutePath(imageUri, this))
+//        val requestFile = uFile.asRequestBody("image/*".toMediaTypeOrNull())
+//        val body: MultipartBody.Part = MultipartBody.Part.createFormData("photo", uFile.name, requestFile)
+//
+//        Log.d("body", "body 확인: $body")
+//
+//        uBody = body
+//
+//        ctBinding.imgLoad.setImageURI(imageUri)
+//    } }
 
     // 사진 가져오기 (1)
 //    private val readImage = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
@@ -231,27 +250,30 @@ class CreateBoardActivity : AppCompatActivity() {
             val uTitle : String = ctBinding.title.text.toString()
             uContent = ctBinding.writeText.text.toString()
 
-            val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
-            val body: MultipartBody.Part = MultipartBody.Part.createFormData("photo", file.name, requestFile)
-
-            val jsObject = JSONObject("{\"uid\":\"${uid}\", \"title\":\"${uTitle}\", \"content\":\"${uContent}\", \"category\":\"${uCategory}\", " +
-                    "\"deadline\":\"${uDeadline}\"}").toString()
-            val jsBody = jsObject.toRequestBody("application/json".toMediaTypeOrNull())
+//            val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+//            val body: MultipartBody.Part = MultipartBody.Part.createFormData("photo", file.name, requestFile)
+//
+//            val jsObject = JSONObject("{\"uid\":\"${uid}\", \"title\":\"${uTitle}\", \"content\":\"${uContent}\", \"category\":\"${uCategory}\", " +
+//                    "\"deadline\":\"${uDeadline}\"}").toString()
+//            val jsBody = jsObject.toRequestBody("application/json".toMediaTypeOrNull())
 
 //            val createBoardModel = js_createBoard(body, jsBody)
+            val BoardData  = createBoard("10000",uTitle,uContent,uCategory, uDeadline)
 
-            server.writeBoard(uBody, jsBody).enqueue(object : Callback<WriteBoardResponse>{
+            server.writeBoard(BoardData, body).enqueue(object : Callback<WriteBoardResponse>{
                 override fun onFailure(call: Call<WriteBoardResponse>, t: Throwable) {
-                    Log.d("글 작성 실패", "$t")
-                    Log.d("왜 안될까", "$uBody + $jsBody")
+                    Log.d("글 작성 실패", "${t.message}")
+                    Log.d("왜 안될까", "$BoardData + $body")
                 }
 
                 override fun onResponse(
                     call: Call<WriteBoardResponse>,
                     response: Response<WriteBoardResponse>
                 ) {
-                    Log.d("글 작성 성공?", "$uBody, $uid, $uTitle, $uContent, $uCategory, $uDeadline, $jsBody")
-                    Log.d("코드 확인", "$response")
+                    Log.d("글 작성 성공?", "$body, $uid, $uTitle, $uContent, $uCategory, $uDeadline, $BoardData")
+                    Log.d("코드 확인", "${response.body().toString()}")
+                    var nickname = response.body()?.board?.get("nickname")
+                    Log.d("로그","닉네임 : $nickname")
                     Toast.makeText(this@CreateBoardActivity, "글 생성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@CreateBoardActivity, HomeActivity::class.java)
                     startActivity(intent)

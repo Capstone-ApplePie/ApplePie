@@ -63,8 +63,8 @@ interface ApiService {
     @Multipart
     @POST(API.WRITE_BOARD)
     fun writeBoard(
-        @Part image: MultipartBody.Part?,
-        @Part ("boardData") boardData : RequestBody
+        @Part ("board") board : createBoard,
+        @Part image: MultipartBody.Part?
     ): Call<WriteBoardResponse>
 
     // 14. 단일 글 조회(참조 : https://zerodice0.tistory.com/198)
