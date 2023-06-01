@@ -29,10 +29,13 @@ import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.parse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -79,9 +82,9 @@ class CreateBoardActivity : AppCompatActivity() {
     } }
 
     // 사진 가져오기 (1)
-    private val readImage = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
-        findViewById<ImageView>(R.id.img_load).load(uri)
-    }
+//    private val readImage = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
+//        findViewById<ImageView>(R.id.img_load).load(uri)
+//    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -230,19 +233,24 @@ class CreateBoardActivity : AppCompatActivity() {
 
             val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
             val body: MultipartBody.Part = MultipartBody.Part.createFormData("photo", file.name, requestFile)
-            val createBoardModel = js_createBoard(body, uid, uTitle, uContent, uCategory, uDeadline)
 
-            server.writeBoard(uBody, uid, uTitle, uContent, uCategory, uDeadline).enqueue(object : Callback<WriteBoardResponse>{
+            val jsObject = JSONObject("{\"uid\":\"${uid}\", \"title\":\"${uTitle}\", \"content\":\"${uContent}\", \"category\":\"${uCategory}\", " +
+                    "\"deadline\":\"${uDeadline}\"}").toString()
+            val jsBody = jsObject.toRequestBody("application/json".toMediaTypeOrNull())
+
+//            val createBoardModel = js_createBoard(body, jsBody)
+
+            server.writeBoard(uBody, jsBody).enqueue(object : Callback<WriteBoardResponse>{
                 override fun onFailure(call: Call<WriteBoardResponse>, t: Throwable) {
                     Log.d("글 작성 실패", "$t")
-                    Log.d("왜 안될까", "$uBody")
+                    Log.d("왜 안될까", "$uBody + $jsBody")
                 }
 
                 override fun onResponse(
                     call: Call<WriteBoardResponse>,
                     response: Response<WriteBoardResponse>
                 ) {
-                    Log.d("글 작성 성공?", "$uBody, $uid, $uTitle, $uContent, $uCategory, $uDeadline")
+                    Log.d("글 작성 성공?", "$uBody, $uid, $uTitle, $uContent, $uCategory, $uDeadline, $jsBody")
                     Log.d("코드 확인", "$response")
                     Toast.makeText(this@CreateBoardActivity, "글 생성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@CreateBoardActivity, HomeActivity::class.java)

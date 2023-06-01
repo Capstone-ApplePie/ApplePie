@@ -4,7 +4,9 @@ import com.example.project_applepie.model.dao.*
 import com.example.project_applepie.retrofit.domain.*
 import com.example.project_applepie.utils.API
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.http.*
 import java.util.*
 
@@ -62,11 +64,7 @@ interface ApiService {
     @POST(API.WRITE_BOARD)
     fun writeBoard(
         @Part image: MultipartBody.Part?,
-        @Part ("id") id : String,
-        @Part ("title") title : String,
-        @Part ("content") content : String,
-        @Part ("category") category : Int,
-        @Part ("deadline") deadline : String
+        @Part ("boardData") boardData : RequestBody
     ): Call<WriteBoardResponse>
 
     // 14. 단일 글 조회(참조 : https://zerodice0.tistory.com/198)
