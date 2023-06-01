@@ -61,8 +61,13 @@ interface ApiService {
     @Multipart
     @POST(API.WRITE_BOARD)
     fun writeBoard(
-        @Part imageList : List<MultipartBody.Part?>
-    ): Call<LoginData>
+        @Part image: MultipartBody.Part?,
+        @Part ("id") id : String,
+        @Part ("title") title : String,
+        @Part ("content") content : String,
+        @Part ("category") category : Int,
+        @Part ("deadline") deadline : String
+    ): Call<WriteBoardResponse>
 
     // 14. 단일 글 조회(참조 : https://zerodice0.tistory.com/198)
     @GET(API.SEARCH_BOARD_DETAIL)

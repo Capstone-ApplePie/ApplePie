@@ -282,30 +282,26 @@
                 android:background="@drawable/round_text_view"
                 android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="12dp"
+                android:gravity="top"
+                android:padding="5dp"
                 tools:ignore="SpeakableTextPresentCheck"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+
+            <ImageView
+                android:id="@+id/img_load"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="fitStart"
                 android:layout_marginHorizontal="12dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="16dp"></ImageView>
 
-                <ImageView
-                    android:id="@+id/img_load"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp">
-                </ImageView>
-
-                <Button
-                    android:id="@+id/btn_upload"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="225dp"
-                    android:layout_gravity="center"
-                    android:text="사진 업로드" />
-
-            </LinearLayout>
+            <Button
+                android:id="@+id/btn_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="16dp"
+                android:text="사진 업로드" />
 
             <Button
                 android:id="@+id/creating"

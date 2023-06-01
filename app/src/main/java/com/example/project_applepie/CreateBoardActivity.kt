@@ -1,6 +1,7 @@
 package com.example.project_applepie
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -60,18 +61,32 @@ class CreateBoardActivity : AppCompatActivity() {
 
     // 임시 (확실 치 않음)
     var file = File("")
+    var uBody = MultipartBody.Part.createFormData("image", file.name)
+
+    // 사진 전송을 위한 코드
+    private val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            result -> if(result.resultCode == Activity.RESULT_OK){
+        val imageUri = result.data?.data ?: return@registerForActivityResult
+        val uFile = File(absolutePath(imageUri, this))
+        val requestFile = uFile.asRequestBody("image/*".toMediaTypeOrNull())
+        val body: MultipartBody.Part = MultipartBody.Part.createFormData("photo", uFile.name, requestFile)
+
+        Log.d("body", "body 확인: $body")
+
+        uBody = body
+
+        ctBinding.imgLoad.setImageURI(imageUri)
+    } }
 
     // 사진 가져오기 (1)
     private val readImage = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
         findViewById<ImageView>(R.id.img_load).load(uri)
-//        Log.d("uri 확인", uri.toString())
-        file = File(absolutePath(uri, this))
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val ctBinding = ActivityCreateBoardBinding.inflate(layoutInflater)
+        ctBinding = ActivityCreateBoardBinding.inflate(layoutInflater)
         setContentView(ctBinding.root)
 
         val getTeamCount = resources.getStringArray(R.array.create_team_count)
@@ -86,8 +101,13 @@ class CreateBoardActivity : AppCompatActivity() {
 
         // 사진 가져오기 (1)
         ctBinding.btnUpload.setOnClickListener {
-            if(readImage != null){
-                readImage.launch("image/*")
+//            if(readImage != null){
+//                readImage.launch("image/*")
+//            }
+            if(imageResult != null){
+                val ctIntent = Intent(Intent.ACTION_PICK)
+                ctIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+                imageResult.launch(ctIntent)
             }
         }
 
@@ -207,20 +227,23 @@ class CreateBoardActivity : AppCompatActivity() {
 
             val uTitle : String = ctBinding.title.text.toString()
             uContent = ctBinding.writeText.text.toString()
+
             val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
             val body: MultipartBody.Part = MultipartBody.Part.createFormData("photo", file.name, requestFile)
-//            val createBoardModel = js_createBoard(body, uid, uTitle, uContent, uCategory, uDeadline)
+            val createBoardModel = js_createBoard(body, uid, uTitle, uContent, uCategory, uDeadline)
 
-            server.writeBoard(body, uid, uTitle, uContent, uCategory, uDeadline).enqueue(object : Callback<WriteBoardResponse>{
+            server.writeBoard(uBody, uid, uTitle, uContent, uCategory, uDeadline).enqueue(object : Callback<WriteBoardResponse>{
                 override fun onFailure(call: Call<WriteBoardResponse>, t: Throwable) {
-//                    Log.d("글 작성 실패", "글 작성 실패")
                     Log.d("글 작성 실패", "$t")
+                    Log.d("왜 안될까", "$uBody")
                 }
 
                 override fun onResponse(
                     call: Call<WriteBoardResponse>,
                     response: Response<WriteBoardResponse>
                 ) {
+                    Log.d("글 작성 성공?", "$uBody, $uid, $uTitle, $uContent, $uCategory, $uDeadline")
+                    Log.d("코드 확인", "$response")
                     Toast.makeText(this@CreateBoardActivity, "글 생성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@CreateBoardActivity, HomeActivity::class.java)
                     startActivity(intent)
