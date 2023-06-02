@@ -31,6 +31,7 @@ class ModifyProfileActivity : AppCompatActivity() {
 
         // 사용자 uid 가져오기
         val uid = SharedPref.getUserId(this@ModifyProfileActivity)
+//        val uid = "10006"
 
         // 사용자 정보 조회하기
         val url = Url.BASE_URL

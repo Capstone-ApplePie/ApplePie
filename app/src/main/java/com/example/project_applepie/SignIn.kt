@@ -78,7 +78,8 @@ class SignIn : AppCompatActivity() {
                         val userLogin = response.body()
                         Log.d("로그","${response.body().toString()}")
                         if(userLogin?.status == 200){
-                            SharedPref.setUserId(this@SignIn, userLogin.uid)
+                            SharedPref.setUserId(this@SignIn, userLogin.uid) // uid 설정
+                            SharedPref.setPid(this@SignIn, userLogin.pid) // pid 설정
                             Log.d("로그인 성공", "로그인 성공 $uEmail, $uPw")
                             startActivity(intent)
                             finish()

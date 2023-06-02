@@ -35,11 +35,11 @@ class CreateProfile : AppCompatActivity() {
         cpBinding = ActivityCreateProfileBinding.inflate(layoutInflater)
         setContentView(cpBinding.root)
 
-        // 입력란 확인 코드
+        // 입력란 확인 코드 TODO : 예외처리 다 할 것!
         regionFocusListener()
         collegeFocusListener()
         emailFocusListener()
-        gradeFocusListener()
+//        gradeFocusListener()
 
         // 회원가입 정보
         val uEmail= intent.getStringExtra("uEmail")
@@ -57,7 +57,6 @@ class CreateProfile : AppCompatActivity() {
 
         // 사용자가 대학교에서 받은 학점 (숫자로만 입력 받도록 수정 필요) <------------------------------------------------------------
         var uGrade : Float = 0F
-
         // 사용자가 다니는 대학의 총 학점 (숫자로만 입력 받도록 수정 필요) <-----------------------------------------------------------
         var uTotalGrade : Float = 4.5F
 
@@ -140,15 +139,16 @@ class CreateProfile : AppCompatActivity() {
             uGit = cpBinding.writeGit.text.toString()
             uGrade = cpBinding.myScore.text.toString().toFloat()
             uTotalGrade = cpBinding.maxScore.text.toString().toFloat()
+//            Log.d("test", "$uCollege")
 
             val signupModal: sinup = sinup(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender,
                 uArea, uCollege, uGrade, uTotalGrade, uGrader, uGit, uLanguage, uFramework)
 
 //            Log.d("로그","signupModel : $signupModal")
 
-            // 회원가입 정보 null 처리 필요 <-------------------------------------------------------------------------------
+            // 회원가입 정보 TODO: 예외처리
             if (uEmail != null && uPw != null && uName != null && uNickname!=null && uBirth!=null && uGender!=null
-                && uGrade != null && uTotalGrade != null) {
+                && uGrade != null && uTotalGrade != null && uCollege != null) {
 
                 server.signUp(signupModal).enqueue(object :
                     Callback<BasicResponse> {
@@ -168,7 +168,10 @@ class CreateProfile : AppCompatActivity() {
                     }
                 } )
             }
-            Log.d("test", "Click: $uLanguage")
+            else {
+                Toast.makeText(this@CreateProfile, "오류!", Toast.LENGTH_SHORT).show()
+            }
+//            Log.d("test", "Click: $uLanguage")
 //            Toast.makeText(this, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()
 //            val intent = Intent(this@CreateProfile, SignIn::class.java)
 //            startActivity(intent)

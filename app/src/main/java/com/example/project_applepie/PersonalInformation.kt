@@ -91,11 +91,16 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         var server = retrofit.create(ApiService::class.java)
 
         val uid = SharedPref.getUserId(homeActivity)
+        val pid = SharedPref.getPid(homeActivity)
 
         // 사용자 세부정보 조회하기
-        server.searchProfileDetails(uid).enqueue(object : Callback<personalDetailProfile>{
+        server.searchProfileDetails(pid).enqueue(object : Callback<personalDetailProfile>{
             override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>) {
-                TODO("Not yet implemented")
+                Log.d("로그","${response.body().toString()}")
+                var eamil = response.body()?.lesson?.get(0)
+                Log.d("로그","$eamil")
+                Log.d("uid 확인", "$uid")
+                Log.d("pid 확인", "$pid")
             }
 
             override fun onFailure(call: Call<personalDetailProfile>, t: Throwable) {
