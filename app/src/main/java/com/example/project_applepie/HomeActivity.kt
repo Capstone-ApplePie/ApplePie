@@ -18,7 +18,14 @@ class HomeActivity : AppCompatActivity() {
         val homeBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(homeBinding.root)
 
-        replaceFragment(RecruitFragment())
+        val chgV = intent.getIntExtra("chgV", 1)
+
+        if(chgV == 1){
+            replaceFragment(RecruitFragment())
+        } else if (chgV == 100){
+            replaceFragment(PersonalInformation())
+        }
+
 
         homeBinding.bottomNavigation.setOnItemSelectedListener{item ->
             when(item.itemId){

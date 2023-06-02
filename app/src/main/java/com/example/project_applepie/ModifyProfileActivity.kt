@@ -1,24 +1,59 @@
 package com.example.project_applepie
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.view.forEach
 import com.example.project_applepie.databinding.ActivityModifyProfileBinding
+import com.example.project_applepie.model.dao.inquireUserInfo
 import com.example.project_applepie.model.dao.js_modProfile
 import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.retrofit.domain.BasicResponse
+import com.example.project_applepie.sharedpref.SharedPref
 import com.example.project_applepie.utils.Url
 import com.google.android.material.chip.Chip
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ModifyProfileActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val mpBinding = ActivityModifyProfileBinding.inflate(layoutInflater)
         setContentView(mpBinding.root)
+
+        // 사용자 uid 가져오기
+        val uid = SharedPref.getUserId(this@ModifyProfileActivity)
+
+        // 사용자 정보 조회하기
+        val url = Url.BASE_URL
+        val retrofit = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        var server = retrofit.create(ApiService::class.java)
+
+        server.inquireUserInfo(uid).enqueue(object : Callback<inquireUserInfo> {
+            override fun onResponse(call: Call<inquireUserInfo>, response: Response<inquireUserInfo>
+            ) {
+                Log.d("로그","${response.body().toString()}")
+                var eamil = response.body()?.data?.get("email");
+                Log.d("로그","$eamil")
+                Log.d("uid 확인", "$uid")
+            }
+
+            override fun onFailure(call: Call<inquireUserInfo>, t: Throwable) {
+                Log.d("로그_서버연동 실패","${t.message}")
+            }
+        })
 
         // 사용자 지역
         var uArea : String = "KOREA"
@@ -105,27 +140,29 @@ class ModifyProfileActivity : AppCompatActivity() {
             uGrade = mpBinding.modMyScore.text.toString().toFloat()
             uTotalGrade = mpBinding.modMaxScore.text.toString().toFloat()
 
-            val modifyProfileModel : js_modProfile = js_modProfile(uArea, uCollege, uGrade, uTotalGrade, uGrader, uGit, uLanguage, uFramework)
+            val modifyProfileModel = js_modProfile(uArea, uCollege, uGrade, uTotalGrade, uGrader, uGit, uLanguage, uFramework)
 
-//            server.modifyProfile(modifyProfileModel).enqueue(object:Callback<LoginData> {
-//                override fun onFailure(call: Call<LoginData>, t: Throwable) {
-//                    Log.d("프로필수정 실패", "프로필 수정 실패")
-//                    Log.d("프로필수정 실패", "$t")
-//                    Toast.makeText(this@ModifyProfileActivity, "서버 오류! 프로필 수정 실패", Toast.LENGTH_LONG).show()
-//                }
-//
-//                override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
-//                    Toast.makeText(this@ModifyProfileActivity, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()
-//                    val intent = Intent(this@ModifyProfileActivity, PersonalInformation::class.java)
-//                    Log.d("프로필수정 실패", "$modifyProfileModel")
-//                    startActivity(intent)
-//                    finish()
-//                } }
-//            )
+            server.modifyProfile(modifyProfileModel, uid).enqueue(object:Callback<BasicResponse> {
+                override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                    Log.d("프로필 수정 실패", "$t")
+                    Toast.makeText(this@ModifyProfileActivity, "서버 오류! 프로필 수정 실패", Toast.LENGTH_LONG).show()
+                }
 
-            val intent = Intent(this, PersonalInformation::class.java)
-            startActivity(intent)
-            finish()
+                override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                    Toast.makeText(this@ModifyProfileActivity, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()
+                    Log.d("프로필 수정 성공", "$modifyProfileModel")
+
+                    val intent = Intent(this@ModifyProfileActivity, HomeActivity::class.java)
+
+                    val changeView = 100
+                    intent.putExtra("chgV", changeView)
+                    startActivity(intent)
+                    finish()
+                } }
+            )
+//            val intent = Intent(this, PersonalInformation::class.java)
+//            startActivity(intent)
+//            finish()
         }
     }
 }

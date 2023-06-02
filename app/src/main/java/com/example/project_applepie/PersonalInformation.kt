@@ -8,9 +8,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentPersonalInformationBinding
 import com.example.project_applepie.model.dao.inquireUserInfo
+import com.example.project_applepie.model.dao.personalDetailProfile
 import com.example.project_applepie.model.myBoard
 import com.example.project_applepie.model.myTeam
 import com.example.project_applepie.model.recuit
@@ -18,6 +20,8 @@ import com.example.project_applepie.recyclerview.homeRecycle.SearchItemRecyclerV
 import com.example.project_applepie.recyclerview.profileRecycle.MyTeamAdapter
 import com.example.project_applepie.recyclerview.profileRecycle.myBoardAdapter
 import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.retrofit.domain.BasicResponse
+import com.example.project_applepie.sharedpref.SharedPref
 import com.example.project_applepie.utils.Url
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,6 +50,13 @@ class PersonalInformation : Fragment(), View.OnClickListener {
     private lateinit var boardAdapter : myBoardAdapter
     private var _recruitBinding : FragmentPersonalInformationBinding? = null
     private val recruitBinding get() = _recruitBinding!!
+
+    // Fragment에서 SharedPreference를 쓸 수 있게 해주는 코드
+    private lateinit var homeActivity : HomeActivity
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        homeActivity = context as HomeActivity
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,19 +90,17 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 
         var server = retrofit.create(ApiService::class.java)
 
-        var uid = "10007"
-        server.inquireUserInfo(uid).enqueue(object : Callback<inquireUserInfo>{
-            override fun onResponse(call: Call<inquireUserInfo>, response: Response<inquireUserInfo>
-            ) {
-                Log.d("로그","${response.body().toString()}")
-                var eamil = response.body()?.data?.get("email");
-                Log.d("로그","$eamil")
+        val uid = SharedPref.getUserId(homeActivity)
+
+        // 사용자 세부정보 조회하기
+        server.searchProfileDetails(uid).enqueue(object : Callback<personalDetailProfile>{
+            override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>) {
+                TODO("Not yet implemented")
             }
 
-            override fun onFailure(call: Call<inquireUserInfo>, t: Throwable) {
-                Log.d("로그_서버연동 실패","${t.message}")
+            override fun onFailure(call: Call<personalDetailProfile>, t: Throwable) {
+                TODO("Not yet implemented")
             }
-
         })
 
         val basicImg = R.drawable.charmander
@@ -187,8 +196,6 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 
         // 로그아웃 버튼 클릭 시 처음 화면으로 이동
         recruitBinding.userLogOut.setOnClickListener {
-//            var intent = Intent(context, MainActivity::class.java)
-//            startActivity(intent)
             activity?.finish()
         }
 
@@ -201,6 +208,31 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         }
         recruitBinding.swAssignment.setOnCheckedChangeListener { compoundButton, b ->
             Log.d("로그","과외/과제 체크 유무 : $b")
+        }
+
+        // 회원탈퇴 클릭 시
+        recruitBinding.btnDeleteAccount.setOnClickListener {
+            val url = Url.BASE_URL
+            val retrofit = Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            var server = retrofit.create(ApiService::class.java)
+
+            server.deleteUser(uid).enqueue(object : Callback<BasicResponse>{
+                override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                    Log.d("성공 확인", "$response")
+                    Toast.makeText(homeActivity, "회원탈퇴가 성공적으로 처리됐습니다.", Toast.LENGTH_SHORT).show()
+                    activity?.finish()
+                    // TODO: 다이얼로그 만들기?
+                }
+
+                override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                    Log.d("실패 확인", "$t")
+                    Toast.makeText(homeActivity, "(서버오류) 회원가입 탈퇴에 실패했습니다", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
 
     }
