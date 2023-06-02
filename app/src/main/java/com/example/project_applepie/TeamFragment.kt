@@ -3,6 +3,7 @@ package com.example.project_applepie
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentTeamBinding
 import com.example.project_applepie.model.AuerProfile
+import com.example.project_applepie.model.dao.searchAllProfiles
 import com.example.project_applepie.recyclerview.homeRecycle.SearchTeamRecyclerViewAdapter
+import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.retrofit.domain.SearchVolunteerResponse
+import com.example.project_applepie.sharedpref.SharedPref
+import com.example.project_applepie.utils.Url
 import com.google.android.material.tabs.TabLayout
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,6 +43,13 @@ class TeamFragment : Fragment() {
     private var _teamBinding : FragmentTeamBinding? = null
     private val teamBinding get() = _teamBinding!!
 
+    // Fragment에서 SharedPreference를 쓸 수 있게 해주는 코드
+//    private lateinit var homeActivity : HomeActivity
+//    override fun onAttach(context: Context) {
+//        super.onAttach(context)
+//        homeActivity = context as HomeActivity
+//    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -42,6 +60,37 @@ class TeamFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // 서버 연동
+        val url = Url.BASE_URL
+        val retrofit = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        var server = retrofit.create(ApiService::class.java)
+
+        // 사용자의 uid & pid를 가져옴
+//        val uid = SharedPref.getUserId(homeActivity)
+//        val pid = SharedPref.getPid(homeActivity)
+
+        var size = 5
+        var category = 0
+        var id = 1
+        val sopModel = searchAllProfiles(size, category, id)
+        server.searchOpenProfile(sopModel).enqueue(object : Callback<SearchVolunteerResponse>{
+            override fun onFailure(call: Call<SearchVolunteerResponse>, t: Throwable) {
+                Log.d("조회 실패", "$t")
+            }
+
+            override fun onResponse(call: Call<SearchVolunteerResponse>, response: Response<SearchVolunteerResponse>) {
+                Log.d("조회 성공","${response.body().toString()}")
+                var tCount = response.body()?.totalCount?.get(0)
+                var count = response.body()?.count?.get(0)
+                var volList = response.body()?.volunteerList?.get(0)
+            }
+        })
+
         val basicImg = R.drawable.charmander
         val itemList = arrayListOf(
             AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),

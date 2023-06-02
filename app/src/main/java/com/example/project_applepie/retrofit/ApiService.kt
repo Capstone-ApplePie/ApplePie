@@ -42,7 +42,7 @@ interface ApiService {
     fun deleteUser(@Path("uid") uid : String):Call<BasicResponse>
 
     // 7. 개인 세부 프로필 조회
-    @POST(API.SEARCH_DETAIL_PROFILE)
+    @GET(API.SEARCH_DETAIL_PROFILE)
     fun searchProfileDetails(@Path("pid") pid : String):Call<personalDetailProfile>
 
     // 10. open 여부 수정

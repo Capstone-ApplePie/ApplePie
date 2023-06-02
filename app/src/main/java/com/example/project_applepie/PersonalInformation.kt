@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentPersonalInformationBinding
 import com.example.project_applepie.model.dao.inquireUserInfo
+import com.example.project_applepie.model.dao.modiOpen
 import com.example.project_applepie.model.dao.personalDetailProfile
 import com.example.project_applepie.model.myBoard
 import com.example.project_applepie.model.myTeam
@@ -90,21 +91,27 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 
         var server = retrofit.create(ApiService::class.java)
 
+        // 사용자의 uid & pid를 가져옴
         val uid = SharedPref.getUserId(homeActivity)
         val pid = SharedPref.getPid(homeActivity)
+
+
 
         // 사용자 세부정보 조회하기
         server.searchProfileDetails(pid).enqueue(object : Callback<personalDetailProfile>{
             override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>) {
                 Log.d("로그","${response.body().toString()}")
-                var eamil = response.body()?.lesson?.get(0)
-                Log.d("로그","$eamil")
+                var lessonIntro = response.body()?.lesson?.get(0)
+                var lessonSub = response.body()?.lesson?.get(1)
+                var lessonSelf = response.body()?.lesson?.get(2)
+                var lessonOpen = response.body()?.lesson?.get(3)
+                Log.d("세부 프로필 확인", "$lessonOpen")
                 Log.d("uid 확인", "$uid")
                 Log.d("pid 확인", "$pid")
             }
 
             override fun onFailure(call: Call<personalDetailProfile>, t: Throwable) {
-                TODO("Not yet implemented")
+                Log.d("실패 로그","$t")
             }
         })
 
@@ -176,25 +183,101 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             startActivity(intent)
         }
 
+        // OPEN 여부 판단
         recruitBinding.swOutsourcing.setOnCheckedChangeListener { buttonView, idChecked ->
+            // 사용자 정보 조회하기
+            val url = Url.BASE_URL
+            val retrofit = Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            var server = retrofit.create(ApiService::class.java)
+
             if(buttonView.isChecked){
-                Log.d("로그","외주 on")
+                val modiOpen = modiOpen(0, 0)
+                server.modiOpenProfile(pid, modiOpen).enqueue(object : Callback<BasicResponse>{
+                    override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                        Log.d("OPEN-OUT-ON", "Fail")
+                        Log.d("OPEN-OUT-ON", "$t")
+                    }
+
+                    override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                        Log.d("OPEN-OUT-ON", "OPEN")
+                        Log.d("OPEN-OUT-ON", "$response")
+                    }
+                })
             }else{
-                Log.d("로그","외주 off")
+                val modiOpen = modiOpen(0, 1)
+                server.modiOpenProfile(pid, modiOpen).enqueue(object : Callback<BasicResponse>{
+                    override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                        Log.d("OPEN-OUT-OFF", "Fail")
+                        Log.d("OPEN-OUT-OFF", "$t")
+                    }
+
+                    override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                        Log.d("OPEN-OUT-OFF", "CLOSE")
+                        Log.d("OPEN-OUT-OFF", "$response")
+                    }
+                })
             }
         }
         recruitBinding.swAssignment.setOnCheckedChangeListener { buttonView, idChecked ->
             if(buttonView.isChecked){
-                Log.d("로그","과제/과외 on")
+                val modiOpen = modiOpen(1, 0)
+                server.modiOpenProfile(pid, modiOpen).enqueue(object : Callback<BasicResponse>{
+                    override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                        Log.d("OPEN-LES-ON", "Fail")
+                        Log.d("OPEN-LES-ON", "$t")
+                    }
+
+                    override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                        Log.d("OPEN-LES-ON", "OPEN")
+                        Log.d("OPEN-LES-ON", "$response")
+                    }
+                })
             }else{
-                Log.d("로그","과제/과외 off")
+                val modiOpen = modiOpen(1, 1)
+                server.modiOpenProfile(pid, modiOpen).enqueue(object : Callback<BasicResponse>{
+                    override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                        Log.d("OPEN-LES-OFF", "Fail")
+                        Log.d("OPEN-LES-OFF", "$t")
+                    }
+
+                    override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                        Log.d("OPEN-LES-OFF", "CLOSE")
+                        Log.d("OPEN-LES-OFF", "$response")
+                    }
+                })
             }
         }
         recruitBinding.swCompetition.setOnCheckedChangeListener { buttonView, idChecked ->
             if(buttonView.isChecked){
-                Log.d("로그","공모전 on")
+                val modiOpen = modiOpen(2, 0)
+                server.modiOpenProfile(pid, modiOpen).enqueue(object : Callback<BasicResponse>{
+                    override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                        Log.d("OPEN-PRO-ON", "Fail")
+                        Log.d("OPEN-PRO-ON", "$t")
+                    }
+
+                    override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                        Log.d("OPEN-PRO-ON", "OPEN")
+                        Log.d("OPEN-PRO-ON", "$response")
+                    }
+                })
             }else{
-                Log.d("로그","공모전 off")
+                val modiOpen = modiOpen(2, 1)
+                server.modiOpenProfile(pid, modiOpen).enqueue(object : Callback<BasicResponse>{
+                    override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                        Log.d("OPEN-PRO-OFF", "Fail")
+                        Log.d("OPEN-PRO-OFF", "$t")
+                    }
+
+                    override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                        Log.d("OPEN-PRO-OFF", "OPEN")
+                        Log.d("OPEN-PRO-OFF", "$response")
+                    }
+                })
             }
         }
 

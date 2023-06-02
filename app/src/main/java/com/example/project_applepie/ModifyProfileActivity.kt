@@ -29,7 +29,7 @@ class ModifyProfileActivity : AppCompatActivity() {
         val mpBinding = ActivityModifyProfileBinding.inflate(layoutInflater)
         setContentView(mpBinding.root)
 
-        // 사용자 uid 가져오기
+        // 사용자 uid & pid 가져오기
         val uid = SharedPref.getUserId(this@ModifyProfileActivity)
 //        val uid = "10006"
 
