@@ -31,7 +31,6 @@ import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import okhttp3.MediaType
-import okhttp3.MediaType.Companion.parse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -76,8 +75,8 @@ class CreateBoardActivity : AppCompatActivity() {
             val imageUri = result.data?.data ?: return@registerForActivityResult
 
             val file = File(absolutePath(imageUri, this))
-            val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
-            body = MultipartBody.Part.createFormData("profile", file.name, requestFile)
+            val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+            body = MultipartBody.Part.createFormData("file", file.name, requestFile)
 
             Log.d("testt",file.name)
         }
