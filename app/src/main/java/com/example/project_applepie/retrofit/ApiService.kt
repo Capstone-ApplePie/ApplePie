@@ -28,7 +28,7 @@ interface ApiService {
     @GET(API.SEARCH_PROFILE)
     fun inquireUserInfo(
         @Path("uid") uid : String
-    ): Call<ProfileData>
+    ): Call<inquireUserInfo>
 
     // 5. 회원 프로필 수정 (수정 완)
     @PUT(API.MODIFY_PROFILE)

@@ -10,12 +10,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentPersonalInformationBinding
+import com.example.project_applepie.model.dao.inquireUserInfo
 import com.example.project_applepie.model.myBoard
 import com.example.project_applepie.model.myTeam
 import com.example.project_applepie.model.recuit
 import com.example.project_applepie.recyclerview.homeRecycle.SearchItemRecyclerViewAdapter
 import com.example.project_applepie.recyclerview.profileRecycle.MyTeamAdapter
 import com.example.project_applepie.recyclerview.profileRecycle.myBoardAdapter
+import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.utils.Url
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,6 +70,29 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         setOnClickListener()
+
+        val url = Url.BASE_URL
+        val retrofit = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        var server = retrofit.create(ApiService::class.java)
+
+        var uid = "10007"
+        server.inquireUserInfo(uid).enqueue(object : Callback<inquireUserInfo>{
+            override fun onResponse(call: Call<inquireUserInfo>, response: Response<inquireUserInfo>
+            ) {
+                Log.d("로그","${response.body().toString()}")
+                var eamil = response.body()?.data?.get("email");
+                Log.d("로그","$eamil")
+            }
+
+            override fun onFailure(call: Call<inquireUserInfo>, t: Throwable) {
+                Log.d("로그_서버연동 실패","${t.message}")
+            }
+
+        })
 
         val basicImg = R.drawable.charmander
         val basicImg2 = R.drawable.bulbasaur
