@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import coil.load
+import com.bumptech.glide.Glide
 import com.example.project_applepie.databinding.ActivityCreateBoardBinding
 import com.example.project_applepie.model.dao.WriteBoardBoard
 import com.example.project_applepie.model.dao.createBoard
@@ -30,6 +31,7 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.gson.JsonElement
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -272,11 +274,16 @@ class CreateBoardActivity : AppCompatActivity() {
                     Log.d("글 작성 성공?", "$body, $uid, $uTitle, $uContent, $uCategory, $uDeadline, $BoardData")
                     Log.d("코드 확인", "${response.body().toString()}")
                     var nickname = response.body()?.board?.get("nickname")
-                    Log.d("로그","닉네임 : $nickname")
+                    var files : String = response.body()?.board?.get("files").toString()
+                    files = files.substring(2,files.length-2);
+                    Log.d("로그","닉네임 : $files")
                     Toast.makeText(this@CreateBoardActivity, "글 생성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@CreateBoardActivity, HomeActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    Glide.with(this@CreateBoardActivity)
+                        .load(files)
+                        .into(ctBinding.imgLoad)
+                    //startActivity(intent)
+                    //finish()
                 }
             })
         }
