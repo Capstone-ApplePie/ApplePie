@@ -4,9 +4,7 @@ import com.example.project_applepie.model.dao.*
 import com.example.project_applepie.retrofit.domain.*
 import com.example.project_applepie.utils.API
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.http.*
 import java.util.*
 
@@ -44,6 +42,13 @@ interface ApiService {
     // 7. 개인 세부 프로필 조회
     @GET(API.SEARCH_DETAIL_PROFILE)
     fun searchProfileDetails(@Path("pid") pid : String):Call<personalDetailProfile>
+
+    // 8. 개인 세부 프로필 생성
+    @POST(API.CREATE_DETAIL_PROFILE)
+    fun createDetailProfile(
+        @Path("pid") pid : String,
+        @Body uInput : js_CDP?
+    ) : Call<personalDetailProfile>
 
     // 10. open 여부 수정
     @PUT(API.MODIFY_OPEN_PROFILE)

@@ -1,12 +1,12 @@
 package com.example.project_applepie.model.dao
 
-import com.example.project_applepie.model.historyWork
+import com.google.gson.JsonObject
 
 data class personalDetailProfile (
     var status : Int,
     var code : String,
     var message : String,
-    var lesson : List<historyWork>,
-    var project : List<historyWork>,
-    var outsourcing : List<historyWork>
+    var lesson : JsonObject,
+    var project : JsonObject,
+    var outsourcing : JsonObject
 )

@@ -271,7 +271,7 @@ class CreateBoardActivity : AppCompatActivity() {
                     call: Call<WriteBoardResponse>,
                     response: Response<WriteBoardResponse>
                 ) {
-                    Log.d("글 작성 성공?", "$body, $uid, $uTitle, $uContent, $uCategory, $uDeadline, $BoardData")
+                    Log.d("글 작성 성공", "$body, $uid, $uTitle, $uContent, $uCategory, $uDeadline, $BoardData")
                     Log.d("코드 확인", "${response.body().toString()}")
                     var nickname = response.body()?.board?.get("nickname")
                     var files : String = response.body()?.board?.get("files").toString()
@@ -282,8 +282,8 @@ class CreateBoardActivity : AppCompatActivity() {
                     Glide.with(this@CreateBoardActivity)
                         .load(files)
                         .into(ctBinding.imgLoad)
-                    //startActivity(intent)
-                    //finish()
+                    startActivity(intent)
+                    finish()
                 }
             })
         }

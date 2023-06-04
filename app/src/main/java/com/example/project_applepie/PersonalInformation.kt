@@ -95,17 +95,12 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         val uid = SharedPref.getUserId(homeActivity)
         val pid = SharedPref.getPid(homeActivity)
 
-
-
         // 사용자 세부정보 조회하기
         server.searchProfileDetails(pid).enqueue(object : Callback<personalDetailProfile>{
             override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>) {
                 Log.d("로그","${response.body().toString()}")
-                var lessonIntro = response.body()?.lesson?.get(0)
-                var lessonSub = response.body()?.lesson?.get(1)
-                var lessonSelf = response.body()?.lesson?.get(2)
-                var lessonOpen = response.body()?.lesson?.get(3)
-                Log.d("세부 프로필 확인", "$lessonOpen")
+
+                Log.d("세부 프로필 확인", "${response.body()?.toString()}")
                 Log.d("uid 확인", "$uid")
                 Log.d("pid 확인", "$pid")
             }
@@ -183,7 +178,13 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             startActivity(intent)
         }
 
-        // OPEN 여부 판단
+        // 로그아웃 버튼 클릭 시 처음 화면으로 이동
+        recruitBinding.userLogOut.setOnClickListener {
+            activity?.finish()
+        }
+
+
+        // OPEN 여부 판단 (SWITCH)
         recruitBinding.swOutsourcing.setOnCheckedChangeListener { buttonView, idChecked ->
             // 사용자 정보 조회하기
             val url = Url.BASE_URL
@@ -194,7 +195,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 
             var server = retrofit.create(ApiService::class.java)
 
-            if(buttonView.isChecked){
+            if(!idChecked){
                 val modiOpen = modiOpen(0, 0)
                 server.modiOpenProfile(pid, modiOpen).enqueue(object : Callback<BasicResponse>{
                     override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
@@ -203,8 +204,8 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     }
 
                     override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
-                        Log.d("OPEN-OUT-ON", "OPEN")
-                        Log.d("OPEN-OUT-ON", "$response")
+                        Log.d("OPEN-OUT-ON", "CLOSE")
+                        Log.d("OPEN-OUT-ON", "${response.body()?.message.toString()} + $idChecked")
                     }
                 })
             }else{
@@ -216,14 +217,15 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     }
 
                     override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
-                        Log.d("OPEN-OUT-OFF", "CLOSE")
-                        Log.d("OPEN-OUT-OFF", "$response")
+                        Log.d("OPEN-OUT-OFF", "OPEN")
+                        Log.d("OPEN-OUT-OFF", "${response.body()?.message.toString()} + $idChecked")
                     }
                 })
             }
         }
+
         recruitBinding.swAssignment.setOnCheckedChangeListener { buttonView, idChecked ->
-            if(buttonView.isChecked){
+            if(!idChecked){
                 val modiOpen = modiOpen(1, 0)
                 server.modiOpenProfile(pid, modiOpen).enqueue(object : Callback<BasicResponse>{
                     override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
@@ -232,8 +234,8 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     }
 
                     override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
-                        Log.d("OPEN-LES-ON", "OPEN")
-                        Log.d("OPEN-LES-ON", "$response")
+                        Log.d("OPEN-LES-ON1", "CLOSE")
+                        Log.d("OPEN-LES-ON2", "${response.body()?.message.toString()}")
                     }
                 })
             }else{
@@ -245,14 +247,15 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     }
 
                     override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
-                        Log.d("OPEN-LES-OFF", "CLOSE")
-                        Log.d("OPEN-LES-OFF", "$response")
+                        Log.d("OPEN-LES-OFF", "OPEN")
+                        Log.d("OPEN-LES-OFF", "${response.body()?.message.toString()}")
                     }
                 })
             }
         }
+
         recruitBinding.swCompetition.setOnCheckedChangeListener { buttonView, idChecked ->
-            if(buttonView.isChecked){
+            if(!idChecked){
                 val modiOpen = modiOpen(2, 0)
                 server.modiOpenProfile(pid, modiOpen).enqueue(object : Callback<BasicResponse>{
                     override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
@@ -261,8 +264,8 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     }
 
                     override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
-                        Log.d("OPEN-PRO-ON", "OPEN")
-                        Log.d("OPEN-PRO-ON", "$response")
+                        Log.d("OPEN-PRO-ON", "CLOSE")
+                        Log.d("OPEN-PRO-ON", "${response.body()?.message.toString()}")
                     }
                 })
             }else{
@@ -275,28 +278,12 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 
                     override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                         Log.d("OPEN-PRO-OFF", "OPEN")
-                        Log.d("OPEN-PRO-OFF", "$response")
+                        Log.d("OPEN-PRO-OFF", "${response.body()?.message.toString()}")
                     }
                 })
             }
         }
 
-
-        // 로그아웃 버튼 클릭 시 처음 화면으로 이동
-        recruitBinding.userLogOut.setOnClickListener {
-            activity?.finish()
-        }
-
-        //switch 체크 유무
-        recruitBinding.swOutsourcing.setOnCheckedChangeListener { compoundButton, b ->
-            Log.d("로그","외주 체크 유무 : $b")
-        }
-        recruitBinding.swCompetition.setOnCheckedChangeListener { compoundButton, b ->
-            Log.d("로그","공모전 체크 유무 : $b")
-        }
-        recruitBinding.swAssignment.setOnCheckedChangeListener { compoundButton, b ->
-            Log.d("로그","과외/과제 체크 유무 : $b")
-        }
 
         // 회원탈퇴 클릭 시
         recruitBinding.btnDeleteAccount.setOnClickListener {

@@ -1,6 +1,7 @@
 package com.example.project_applepie
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import com.example.project_applepie.databinding.ActivityCreateProfileBinding
 import com.example.project_applepie.model.dao.sinup
 import com.example.project_applepie.retrofit.ApiService
 import com.example.project_applepie.retrofit.domain.BasicResponse
+import com.example.project_applepie.sharedpref.SharedPref
 import com.example.project_applepie.utils.Url
 import com.google.android.material.chip.Chip
 import retrofit2.Call
@@ -144,7 +146,7 @@ class CreateProfile : AppCompatActivity() {
             val signupModal: sinup = sinup(uEmail, uPw, uName, uNickname, uCorp, uBirth, uGender,
                 uArea, uCollege, uGrade, uTotalGrade, uGrader, uGit, uLanguage, uFramework)
 
-//            Log.d("로그","signupModel : $signupModal")
+            Log.d("로그","signupModel : $signupModal")
 
             // 회원가입 정보 TODO: 예외처리
             if (uEmail != null && uPw != null && uName != null && uNickname!=null && uBirth!=null && uGender!=null
@@ -159,23 +161,27 @@ class CreateProfile : AppCompatActivity() {
                     }
 
                     override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                        val userCreatePro = response.body()
                         Log.d("로그","response : $response")
+                        if(userCreatePro?.status == 200){
+                            SharedPref.setUserId(this@CreateProfile, userCreatePro.uid)
+                            SharedPref.setPid(this@CreateProfile, userCreatePro.pid)
 
-                        Toast.makeText(this@CreateProfile, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@CreateProfile, SignIn::class.java)
-                        startActivity(intent)
-                        finish()
+                            Toast.makeText(this@CreateProfile, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()
+//                            val intent = Intent(this@CreateProfile, SignIn::class.java)
+                            val intent = Intent(this@CreateProfile, createDetailProfile::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this@CreateProfile, "잘못된 입력입니다!", Toast.LENGTH_LONG).show()
+                            Log.d("회원가입 실패", "$response")
+                        }
                     }
                 } )
             }
             else {
-                Toast.makeText(this@CreateProfile, "오류!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CreateProfile, "서버 오류!", Toast.LENGTH_SHORT).show()
             }
-//            Log.d("test", "Click: $uLanguage")
-//            Toast.makeText(this, "프로필 생성을 완료했습니다.", Toast.LENGTH_SHORT).show()
-//            val intent = Intent(this@CreateProfile, SignIn::class.java)
-//            startActivity(intent)
-//            finish()
         }
     }
 

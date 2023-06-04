@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/item_search"
+        android:id="@+id/item_skip"
         app:showAsAction="ifRoom"
-        android:title="완료" />
+        android:title="넘어가기" />
 
 </menu>

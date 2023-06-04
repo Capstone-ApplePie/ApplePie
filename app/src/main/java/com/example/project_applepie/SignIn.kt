@@ -62,37 +62,51 @@ class SignIn : AppCompatActivity() {
             val intent = Intent(this, HomeActivity::class.java)
 
 //            if(login_emailPass == 0 && login_pwPass == 0){
-                // 로그인 시 ID & PW 얻기
-                val uEmail: String = binding.etUsermail.text.toString()
-                val uPw: String = binding.etUserpw.text.toString()
+            // 로그인 시 ID & PW 얻기
+            val uEmail: String = binding.etUsermail.text.toString()
+            val uPw: String = binding.etUserpw.text.toString()
 
-                val logInModel : js_signIn = js_signIn(uEmail, uPw)
+            val logInModel : js_signIn = js_signIn(uEmail, uPw)
 
-                server.logIn(logInModel).enqueue(object : Callback<LoginData>{
-                    override fun onFailure(call: Call<LoginData>, t: Throwable) {
-                        Log.d("서버 연동", "로그인 실패")
-                        Log.d("서버 연동","${t.message}")
-                        Toast.makeText(this@SignIn, "서버 오류! 로그인 실패", Toast.LENGTH_LONG).show()
+            server.logIn(logInModel).enqueue(object : Callback<LoginData>{
+                override fun onFailure(call: Call<LoginData>, t: Throwable) {
+                    Log.d("서버 연동", "로그인 실패")
+                    Log.d("서버 연동","${t.message}")
+                    Toast.makeText(this@SignIn, "서버 오류! 로그인 실패", Toast.LENGTH_LONG).show()
+                }
+                override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
+                    val userLogin = response.body()
+                    Log.d("로그","${response.body().toString()}")
+                    if(userLogin?.status == 200){
+
+                        SharedPref.setUserId(this@SignIn, userLogin.uid) // uid 설정
+                        SharedPref.setPid(this@SignIn, userLogin.pid) // pid 설정
+                        Log.d("로그인 성공", "로그인 성공 $uEmail, $uPw")
+
+//                        val isFirst = SharedPref.getFirstTime(this@SignIn, "first")
+//                        if(!isFirst){
+//                            SharedPref.setFirstTime(this@SignIn, "first", true)
+//                            val intent = Intent(this@SignIn, createDetailProfile::class.java)
+//                            startActivity(intent)
+//                            finish()
+//                        } else {
+//                            val intent = Intent(this@SignIn, HomeActivity::class.java)
+//                            startActivity(intent)
+//                            finish()
+//                        }
+                        startActivity(intent)
+                        finish()
+
+                    } else {
+                        Toast.makeText(this@SignIn, "가입된 계정이 아닙니다!", Toast.LENGTH_LONG).show()
+                        Log.d("로그인 실패", "$response")
                     }
-                    override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
-                        val userLogin = response.body()
-                        Log.d("로그","${response.body().toString()}")
-                        if(userLogin?.status == 200){
-                            SharedPref.setUserId(this@SignIn, userLogin.uid) // uid 설정
-                            SharedPref.setPid(this@SignIn, userLogin.pid) // pid 설정
-                            Log.d("로그인 성공", "로그인 성공 $uEmail, $uPw")
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Toast.makeText(this@SignIn, "가입된 계정이 아닙니다!", Toast.LENGTH_LONG).show()
-                            Log.d("로그인 실패", "$response")
-                        }
-                    }
-                })
+                }
+            })
+        // }
+            startActivity(intent)
+            finish()
 
-//                startActivity(intent)
-//                finish()
-//            }
         }
 
         // 회원가입 문구 클릭 시

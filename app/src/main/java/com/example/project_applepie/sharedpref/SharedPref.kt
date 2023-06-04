@@ -30,4 +30,17 @@ object SharedPref {
         val prefs: SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
         return prefs.getString("MY_PID", "").toString()
     }
+
+    // 최초 1회 실행을 위한 SharedPreference
+    fun setFirstTime(context: Context, key: String, value: Boolean){
+        val prefs = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putBoolean(key, value)
+        editor.commit()
+    }
+
+    fun getFirstTime(context: Context, key: String) : Boolean {
+        val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        return prefs.getBoolean(key, false)
+    }
 }
