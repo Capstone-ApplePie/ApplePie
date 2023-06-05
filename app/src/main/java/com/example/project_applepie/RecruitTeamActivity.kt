@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
+import com.bumptech.glide.Glide
 import com.example.project_applepie.databinding.ActivityRecruitTeamBinding
 import com.example.project_applepie.model.recuit
 
@@ -16,9 +17,9 @@ class RecruitTeamActivity : AppCompatActivity() {
         val intent = intent
         val recruitData = intent.getSerializableExtra("data") as recuit?
 
-        rtBinding.ivRtImg.setImageResource(recruitData?.thumbnail!!)
-        rtBinding.tvRtTitle.text = recruitData.title
-        rtBinding.tvRtDetail.text = recruitData.detail
+        Glide.with(this).load(recruitData?.thumbnail).into(rtBinding.ivRtImg)
+        rtBinding.tvRtTitle.text = recruitData?.title
+        rtBinding.tvRtDetail.text = recruitData?.detail
 
         val getRole = resources.getStringArray(R.array.select_role)
         val arrayAdapter = ArrayAdapter(this,R.layout.dropdown_item, getRole)

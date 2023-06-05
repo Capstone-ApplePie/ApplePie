@@ -1,15 +1,18 @@
 package com.example.project_applepie.recyclerview.homeRecycle
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.project_applepie.App
 import com.example.project_applepie.R
 import com.example.project_applepie.model.recuit
 
-class SearchItemRecyclerViewAdapter : RecyclerView.Adapter<SearchItemViewHolder>(){
+class SearchItemRecyclerViewAdapter(private val context : Context) : RecyclerView.Adapter<SearchItemViewHolder>(){
 
     private var searchList = ArrayList<recuit>()
 
@@ -25,7 +28,13 @@ class SearchItemRecyclerViewAdapter : RecyclerView.Adapter<SearchItemViewHolder>
     }
 
     override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
-        holder.photoImageView.setImageResource(searchList.get(position).thumbnail)
+
+        holder.apply {
+            Glide.with(context)
+                .load(searchList.get(position).thumbnail)
+                .into(photoImageView)
+        }
+
         holder.recruitTitle.text = searchList.get(position).title
         holder.recuitDetail.text = searchList.get(position).detail
 

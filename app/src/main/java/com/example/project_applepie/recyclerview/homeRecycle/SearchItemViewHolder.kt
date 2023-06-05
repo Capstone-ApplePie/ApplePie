@@ -17,14 +17,5 @@ class SearchItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
     val recuitDetail = itemView.findViewById<TextView>(R.id.recuit_detail)
     val recuritBackground = itemView.findViewById<ConstraintLayout>(R.id.recruit_card)
 
-    /*fun bindWithView(recuitItem : recuit){
-        recruitTitle.text = recuitItem.title
-        recuitDetail.text = recuitItem.detail
-
-        Glide.with(App.instance)
-            .load(recuitItem.thumbnail)
-            .placeholder(R.drawable.baseline_insert_photo_24)
-            .into(photoImageView)
-    }*/
 
 }

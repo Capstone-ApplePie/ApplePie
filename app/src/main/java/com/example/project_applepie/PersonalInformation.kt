@@ -132,12 +132,14 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         val basicImg2 = R.drawable.bulbasaur
         val basicImg3 = R.drawable.turtle
 
-        val itemList = arrayListOf(
+        val itemList = ArrayList<recuit>()
+
+        /*val itemList = arrayListOf(
             recuit(basicImg,"이상해씨","이상해씨-이상해풀-이상해꽃"),
             recuit(basicImg3,"파이리","파이리-리자드-리자몽"),
             recuit(basicImg2,"꼬부기","꼬부기-어니부기-거북왕"),
             recuit(basicImg3,"이상해씨","이상해씨-이상해풀-이상해꽃")
-        )
+        )*/
         val itemList2 = arrayListOf(
             myTeam(basicImg,"이상해씨"),
             myTeam(basicImg3,"파이리"),
