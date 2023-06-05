@@ -14,6 +14,7 @@ import com.example.project_applepie.model.AuerProfile
 import com.example.project_applepie.model.dao.searchAllProfiles
 import com.example.project_applepie.recyclerview.homeRecycle.SearchTeamRecyclerViewAdapter
 import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.retrofit.domain.SearchVolDetailResponse
 import com.example.project_applepie.retrofit.domain.SearchVolunteerResponse
 import com.example.project_applepie.sharedpref.SharedPref
 import com.example.project_applepie.utils.Url
@@ -44,11 +45,11 @@ class TeamFragment : Fragment() {
     private val teamBinding get() = _teamBinding!!
 
     // Fragment에서 SharedPreference를 쓸 수 있게 해주는 코드
-//    private lateinit var homeActivity : HomeActivity
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        homeActivity = context as HomeActivity
-//    }
+    private lateinit var homeActivity : HomeActivity
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        homeActivity = context as HomeActivity
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,23 +72,22 @@ class TeamFragment : Fragment() {
         var server = retrofit.create(ApiService::class.java)
 
         // 사용자의 uid & pid를 가져옴
-//        val uid = SharedPref.getUserId(homeActivity)
-//        val pid = SharedPref.getPid(homeActivity)
+        val uid = SharedPref.getUserId(homeActivity)
+        val pid = SharedPref.getPid(homeActivity)
 
-        var size = 5
+        var size = 5 // TODO: 테스트 할 때는 값을 크게
         var category = 0
-        var id = 1
+        var id = 10 // TODO: 초기에 null값
+
         val sopModel = searchAllProfiles(size, category, id)
-        server.searchOpenProfile(sopModel).enqueue(object : Callback<SearchVolunteerResponse>{
-            override fun onFailure(call: Call<SearchVolunteerResponse>, t: Throwable) {
-                Log.d("조회 실패", "$t")
+        server.searchOpenProfile(sopModel).enqueue(object : Callback<SearchVolDetailResponse>{
+            override fun onFailure(call: Call<SearchVolDetailResponse>, t: Throwable) {
+                Log.d("TF 정보 가져오기 실패", "$t")
             }
 
-            override fun onResponse(call: Call<SearchVolunteerResponse>, response: Response<SearchVolunteerResponse>) {
-                Log.d("조회 성공","${response.body().toString()}")
-                var tCount = response.body()?.totalCount?.get(0)
-                var count = response.body()?.count?.get(0)
-                var volList = response.body()?.volunteerList?.get(0)
+            override fun onResponse(call: Call<SearchVolDetailResponse>, response: Response<SearchVolDetailResponse>) {
+                val userData = response.body()?.data
+                Log.d("TF 정보 가져오기 성공?", "${response.body()?.data} + ${response.body()?.message} + $userData")
             }
         })
 

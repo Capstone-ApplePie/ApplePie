@@ -73,6 +73,8 @@ class modifyDetailProfile : AppCompatActivity() {
             }
         }
 
+
+
         mdpBinding.modifyDetailProfile.setOnClickListener {
             // 서버 연동
             val url = Url.BASE_URL
@@ -101,10 +103,6 @@ class modifyDetailProfile : AppCompatActivity() {
             val mdpModelLes = js_CDP(1, uSelfIntroLes, uIntroLes, uSubject, uOpenLes)
             val mdpModelPro = js_CDP(2, uSelfIntroPro, uIntroPro, uPart, uOpenPro)
 
-            var checkOne = 0
-            var checkTwo = 0
-            var checkThr = 0
-
             server.modifyDetailProfile(pid, mdpModelOut).enqueue(object :
                 Callback<personalDetailProfile> {
                 override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>
@@ -113,7 +111,6 @@ class modifyDetailProfile : AppCompatActivity() {
                     if(findError?.status == 200){
                         Log.d("세부 프로필 성공?", "${response.body()?.status}")
                         Log.d("세부 프로필 성공?", "${response.body()?.message}")
-                        checkOne = 1
                     }
                     else {
                         Log.d("문제찾아 삼만리", "${findError?.status} + ${findError?.message}")
@@ -134,7 +131,6 @@ class modifyDetailProfile : AppCompatActivity() {
                     if(findError?.status == 200){
                         Log.d("세부 프로필 성공?", "${response.body()?.status}")
                         Log.d("세부 프로필 성공?", "${response.body()?.message}")
-                        checkTwo = 1
                     }
                     else {
                         Log.d("문제찾아 삼만리", "${findError?.status} + ${findError?.message}")
@@ -155,7 +151,6 @@ class modifyDetailProfile : AppCompatActivity() {
                     if(findError?.status == 200){
                         Log.d("세부 프로필 성공?", "${response.body()?.status}")
                         Log.d("세부 프로필 성공?", "${response.body()?.message}")
-                        checkThr = 3
                     }
                     else {
                         Log.d("문제찾아 삼만리", "${findError?.status} + ${findError?.message}")
@@ -168,15 +163,13 @@ class modifyDetailProfile : AppCompatActivity() {
                 }
             })
 
-            if(checkOne == 1 && checkTwo == 1 && checkThr == 1){
-                val intent = Intent(this@modifyDetailProfile, HomeActivity::class.java)
-                val changeView = 100
-                intent.putExtra("chgV", changeView)
-                startActivity(intent)
-                finish()
-            } else {
-                Toast.makeText(this@modifyDetailProfile, "서버 통신 실패", Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(this@modifyDetailProfile, "수정이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+
+            val intent = Intent(this@modifyDetailProfile, HomeActivity::class.java)
+            val changeView = 100
+            intent.putExtra("chgV", changeView)
+            startActivity(intent)
+            finish()
         }
     }
 }

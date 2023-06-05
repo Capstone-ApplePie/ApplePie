@@ -37,6 +37,12 @@ class RecruitFragment : Fragment() {
     private var _recruitBinding : FragmentRecruitBinding? = null
     private val recruitBinding get() = _recruitBinding!!
 
+    // Fragment에서 SharedPreference를 쓸 수 있게 해주는 코드
+    private lateinit var homeActivity : HomeActivity
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        homeActivity = context as HomeActivity
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,18 +65,17 @@ class RecruitFragment : Fragment() {
 
         var server = retrofit.create(ApiService::class.java)
 
-        var id = ""
-        var category = 1
-        var title = "";
-        var size = 10
-        val boardModel1 = board(category,"","",size)
-        val boardModel2 = board(category + 1,"","",size)
-        val boardModel3 = board(category + 2,"","",size)
+        var id = 15 // TODO: 초기에 null값 <-- ??????
+//        var category = 2
+        var size = 10 // TODO: 테스트 할 때는 값을 크게
+        val boardModel1 = board(0,id,size)
+        val boardModel2 = board(1,id,size)
+        val boardModel3 = board(2,id,size)
 
         //cate1번 가져오기
         server.searchBoard(boardModel1).enqueue(object :Callback<BoardResponse>{
             override fun onResponse(call: Call<BoardResponse>, response: Response<BoardResponse>) {
-                Log.d("로그","${response.body().toString()}")
+                Log.d("글1 확인 로그","${response.body().toString()}")
             }
 
             override fun onFailure(call: Call<BoardResponse>, t: Throwable) {
@@ -82,7 +87,7 @@ class RecruitFragment : Fragment() {
         //cate2번 가져오기
         server.searchBoard(boardModel2).enqueue(object :Callback<BoardResponse>{
             override fun onResponse(call: Call<BoardResponse>, response: Response<BoardResponse>) {
-                Log.d("로그","${response.body().toString()}")
+                Log.d("글2 확인 로그","${response.body().toString()}")
             }
 
             override fun onFailure(call: Call<BoardResponse>, t: Throwable) {
@@ -94,17 +99,15 @@ class RecruitFragment : Fragment() {
         //cate3번 가져오기
         server.searchBoard(boardModel3).enqueue(object :Callback<BoardResponse>{
             override fun onResponse(call: Call<BoardResponse>, response: Response<BoardResponse>) {
-                Log.d("로그","${response.body().toString()}")
+                Log.d("글3 확인 로그","${response.body().toString()}")
+                Log.d("글3 확인 로그","${response.body()?.boardList?.get(2)}")
             }
 
             override fun onFailure(call: Call<BoardResponse>, t: Throwable) {
                 Log.d("서버 연동", "글 가져오기 실패")
                 Log.d("서버 연동","${t.message}")
             }
-
         })
-
-
 
         val itemList = arrayListOf(
             recuit(basicImg,"이상해씨","이상해씨-이상해풀-이상해꽃"),

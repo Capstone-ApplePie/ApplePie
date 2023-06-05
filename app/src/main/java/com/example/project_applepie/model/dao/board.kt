@@ -1,8 +1,7 @@
 package com.example.project_applepie.model.dao
 
 data class board(
-    var category: Int?,
-    var id : String?,
-    var title : String?,
+    var categoryId: Int?,
+    var id : Int?,
     var size: Int?
 )

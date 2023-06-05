@@ -12,10 +12,16 @@ import com.example.project_applepie.recyclerview.profileRecycle.viewTeamAdapter
 
 class ViewTeamActivity : AppCompatActivity() {
     private lateinit var viewTeamAdapter: viewTeamAdapter
+    private lateinit var vtBinding : ActivityViewTeamBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val vtBinding = ActivityViewTeamBinding.inflate(layoutInflater)
+        vtBinding = ActivityViewTeamBinding.inflate(layoutInflater)
         setContentView(vtBinding.root)
+
+        // 상단 뒤로가기 버튼 활성화
+        vtBinding.topAppBar.setNavigationOnClickListener { _ ->
+            finish()
+        }
 
         val basicImg = R.drawable.charmander
         val itemList = arrayListOf(

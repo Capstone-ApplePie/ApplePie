@@ -64,7 +64,7 @@ interface ApiService {
 
     // 11 . 전체 open 프로필 조회
     @POST(API.SEARCH_ALL_OPEN_PROFILE)
-    fun searchOpenProfile(@Body searchAllProfiles: searchAllProfiles) : Call<SearchVolunteerResponse>
+    fun searchOpenProfile(@Body searchAllProfiles: searchAllProfiles) : Call<SearchVolDetailResponse>
 
     // 12. 전체 글 조회 <= 서버 수정 필요
     @POST(API.SEARCH_BOARD)

@@ -104,9 +104,8 @@ class SignIn : AppCompatActivity() {
                 }
             })
         // }
-            startActivity(intent)
-            finish()
-
+//            startActivity(intent)
+//            finish()
         }
 
         // 회원가입 문구 클릭 시
