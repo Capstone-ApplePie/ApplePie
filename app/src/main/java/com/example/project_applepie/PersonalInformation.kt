@@ -22,6 +22,7 @@ import com.example.project_applepie.recyclerview.profileRecycle.MyTeamAdapter
 import com.example.project_applepie.recyclerview.profileRecycle.myBoardAdapter
 import com.example.project_applepie.retrofit.ApiService
 import com.example.project_applepie.retrofit.domain.BasicResponse
+import com.example.project_applepie.retrofit.domain.SearchUserAllDataResponse
 import com.example.project_applepie.sharedpref.SharedPref
 import com.example.project_applepie.utils.Url
 import retrofit2.Call
@@ -94,6 +95,23 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         // 사용자의 uid & pid를 가져옴
         val uid = SharedPref.getUserId(homeActivity)
         val pid = SharedPref.getPid(homeActivity)
+
+        //사용자 정보 모두 가져오기
+        server.userAllData(uid).enqueue(object : Callback<SearchUserAllDataResponse>{
+            override fun onResponse(call: Call<SearchUserAllDataResponse>, response: Response<SearchUserAllDataResponse>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("로그 - 성공","${response.body().toString()}")
+                }else{
+                    Log.d("로그 - 실패","${response.body().toString()}")
+                }
+            }
+
+            override fun onFailure(call: Call<SearchUserAllDataResponse>, t: Throwable) {
+                Log.d("로그 - 서버실패","${t.localizedMessage}")
+            }
+
+        })
 
         // 사용자 세부정보 조회하기
         server.searchProfileDetails(pid).enqueue(object : Callback<personalDetailProfile>{

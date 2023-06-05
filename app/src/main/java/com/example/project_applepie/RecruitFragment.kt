@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentRecruitBinding
+import com.example.project_applepie.model.boardList
 import com.example.project_applepie.model.dao.board
 import com.example.project_applepie.model.recuit
 import com.example.project_applepie.recyclerview.homeRecycle.SearchItemRecyclerViewAdapter
@@ -17,6 +18,13 @@ import com.example.project_applepie.retrofit.ApiService
 import com.example.project_applepie.retrofit.domain.BoardResponse
 import com.example.project_applepie.utils.Url
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import org.json.JSONArray
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -65,17 +73,29 @@ class RecruitFragment : Fragment() {
 
         var server = retrofit.create(ApiService::class.java)
 
-        var id = 15 // TODO: 초기에 null값 <-- ??????
+        var id = 2 // TODO: 초기에 null값 <-- ??????
 //        var category = 2
-        var size = 10 // TODO: 테스트 할 때는 값을 크게
-        val boardModel1 = board(0,id,size)
-        val boardModel2 = board(1,id,size)
-        val boardModel3 = board(2,id,size)
+        var size = 5 // TODO: 테스트 할 때는 값을 크게
+        val boardModel1 = board(0,size)
+        val boardModel2 = board(1,size)
+        val boardModel3 = board(2,size)
 
         //cate1번 가져오기
         server.searchBoard(boardModel1).enqueue(object :Callback<BoardResponse>{
             override fun onResponse(call: Call<BoardResponse>, response: Response<BoardResponse>) {
                 Log.d("글1 확인 로그","${response.body().toString()}")
+                var arrList:ArrayList<boardList> = ArrayList()
+                var JsonResponse = response.body()
+
+                val jsonArr= response.body()?.boardList
+                Log.d("로그-jsonArray","${jsonArr}")
+                var size = jsonArr!!.size()
+                var gson = Gson()
+                for(i in 0..size){
+
+                }
+
+                Log.d("로그-jsonArray","${arrList}")
             }
 
             override fun onFailure(call: Call<BoardResponse>, t: Throwable) {
@@ -88,6 +108,35 @@ class RecruitFragment : Fragment() {
         server.searchBoard(boardModel2).enqueue(object :Callback<BoardResponse>{
             override fun onResponse(call: Call<BoardResponse>, response: Response<BoardResponse>) {
                 Log.d("글2 확인 로그","${response.body().toString()}")
+                var arrList:ArrayList<boardList> = ArrayList()
+
+                val jsonArr= response.body()?.boardList
+                var size = jsonArr!!.size()
+                for(i in 0..size-1){
+                    val jsonObj = jsonArr.get(i).asJsonObject
+                    /*Log.d("로그 test","$jsonObj")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("id")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("title")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("content")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("viewCount")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("categoryId")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("file")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("deadline")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("status")}")*/
+                    try{
+                        var board = boardList(jsonObj.getAsJsonPrimitive("id").asInt,
+                            jsonObj.getAsJsonPrimitive("title").asString, jsonObj.getAsJsonPrimitive("content").asString ,
+                            jsonObj.getAsJsonPrimitive("viewCount").asInt,jsonObj.getAsJsonPrimitive("categoryId").asString,
+                            jsonObj.getAsJsonPrimitive("file").asString,jsonObj.getAsJsonPrimitive("deadline").asString,
+                            jsonObj.getAsJsonPrimitive("status").asBoolean)
+                        arrList.add(board)
+                        //Log.d("로그 test","${board}")
+                    }catch (e : RuntimeException){
+                        //Log.d("로그 test","${jsonObj.getAsJsonPrimitive("id")}")
+                        //Log.d("에러 로그","${e.message}")
+                    }
+                }
+                //Log.d("로그 test","$arrList")
             }
 
             override fun onFailure(call: Call<BoardResponse>, t: Throwable) {
@@ -100,7 +149,36 @@ class RecruitFragment : Fragment() {
         server.searchBoard(boardModel3).enqueue(object :Callback<BoardResponse>{
             override fun onResponse(call: Call<BoardResponse>, response: Response<BoardResponse>) {
                 Log.d("글3 확인 로그","${response.body().toString()}")
-                Log.d("글3 확인 로그","${response.body()?.boardList?.get(2)}")
+                //Log.d("글3 확인 로그","${response.body()?.boardList?.get(2)}")
+                var arrList:ArrayList<boardList> = ArrayList()
+
+                val jsonArr= response.body()?.boardList
+                var size = jsonArr!!.size()
+                for(i in 0..size-1){
+                    val jsonObj = jsonArr.get(i).asJsonObject
+                    /*Log.d("로그 test","$jsonObj")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("id")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("title")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("content")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("viewCount")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("categoryId")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("file")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("deadline")}")
+                    Log.d("로그 test","${jsonObj.getAsJsonPrimitive("status")}")*/
+                    try{
+                        var board = boardList(jsonObj.getAsJsonPrimitive("id").asInt,
+                            jsonObj.getAsJsonPrimitive("title").asString, jsonObj.getAsJsonPrimitive("content").asString ,
+                            jsonObj.getAsJsonPrimitive("viewCount").asInt,jsonObj.getAsJsonPrimitive("categoryId").asString,
+                            jsonObj.getAsJsonPrimitive("file").asString,jsonObj.getAsJsonPrimitive("deadline").asString,
+                            jsonObj.getAsJsonPrimitive("status").asBoolean)
+                        arrList.add(board)
+                        Log.d("로그3 test","${board}")
+                    }catch (e : RuntimeException){
+                        Log.d("로그3 test","${jsonObj.getAsJsonPrimitive("id")}")
+                        Log.d("에러 로그","${e.message}")
+                    }
+                }
+                Log.d("로그3 arr test","$arrList")
             }
 
             override fun onFailure(call: Call<BoardResponse>, t: Throwable) {
@@ -226,3 +304,4 @@ class RecruitFragment : Fragment() {
             }
     }
 }
+

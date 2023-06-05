@@ -23,7 +23,7 @@ object API{
     const val APPLY_VOLUNTEER : String = "/teams/volunteer"
     const val SEARCH_VOLUNTEER : String = "/teams/volunteer/{uid}"
     const val CANCEL_VOLUNTEER : String = "/teams/volunteer"
-    const val SEARCH_USER_ALL_DATA : String = "/teams/{id}"
+    const val SEARCH_USER_ALL_DATA : String = "/teams/{uid}"
     const val CANCEL_TEAM : String = "/teams"
     const val SEARCH_VOLUNTEER_MEMBER = "/teams/member/all"
     const val DELETE_TEAM = "/teams"

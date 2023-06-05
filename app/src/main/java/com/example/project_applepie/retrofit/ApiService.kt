@@ -117,7 +117,7 @@ interface ApiService {
 
     // 22. 유저 팀 모두 조회 및 유저 생성 글 조회
     @GET(API.SEARCH_USER_ALL_DATA)
-    fun userAllData(@Body userAllData: UserAllData) : Call<BasicResponse>
+    fun userAllData(@Path("uid") uid : String) : Call<SearchUserAllDataResponse>
 
     //24. 팀 취소
     @DELETE(API.CANCEL_TEAM)
