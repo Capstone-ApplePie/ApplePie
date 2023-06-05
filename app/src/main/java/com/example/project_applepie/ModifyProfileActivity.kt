@@ -29,6 +29,11 @@ class ModifyProfileActivity : AppCompatActivity() {
         val mpBinding = ActivityModifyProfileBinding.inflate(layoutInflater)
         setContentView(mpBinding.root)
 
+        // 상단 뒤로가기 버튼 활성화
+        mpBinding.topAppBar.setNavigationOnClickListener { _ ->
+            finish()
+        }
+
         // 사용자 uid & pid 가져오기
         val uid = SharedPref.getUserId(this@ModifyProfileActivity)
 //        val uid = "10006"

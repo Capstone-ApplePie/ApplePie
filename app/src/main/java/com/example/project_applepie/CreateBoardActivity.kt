@@ -112,6 +112,11 @@ class CreateBoardActivity : AppCompatActivity() {
         ctBinding = ActivityCreateBoardBinding.inflate(layoutInflater)
         setContentView(ctBinding.root)
 
+        // 상단 뒤로가기 버튼 활성화
+        ctBinding.topAppBar.setNavigationOnClickListener { _ ->
+            finish()
+        }
+
         val getTeamCount = resources.getStringArray(R.array.create_team_count)
         val arrayAdapter = ArrayAdapter(this,R.layout.dropdown_item, getTeamCount)
         ctBinding.actvBackend.setAdapter(arrayAdapter)

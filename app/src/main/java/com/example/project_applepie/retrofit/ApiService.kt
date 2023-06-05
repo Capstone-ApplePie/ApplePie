@@ -50,6 +50,13 @@ interface ApiService {
         @Body uInput : js_CDP?
     ) : Call<personalDetailProfile>
 
+    // 9. 개인 세부 프로필 수정
+    @PUT(API.MODIFY_DETAIL_PROFILE)
+    fun modifyDetailProfile(
+        @Path("pid") pid : String,
+        @Body uInput : js_CDP?
+    ) : Call<personalDetailProfile>
+
     // 10. open 여부 수정
     @PUT(API.MODIFY_OPEN_PROFILE)
     fun modiOpenProfile(@Path("pid") pid : String,

@@ -183,6 +183,11 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             activity?.finish()
         }
 
+        // 자기소개 수정 버튼 클릭 시 modify_detail_profile 화면으로 이동
+        recruitBinding.btnModifyIntro.setOnClickListener {
+
+        }
+
 
         // OPEN 여부 판단 (SWITCH)
         recruitBinding.swOutsourcing.setOnCheckedChangeListener { buttonView, idChecked ->

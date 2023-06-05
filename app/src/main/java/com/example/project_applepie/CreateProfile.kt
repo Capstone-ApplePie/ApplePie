@@ -37,6 +37,11 @@ class CreateProfile : AppCompatActivity() {
         cpBinding = ActivityCreateProfileBinding.inflate(layoutInflater)
         setContentView(cpBinding.root)
 
+        // 상단 뒤로가기 버튼 활성화
+        cpBinding.topAppBar.setNavigationOnClickListener { _ ->
+            finish()
+        }
+
         // 입력란 확인 코드 TODO : 예외처리 다 할 것!
         regionFocusListener()
         collegeFocusListener()

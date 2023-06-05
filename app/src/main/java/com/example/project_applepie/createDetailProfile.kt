@@ -25,6 +25,11 @@ class createDetailProfile : AppCompatActivity() {
         cdpBinding = ActivityCreateDetailProfileBinding.inflate(layoutInflater)
         setContentView(cdpBinding.root)
 
+        // 상단 뒤로가기 버튼 활성화
+        cdpBinding.topAppBar.setNavigationOnClickListener { _ ->
+            finish()
+        }
+
         // 사용자 입력 정보 받아올 변수 모음 (소개, 희망 분야, 여부, 과목, 여부, 경력, 여부)
         var uSelfIntroOut : String = "-" // outTitle
         var uIntroOut : String = "-" // outWriteSelfIntro
@@ -70,66 +75,65 @@ class createDetailProfile : AppCompatActivity() {
         cdpBinding.topAppBar.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId){
                 R.id.item_skip -> {
-//                    val pid = SharedPref.getPid(this@createDetailProfile)
+                    val pid = SharedPref.getPid(this@createDetailProfile)
 //                    val pid = "2"
-//                    val url = Url.BASE_URL
-//                    val retrofit = Retrofit.Builder()
-//                        .baseUrl(url)
-//                        .addConverterFactory(GsonConverterFactory.create())
-//                        .build()
-//
-//                    var server = retrofit.create(ApiService::class.java)
-//
-//                    val cdpModelOut = js_CDP(0, uSelfIntroOut, uIntroOut, uCareer, uOpenOut)
-//                    val cdpModelLes = js_CDP(1, uSelfIntroLes, uIntroLes, uSubject, uOpenLes)
-//                    val cdpModelPro = js_CDP(2, uSelfIntroPro, uIntroPro, uPart, uOpenPro)
-//
-//                    var checkOne = 0
-//                    var checkTwo = 0
-//                    var checkThr = 0
-//
-//                    server.createDetailProfile(pid, cdpModelOut).enqueue(object : Callback<personalDetailProfile>{
-//                        override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>
-//                        ) {
-//                            checkOne = 1
-//                        }
-//
-//                        override fun onFailure(call: Call<personalDetailProfile>, t: Throwable) {
-//                            checkOne = 0
-//                            Log.d("건너뛰기 1번 오류", "$t")
-//                        }
-//                    })
-//                    server.createDetailProfile(pid, cdpModelLes).enqueue(object : Callback<personalDetailProfile>{
-//                        override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>
-//                        ) {
-//                            checkTwo = 1
-//                        }
-//
-//                        override fun onFailure(call: Call<personalDetailProfile>, t: Throwable) {
-//                            checkTwo = 0
-//                            Log.d("건너뛰기 2번 오류", "$t")
-//                        }
-//                    })
-//                    server.createDetailProfile(pid, cdpModelPro).enqueue(object : Callback<personalDetailProfile>{
-//                        override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>
-//                        ) {
-//                            checkThr = 1
-//                        }
-//
-//                        override fun onFailure(call: Call<personalDetailProfile>, t: Throwable) {
-//                            checkThr = 0
-//                            Log.d("건너뛰기 3번 오류", "$t")
-//                        }
-//                    })
-//
-//                    if(checkOne == 1 && checkTwo == 1 && checkThr == 1){
-//                        val intent = Intent(this@createDetailProfile, SignIn::class.java)
-//                        startActivity(intent)
-//                        finish()
-//                    } else {
-//                        Log.d("건너뛰기 최종 오류", "오류 발생")
-//                    }
+                    val url = Url.BASE_URL
+                    val retrofit = Retrofit.Builder()
+                        .baseUrl(url)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
 
+                    var server = retrofit.create(ApiService::class.java)
+
+                    val cdpModelOut = js_CDP(0, uSelfIntroOut, uIntroOut, uCareer, uOpenOut)
+                    val cdpModelLes = js_CDP(1, uSelfIntroLes, uIntroLes, uSubject, uOpenLes)
+                    val cdpModelPro = js_CDP(2, uSelfIntroPro, uIntroPro, uPart, uOpenPro)
+
+                    var checkOne = 0
+                    var checkTwo = 0
+                    var checkThr = 0
+
+                    server.createDetailProfile(pid, cdpModelOut).enqueue(object : Callback<personalDetailProfile>{
+                        override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>
+                        ) {
+                            checkOne = 1
+                        }
+
+                        override fun onFailure(call: Call<personalDetailProfile>, t: Throwable) {
+                            checkOne = 0
+                            Log.d("건너뛰기 1번 오류", "$t")
+                        }
+                    })
+                    server.createDetailProfile(pid, cdpModelLes).enqueue(object : Callback<personalDetailProfile>{
+                        override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>
+                        ) {
+                            checkTwo = 1
+                        }
+
+                        override fun onFailure(call: Call<personalDetailProfile>, t: Throwable) {
+                            checkTwo = 0
+                            Log.d("건너뛰기 2번 오류", "$t")
+                        }
+                    })
+                    server.createDetailProfile(pid, cdpModelPro).enqueue(object : Callback<personalDetailProfile>{
+                        override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>
+                        ) {
+                            checkThr = 1
+                        }
+
+                        override fun onFailure(call: Call<personalDetailProfile>, t: Throwable) {
+                            checkThr = 0
+                            Log.d("건너뛰기 3번 오류", "$t")
+                        }
+                    })
+
+                    if(checkOne == 1 && checkTwo == 1 && checkThr == 1){
+                        val intent = Intent(this@createDetailProfile, SignIn::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Log.d("건너뛰기 최종 오류", "오류 발생")
+                    }
 
                     true
                 }
@@ -141,7 +145,6 @@ class createDetailProfile : AppCompatActivity() {
             // 전송을 위해 pid 가져오기
 //            val pid = SharedPref.getPid(this@createDetailProfile)
             val pid = "1"
-            Log.d("OPEN 여부 확인하는 중", "$uOpenOut, $uOpenLes, $uOpenPro")
 
             // Retrofit 연동
             val url = Url.BASE_URL
@@ -170,9 +173,9 @@ class createDetailProfile : AppCompatActivity() {
             val cdpModelLes = js_CDP(1, uSelfIntroLes, uIntroLes, uSubject, uOpenLes)
             val cdpModelPro = js_CDP(2, uSelfIntroPro, uIntroPro, uPart, uOpenPro)
 
-//            var checkOne = 0
-//            var checkTwo = 0
-//            var checkThr = 0
+            var checkOne = 0
+            var checkTwo = 0
+            var checkThr = 0
 
             server.createDetailProfile(pid, cdpModelOut).enqueue(object : Callback<personalDetailProfile>{
                 override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>
@@ -181,9 +184,10 @@ class createDetailProfile : AppCompatActivity() {
                     if(findError?.status == 200){
                         Log.d("세부 프로필 성공?", "${response.body()?.status}")
                         Log.d("세부 프로필 성공?", "${response.body()?.message}")
-                        val intent = Intent(this@createDetailProfile, SignIn::class.java)
-                        startActivity(intent)
-                        finish()
+                        checkOne = 1
+//                        val intent = Intent(this@createDetailProfile, SignIn::class.java)
+//                        startActivity(intent)
+//                        finish()
                     }
                     else {
                         Log.d("문제찾아 삼만리", "${findError?.status} + ${findError?.message}")
@@ -203,9 +207,10 @@ class createDetailProfile : AppCompatActivity() {
                     if(findError?.status == 200){
                         Log.d("세부 프로필 성공?", "${response.body()?.status}")
                         Log.d("세부 프로필 성공?", "${response.body()?.message}")
-                        val intent = Intent(this@createDetailProfile, SignIn::class.java)
-                        startActivity(intent)
-                        finish()
+                        checkTwo = 1
+//                        val intent = Intent(this@createDetailProfile, SignIn::class.java)
+//                        startActivity(intent)
+//                        finish()
                     }
                     else {
                         Log.d("문제찾아 삼만리", "${findError?.status} + ${findError?.message}")
@@ -225,9 +230,10 @@ class createDetailProfile : AppCompatActivity() {
                     if(findError?.status == 200){
                         Log.d("세부 프로필 성공?", "${response.body()?.status}")
                         Log.d("세부 프로필 성공?", "${response.body()?.message}")
-                        val intent = Intent(this@createDetailProfile, SignIn::class.java)
-                        startActivity(intent)
-                        finish()
+                        checkThr = 3
+//                        val intent = Intent(this@createDetailProfile, SignIn::class.java)
+//                        startActivity(intent)
+//                        finish()
                     }
                     else {
                         Log.d("문제찾아 삼만리", "${findError?.status} + ${findError?.message}")
@@ -240,10 +246,11 @@ class createDetailProfile : AppCompatActivity() {
                 }
             })
 
-            val intent = Intent(this@createDetailProfile, SignIn::class.java)
-            startActivity(intent)
-            finish()
-
+            if(checkOne == 1 && checkTwo == 1 && checkThr == 1){
+                val intent = Intent(this@createDetailProfile, SignIn::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
 
     }
