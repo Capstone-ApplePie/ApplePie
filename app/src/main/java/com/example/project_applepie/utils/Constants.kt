@@ -15,7 +15,7 @@ object API{
     const val SEARCH_ALL_OPEN_PROFILE : String = "/profiles" // 전체 open 프로필 조회
     const val SEARCH_BOARD : String = "/boards/all" // 전체 글 조회
     const val WRITE_BOARD : String = "/boards" // 글 작성
-    const val SEARCH_BOARD_DETAIL : String = "/boards/{id}" // 단일 글 조회 (팀 정보 포함)
+    const val SEARCH_BOARD_DETAIL : String = "/boards/{bid}" // 단일 글 조회 (팀 정보 포함)
     const val DELETE_BOARD : String = "/boards/{id}" // 글 삭제
     const val MODIFY_BOARD : String = "/boards/{id}" // 글 수정
     const val SEARCH_USER_TEAM : String = "/teams/board/{uid}" // 유저 팀 검색

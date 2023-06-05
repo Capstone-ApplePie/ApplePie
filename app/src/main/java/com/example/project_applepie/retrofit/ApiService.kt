@@ -82,7 +82,7 @@ interface ApiService {
     // 14. 단일 글 조회(참조 : https://zerodice0.tistory.com/198)
     @GET(API.SEARCH_BOARD_DETAIL)
     @Streaming
-    fun searchBoardDetails() :Call<BoardDetailResponse>
+    fun searchBoardDetails(@Path("bid") bid : Int) :Call<BoardDetailResponse>
 
     // 15. 글 삭제
     @DELETE(API.DELETE_BOARD)

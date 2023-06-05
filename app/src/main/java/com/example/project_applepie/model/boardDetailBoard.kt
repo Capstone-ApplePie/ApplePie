@@ -10,7 +10,6 @@ data class boardDetailBoard(
     var view_count : Int,
     var category : String,
     var deadline : String,
-    var files : List<MultipartBody.Part>,
-    var status : Boolean
-    //set
+    var files : List<String>
+    //var status : Boolean
 )

@@ -153,7 +153,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             myBoard(basicImg3,"이상해씨")
         )
 
-        searchAdapter = SearchItemRecyclerViewAdapter()
+        searchAdapter = SearchItemRecyclerViewAdapter(view.context)
         searchAdapter.submitList(itemList)
         recruitBinding.rvRecruit.layoutManager = LinearLayoutManager(view.context,
             LinearLayoutManager.VERTICAL,false)
