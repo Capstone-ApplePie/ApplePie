@@ -224,10 +224,10 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             recuit(basicImg3,"이상해씨","이상해씨-이상해풀-이상해꽃")
         )*/
         val itemList2 = arrayListOf(
-            myTeam(basicImg,"이상해씨"),
-            myTeam(basicImg3,"파이리"),
-            myTeam(basicImg2,"꼬부기"),
-            myTeam(basicImg3,"이상해씨")
+            myTeam(basicImg,"이상해씨",17),
+            myTeam(basicImg3,"파이리",17),
+            myTeam(basicImg2,"꼬부기",17),
+            myTeam(basicImg3,"이상해씨",17)
         )
         val itemList3 = arrayListOf(
             myBoard(basicImg,"이상해씨"),
