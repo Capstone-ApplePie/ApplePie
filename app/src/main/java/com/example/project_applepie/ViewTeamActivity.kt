@@ -42,9 +42,10 @@ class ViewTeamActivity : AppCompatActivity() {
 
         var uid = SharedPref.getUserId(this)
 
+
         val basicImg = R.drawable.charmander
         val itemList = arrayListOf(
-            AuerProfile(basicImg,"이상해씨","프론트","간략하게 작성")
+            AuerProfile(basicImg,"이상해씨","프론트","간략하게 작성", "1")
         )
 
         viewTeamAdapter = viewTeamAdapter()

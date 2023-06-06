@@ -5,4 +5,5 @@ import java.io.Serializable
 data class AuerProfile(val img : Int,
                        val uname: String,
                        val tag : String,
-                       val udetail : String) : Serializable
+                       val udetail : String,
+                       val oid : String) : Serializable

@@ -27,7 +27,6 @@ var createProfile_collegePass = 1
 var createProfile_emailPass = 1
 var createProfile_gradePass = 1
 
-
 class CreateProfile : AppCompatActivity() {
 
     private lateinit var cpBinding: ActivityCreateProfileBinding

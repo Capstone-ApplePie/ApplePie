@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentPersonalInformationBinding
 import com.example.project_applepie.model.dao.inquireUserInfo
 import com.example.project_applepie.model.dao.modiOpen
+import com.example.project_applepie.model.dao.personalAll
 import com.example.project_applepie.model.dao.personalDetailProfile
 import com.example.project_applepie.model.myBoard
 import com.example.project_applepie.model.myTeam
@@ -110,21 +111,19 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             override fun onFailure(call: Call<SearchUserAllDataResponse>, t: Throwable) {
                 Log.d("로그 - 서버실패","${t.localizedMessage}")
             }
-
         })
 
-        // 사용자 세부정보 조회하기
-        server.searchProfileDetails(pid).enqueue(object : Callback<personalDetailProfile>{
-            override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>) {
-                Log.d("로그","${response.body().toString()}")
-
-                Log.d("세부 프로필 확인", "${response.body()?.toString()}")
-                Log.d("uid 확인", "$uid")
-                Log.d("pid 확인", "$pid")
+        server.searchAllFile(uid).enqueue(object : Callback<personalAll>{
+            override fun onResponse(call: Call<personalAll>, response: Response<personalAll>) {
+                if(response.isSuccessful){
+                    Log.d("전체 조회 로그 - 성공","${response.body().toString()}")
+                }else{
+                    Log.d("전체 로그 - 실패","${response.body().toString()}")
+                }
             }
 
-            override fun onFailure(call: Call<personalDetailProfile>, t: Throwable) {
-                Log.d("실패 로그","$t")
+            override fun onFailure(call: Call<personalAll>, t: Throwable) {
+                Log.d("전체 조회 로그 - 서버실패","${t.localizedMessage}, $uid")
             }
         })
 

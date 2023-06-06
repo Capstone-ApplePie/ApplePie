@@ -11,11 +11,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentTeamBinding
 import com.example.project_applepie.model.AuerProfile
-import com.example.project_applepie.model.dao.searchAllProfiles
+import com.example.project_applepie.model.dao.SearchAllProfiles
+import com.example.project_applepie.model.profileData
 import com.example.project_applepie.recyclerview.homeRecycle.SearchTeamRecyclerViewAdapter
 import com.example.project_applepie.retrofit.ApiService
 import com.example.project_applepie.retrofit.domain.SearchVolDetailResponse
-import com.example.project_applepie.retrofit.domain.SearchVolunteerResponse
 import com.example.project_applepie.sharedpref.SharedPref
 import com.example.project_applepie.utils.Url
 import com.google.android.material.tabs.TabLayout
@@ -59,6 +59,10 @@ class TeamFragment : Fragment() {
         }
     }
 
+    val itemList1 : ArrayList<AuerProfile> = ArrayList()
+    val itemList2 : ArrayList<AuerProfile> = ArrayList()
+    val itemList3 : ArrayList<AuerProfile> = ArrayList()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -75,51 +79,158 @@ class TeamFragment : Fragment() {
         val uid = SharedPref.getUserId(homeActivity)
         val pid = SharedPref.getPid(homeActivity)
 
-        var size = 5 // TODO: 테스트 할 때는 값을 크게
-        var category = 0
+        // 프로필 정보를 담을 List
+        var arrList1:ArrayList<profileData> = ArrayList()
+        var arrList2:ArrayList<profileData> = ArrayList()
+        var arrList3:ArrayList<profileData> = ArrayList()
+
+        var size = 15 // TODO: 테스트 할 때는 값을 크게
+//        var category = 0
         var id = 10 // TODO: 초기에 null값
 
-        val sopModel = searchAllProfiles(size, category, id)
-        server.searchOpenProfile(sopModel).enqueue(object : Callback<SearchVolDetailResponse>{
+        val sopModel1 = SearchAllProfiles(size, 0, id) // 외주
+        val sopModel2 = SearchAllProfiles(size, 1, id) // 과외 과제
+        val sopModel3 = SearchAllProfiles(size, 2, id) // 공모전
+
+        // 외주 프로필 가져오기
+        server.searchOpenProfile(sopModel1).enqueue(object : Callback<SearchVolDetailResponse>{
             override fun onFailure(call: Call<SearchVolDetailResponse>, t: Throwable) {
-                Log.d("TF 정보 가져오기 실패", "$t")
+                Log.d("TF 외주 정보 가져오기 실패", "$t")
             }
 
             override fun onResponse(call: Call<SearchVolDetailResponse>, response: Response<SearchVolDetailResponse>) {
-                val userData = response.body()?.data
-                Log.d("TF 정보 가져오기 성공?", "${response.body()?.data} + ${response.body()?.message} + $userData")
+//                val userData = response.body()?.data
+
+                val jsonArrOut = response.body()?.data
+                var jsSize = jsonArrOut!!.size()
+                Log.d("TF 외주 정보 가져오기 성공?", "${response.body()?.data} + ${response.body()?.message} + $jsonArrOut")
+
+                for(i in 0 until jsSize){
+                    val jsonObj = jsonArrOut.get(i).asJsonObject
+                    try{
+                        var proData = profileData(jsonObj.getAsJsonPrimitive("oid").asString,
+                            jsonObj.getAsJsonPrimitive("introduce").asString, jsonObj.getAsJsonPrimitive("category").asString )
+                        arrList1.add(proData)
+                    }catch (e : RuntimeException){
+                        Log.d("외주 프로필 에러 로그","${e.message}")
+                    }
+                }
+
+                Log.d("외주 프로필 data1 test","$jsonArrOut")
+                Log.d("외주 프로필 arr1 test","$arrList1")
+                for(i in arrList1){
+                    val basicImg = R.drawable.user
+                    val re = AuerProfile(basicImg, "user",i.category,i.introduce, i.oid) // TODO: AuerProfile에 oid 추가
+//                    Log.d("로그-배열_1_re","$re")
+                    itemList1.add(re)
+                }
             }
         })
 
-        val basicImg = R.drawable.charmander
-        val itemList = arrayListOf(
-            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
-            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
-            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
-            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","가나다라마바사아"),
-            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
-            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
-            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
-            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
-            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다")
-        )
+        // 과외 과제 프로필 가져오기
+        server.searchOpenProfile(sopModel2).enqueue(object : Callback<SearchVolDetailResponse>{
+            override fun onFailure(call: Call<SearchVolDetailResponse>, t: Throwable) {
+                Log.d("TF 과외 과제 정보 가져오기 실패", "$t")
+            }
+
+            override fun onResponse(call: Call<SearchVolDetailResponse>, response: Response<SearchVolDetailResponse>) {
+//                val userData = response.body()?.data
+
+                val jsonArrLes = response.body()?.data
+                var jsSize = jsonArrLes!!.size()
+                Log.d("TF 과외 과제 정보 가져오기 성공?", "${response.body()?.data} + ${response.body()?.message} + $jsonArrLes")
+
+                for(i in 0 until jsSize){
+                    val jsonObj = jsonArrLes.get(i).asJsonObject
+                    try{
+                        var proData = profileData(jsonObj.getAsJsonPrimitive("oid").asString,
+                            jsonObj.getAsJsonPrimitive("introduce").asString, jsonObj.getAsJsonPrimitive("category").asString )
+                        arrList2.add(proData)
+                    }catch (e : RuntimeException){
+                        Log.d("과외 과제 프로필 에러 로그","${e.message}")
+                    }
+                }
+
+                Log.d("과외 과제 프로필 arr2 test","$arrList2")
+                for(i in arrList2){
+                    val basicImg = R.drawable.bulbasaur
+                    val re = AuerProfile(basicImg, "user",i.category,i.introduce, i.oid)
+//                    Log.d("로그-배열_2_re","$re")
+                    itemList2.add(re)
+                }
+            }
+        })
+
+        // 공모전 프로필 가져오기
+        server.searchOpenProfile(sopModel3).enqueue(object : Callback<SearchVolDetailResponse>{
+            override fun onFailure(call: Call<SearchVolDetailResponse>, t: Throwable) {
+                Log.d("TF 공모전 정보 가져오기 실패", "$t")
+            }
+
+            override fun onResponse(call: Call<SearchVolDetailResponse>, response: Response<SearchVolDetailResponse>) {
+//                val userData = response.body()?.data
+
+                val jsonArrPro = response.body()?.data
+                var jsSize = jsonArrPro!!.size()
+                Log.d("TF 공모전 정보 가져오기 성공?", "${response.body()?.data} + ${response.body()?.message} + $jsonArrPro")
+
+                for(i in 0 until jsSize){
+                    val jsonObj = jsonArrPro.get(i).asJsonObject
+                    try{
+                        var proData = profileData(jsonObj.getAsJsonPrimitive("oid").asString,
+                            jsonObj.getAsJsonPrimitive("introduce").asString, jsonObj.getAsJsonPrimitive("category").asString )
+                        arrList3.add(proData)
+                    }catch (e : RuntimeException){
+                        Log.d("외주 프로필 에러 로그","${e.message}")
+                    }
+                }
+
+                Log.d("공모전 프로필 arr3 test","$arrList3")
+                for(i in arrList3){
+                    val basicImg = R.drawable.charmander
+                    val re = AuerProfile(basicImg, "user",i.category,i.introduce, i.oid)
+//                    Log.d("로그-배열_3_re","$re")
+                    itemList3.add(re)
+                }
+            }
+        })
+
+        Log.d("생성 데이터 확인","$itemList1 + $itemList2 + $itemList3")
+
+//        val itemList = arrayListOf(
+//            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
+//            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
+//            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
+//            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","가나다라마바사아"),
+//            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
+//            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
+//            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
+//            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다"),
+//            AuerProfile(basicImg,"파이리","도롱뇽포켓몬","뜨거운 것을 좋아하는 성격이다")
+//        )
+
         searchAdapter = SearchTeamRecyclerViewAdapter()
-        searchAdapter.submitList(itemList)
+        searchAdapter.submitList(itemList1)
         teamBinding.rvTeam.layoutManager = LinearLayoutManager(view.context,
             LinearLayoutManager.VERTICAL,false)
         teamBinding.rvTeam.adapter = searchAdapter
 
         teamBinding.tabLayoutRecruit.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
+
+                Log.d("로그-배열_1","$itemList1")
+                Log.d("로그-배열_2","$itemList2")
+                Log.d("로그-배열_3","$itemList3")
+
                 when(tab?.position){
                     0 ->{
-                        bindAdpater(itemList,view.context)
+                        bindAdpater(itemList1,view.context)
                     }
                     1 ->{
-                        bindAdpater(itemList,view.context)
+                        bindAdpater(itemList2,view.context)
                     }
                     2 ->{
-                        bindAdpater(itemList,view.context)
+                        bindAdpater(itemList3,view.context)
                     }
                 }
             }

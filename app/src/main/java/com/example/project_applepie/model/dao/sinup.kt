@@ -9,7 +9,7 @@ data class sinup(
     var birth: String?,
     var gender: String?,
     var area: String,
-    var collegue: String,
+    var college: String,
     var grade: Float,
     var totalGrade: Float,
     var grader: String,

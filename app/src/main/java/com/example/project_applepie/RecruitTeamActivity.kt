@@ -18,9 +18,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class RecruitTeamActivity : AppCompatActivity() {
+
+    private lateinit var rtBinding: ActivityRecruitTeamBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val rtBinding = ActivityRecruitTeamBinding.inflate(layoutInflater)
+        rtBinding = ActivityRecruitTeamBinding.inflate(layoutInflater)
         setContentView(rtBinding.root)
 
         val intent = intent
@@ -44,7 +46,6 @@ class RecruitTeamActivity : AppCompatActivity() {
                     Log.d("로그 - 서버성공","deadline : $deadline")
                     rtBinding.tvDeadline.text = "모집마감 : ~ " + dead
                 }
-
             }
 
             override fun onFailure(call: Call<BoardDetailResponse>, t: Throwable) {

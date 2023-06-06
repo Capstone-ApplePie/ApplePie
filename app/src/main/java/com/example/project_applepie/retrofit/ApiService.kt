@@ -43,6 +43,10 @@ interface ApiService {
     @GET(API.SEARCH_DETAIL_PROFILE)
     fun searchProfileDetails(@Path("pid") pid : String):Call<personalDetailProfile>
 
+    // 28. 개인 프로필 전부 조회
+    @GET(API.GET_ALL_DATA)
+    fun searchAllFile(@Path("uid") uid : String):Call<personalAll>
+
     // 8. 개인 세부 프로필 생성
     @POST(API.CREATE_DETAIL_PROFILE)
     fun createDetailProfile(
@@ -64,7 +68,11 @@ interface ApiService {
 
     // 11 . 전체 open 프로필 조회
     @POST(API.SEARCH_ALL_OPEN_PROFILE)
-    fun searchOpenProfile(@Body searchAllProfiles: searchAllProfiles) : Call<SearchVolDetailResponse>
+    fun searchOpenProfile(@Body searchAllProfiles: SearchAllProfiles) : Call<SearchVolDetailResponse>
+
+    // ~~~. Open 프로필 1개 상세 조회
+    @POST(API.SEARCH_ONE_OPEN_PROFILE)
+    fun searchOneOpenProfile(@Body searchOneOpen: searchOneOpenPf) : Call<SearchOneOpen>
 
     // 12. 전체 글 조회 <= 서버 수정 필요
     @POST(API.SEARCH_BOARD)

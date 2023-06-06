@@ -83,7 +83,7 @@ tools:context=".ModifyProfileActivity">
             app:counterMaxLength="20">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/modColleague"
+                android:id="@+id/modCollege"
                 android:layout_width="match_parent"
                 android:hint="단국대학교"
                 android:layout_height="wrap_content"

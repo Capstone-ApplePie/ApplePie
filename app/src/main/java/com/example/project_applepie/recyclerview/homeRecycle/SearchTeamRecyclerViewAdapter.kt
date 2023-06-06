@@ -23,10 +23,10 @@ class SearchTeamRecyclerViewAdapter : RecyclerView.Adapter<SearchTeamViewHolder>
     }
 
     override fun onBindViewHolder(holder: SearchTeamViewHolder, position: Int) {
-        holder.userImg.setImageResource(searchList.get(position).img)
-        holder.userName.text = searchList.get(position).uname
-        holder.userTag.text = searchList.get(position).tag
-        holder.userDetail.text = searchList.get(position).udetail
+        holder.userImg.setImageResource(searchList[position].img)
+        holder.userName.text = searchList[position].uname
+        holder.userTag.text = searchList[position].tag
+        holder.userDetail.text = searchList[position].udetail
 
         if(position!=RecyclerView.NO_POSITION){
             holder.itemView.setOnClickListener {

@@ -1,7 +1,7 @@
 package com.example.project_applepie.model.dao
 
-data class searchAllProfiles(
+data class SearchAllProfiles(
     var size : Int,
-    var category: Int,
+    var categoryId: Int,
     var id : Int
 )

@@ -38,28 +38,12 @@ class ModifyProfileActivity : AppCompatActivity() {
         val uid = SharedPref.getUserId(this@ModifyProfileActivity)
 //        val uid = "10006"
 
-        // 사용자 정보 조회하기
+        // 서버 연동
         val url = Url.BASE_URL
         val retrofit = Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-        var server = retrofit.create(ApiService::class.java)
-
-        server.inquireUserInfo(uid).enqueue(object : Callback<inquireUserInfo> {
-            override fun onResponse(call: Call<inquireUserInfo>, response: Response<inquireUserInfo>
-            ) {
-                Log.d("로그","${response.body().toString()}")
-                var eamil = response.body()?.data?.get("email");
-                Log.d("로그","$eamil")
-                Log.d("uid 확인", "$uid")
-            }
-
-            override fun onFailure(call: Call<inquireUserInfo>, t: Throwable) {
-                Log.d("로그_서버연동 실패","${t.message}")
-            }
-        })
 
         // 사용자 지역
         var uArea : String = "KOREA"
@@ -67,13 +51,69 @@ class ModifyProfileActivity : AppCompatActivity() {
         // 사용자 출신 대학교
         var uCollege : String = "DKU"
 
+        var uGrader : String = "2학년"
         // 사용자가 대학교에서 받은 학점 (숫자로만 입력 받도록 수정 필요) <------------------------------------------------------------
         var uGrade : Float = 0f
         var uTotalGrade : Float = 4.5f
+        // 사용자가 사용하는 프로그램 언어 선택
+        var uLanguage : List<Int> = listOf()
+        var uFramework : String = "None"
+        // 사용자 깃허브 주소
+        var uGit : String = ""
+
+        var server = retrofit.create(ApiService::class.java)
+
+        // 사용자가 처음에 작성한 프로필 데이터 불러오기
+        server.inquireUserInfo(uid).enqueue(object : Callback<inquireUserInfo> {
+            override fun onResponse(call: Call<inquireUserInfo>, response: Response<inquireUserInfo>
+            ) {
+                Log.d("로그","${response.body().toString()}")
+//                var eamil = response.body()?.data?.get("email");
+                val area = response.body()?.data?.get("area").toString()
+                mpBinding.modArea.setText(area.replace("\"",""))
+
+                val college = response.body()?.data?.get("college").toString()
+                mpBinding.modCollege.setText(college.replace("\"",""))
+
+                val grade = response.body()?.data?.get("grade").toString().toFloat()
+                mpBinding.modMyScore.setText(grade.toString())
+
+                val totalGrade = response.body()?.data?.get("totalGrade").toString().toFloat()
+                mpBinding.modMaxScore.setText(totalGrade.toString())
+
+                val befGrader = response.body()?.data?.get("grader").toString()
+                var grader = befGrader.replace("\"","")
+                when (grader) {
+                    "1학년" -> {
+                        mpBinding.toggleButton.check(R.id.btn_grade1)
+                    }
+                    "2학년" -> {
+                        mpBinding.toggleButton.check(R.id.btn_grade2)
+                    }
+                    "3학년" -> {
+                        mpBinding.toggleButton.check(R.id.btn_grade3)
+                    }
+                    "4학년" -> {
+                        mpBinding.toggleButton.check(R.id.btn_grade4)
+                    }
+                }
+
+                // TODO: 언어/프레임워크 선택 해놓기...
+                val language = response.body()?.data?.get("devLanguage").toString()
+                Log.d("언어 확인", "$language")
+
+                val github = response.body()?.data?.get("github").toString()
+                mpBinding.modGithub.setText(github.replace("\"",""))
+            }
+
+            override fun onFailure(call: Call<inquireUserInfo>, t: Throwable) {
+                Log.d("로그_서버연동 실패","${t.message}")
+            }
+        })
 
         // 학년 선택 -> 기본값 : 2학년 (나중에 비우고 선택 안하면 넘어가지 않도록 수정 필요) <-------------------------------------------
-        var uGrader : String = "2학년"
-        mpBinding.toggleButton.check(R.id.btn_grade2)
+
+//        mpBinding.toggleButton.check(R.id.btn_grade2)
         mpBinding.btnGrade1.setOnClickListener {
             uGrader = "1학년"
         }
@@ -87,11 +127,6 @@ class ModifyProfileActivity : AppCompatActivity() {
             uGrader = "4학년"
         }
 
-        // 사용자 깃허브 주소
-        var uGit : String = ""
-
-        // 사용자가 사용하는 프로그램 언어 선택
-        var uLanguage : List<Int> = listOf()
         mpBinding.chLang.forEach { child ->
             (child as? Chip)?.setOnCheckedChangeListener{ _, _ ->
                 val ids = mpBinding.chLang.checkedChipIds
@@ -124,7 +159,6 @@ class ModifyProfileActivity : AppCompatActivity() {
         val arrayAdapter2 = ArrayAdapter(this,R.layout.dropdown_item, getFramework)
         mpBinding.acFramework.setAdapter(arrayAdapter2)
 
-        var uFramework : String = "None"
         mpBinding.acFramework.setOnItemClickListener { adapterView, view, position, id ->
             uFramework = getFramework[position].toString()
 //            Toast.makeText(this, "$uFramework", Toast.LENGTH_SHORT).show()
@@ -141,7 +175,7 @@ class ModifyProfileActivity : AppCompatActivity() {
             var server = retrofit.create(ApiService::class.java)
 
             uArea = mpBinding.modArea.text.toString()
-            uCollege = mpBinding.modColleague.text.toString()
+            uCollege = mpBinding.modCollege.text.toString()
             uGit = mpBinding.modGithub.text.toString()
             uGrade = mpBinding.modMyScore.text.toString().toFloat()
             uTotalGrade = mpBinding.modMaxScore.text.toString().toFloat()

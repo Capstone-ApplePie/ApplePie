@@ -66,7 +66,7 @@ class RecruitFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val basicImg = R.drawable.charmander
+//        val basicImg = R.drawable.charmander
 
         // Retrofit 연동
         val url = Url.BASE_URL
@@ -88,14 +88,14 @@ class RecruitFragment : Fragment() {
         val boardModel2 = board(1,size)
         val boardModel3 = board(2,size)
 
-        //cate1번 가져오기
+        //cate 0번(외주) 가져오기
         server.searchBoard(boardModel1).enqueue(object :Callback<BoardResponse>{
             override fun onResponse(call: Call<BoardResponse>, response: Response<BoardResponse>) {
                 Log.d("글1 확인 로그","${response.body().toString()}")
 
                 val jsonArr= response.body()?.boardList
                 var size = jsonArr!!.size()
-                for(i in 0..size-1){
+                for(i in 0 until size){
                     val jsonObj = jsonArr.get(i).asJsonObject
                     try{
                         var board = boardList(jsonObj.getAsJsonPrimitive("id").asInt,
@@ -105,7 +105,7 @@ class RecruitFragment : Fragment() {
                             jsonObj.getAsJsonPrimitive("status").asBoolean)
                         arrList1.add(board)
                     }catch (e : RuntimeException){
-                        Log.d("에러 로그","${e.message}")
+                        Log.d("글1 에러 로그","${e.message}")
                     }
                 }
                 Log.d("로그1 arr test","$arrList1")
@@ -129,7 +129,7 @@ class RecruitFragment : Fragment() {
 
                 val jsonArr= response.body()?.boardList
                 var size = jsonArr!!.size()
-                for(i in 0..size-1){
+                for(i in 0 until size){
                     val jsonObj = jsonArr.get(i).asJsonObject
                     try{
                         var board = boardList(jsonObj.getAsJsonPrimitive("id").asInt,
@@ -139,7 +139,7 @@ class RecruitFragment : Fragment() {
                             jsonObj.getAsJsonPrimitive("status").asBoolean)
                         arrList2.add(board)
                     }catch (e : RuntimeException){
-                        Log.d("에러 로그","${e.message}")
+                        Log.d("글2 에러 로그","${e.message}")
                     }
                 }
                 for(i in arrList2){
@@ -163,7 +163,7 @@ class RecruitFragment : Fragment() {
 
                 val jsonArr= response.body()?.boardList
                 var size = jsonArr!!.size()
-                for(i in 0..size-1){
+                for(i in 0 until size){
                     val jsonObj = jsonArr.get(i).asJsonObject
                     try{
                         var board = boardList(jsonObj.getAsJsonPrimitive("id").asInt,
@@ -173,7 +173,7 @@ class RecruitFragment : Fragment() {
                             jsonObj.getAsJsonPrimitive("status").asBoolean)
                         arrList3.add(board)
                     }catch (e : RuntimeException){
-                        Log.d("에러 로그","${e.message}")
+                        Log.d("글3 에러 로그","${e.message}")
                     }
                 }
                 for(i in arrList3){
@@ -188,15 +188,6 @@ class RecruitFragment : Fragment() {
                 Log.d("서버 연동","${t.message}")
             }
         })
-
-
-
-
-
-
-        Log.d("로그-배열_1","$itemList")
-        Log.d("로그-배열_2","$itemList2")
-        Log.d("로그-배열_3","$itemList3")
 
         /*val itemList = arrayListOf(
             recuit(basicImg,"이상해씨","이상해씨-이상해풀-이상해꽃"),
