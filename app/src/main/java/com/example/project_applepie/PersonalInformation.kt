@@ -11,9 +11,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentPersonalInformationBinding
+import com.example.project_applepie.model.boardList
 import com.example.project_applepie.model.dao.inquireUserInfo
 import com.example.project_applepie.model.dao.modiOpen
 import com.example.project_applepie.model.dao.personalDetailProfile
+import com.example.project_applepie.model.dao.userTeamData
 import com.example.project_applepie.model.myBoard
 import com.example.project_applepie.model.myTeam
 import com.example.project_applepie.model.recuit
@@ -96,17 +98,98 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         val uid = SharedPref.getUserId(homeActivity)
         val pid = SharedPref.getPid(homeActivity)
 
+        var boards : ArrayList<boardList> = ArrayList()
+        var complete : ArrayList<userTeamData> = ArrayList()
+        var incomplete : ArrayList<userTeamData> = ArrayList()
+        var applys : ArrayList<userTeamData> = ArrayList()
+        var lesson = false
+        var outsourcing = false
+        var project = false
+
         //사용자 정보 모두 가져오기
         server.userAllData(uid).enqueue(object : Callback<SearchUserAllDataResponse>{
             override fun onResponse(call: Call<SearchUserAllDataResponse>, response: Response<SearchUserAllDataResponse>
             ) {
                 if(response.isSuccessful){
                     Log.d("로그 - 성공","${response.body().toString()}")
-                }else{
-                    Log.d("로그 - 실패","${response.body().toString()}")
+                    val jsonBoard = response.body()?.boards
+                    for(i in 0..jsonBoard!!.size()-1){
+                        val jsonObj = jsonBoard.get(i).asJsonObject
+                        try{
+                            var board = boardList(jsonObj.getAsJsonPrimitive("id").asInt,
+                                jsonObj.getAsJsonPrimitive("title").asString, jsonObj.getAsJsonPrimitive("content").asString ,
+                                jsonObj.getAsJsonPrimitive("viewCount").asInt,jsonObj.getAsJsonPrimitive("categoryId").asString,
+                                jsonObj.getAsJsonPrimitive("file").asString,jsonObj.getAsJsonPrimitive("deadline").asString,
+                                jsonObj.getAsJsonPrimitive("status").asBoolean)
+                            boards.add(board)
+                        }catch (e : RuntimeException){
+                            Log.d("로그 - boards에러","${e.localizedMessage}")
+                        }
+                    }
+                    val jsonComplete = response.body()?.complete
+                    for(i in 0..jsonComplete!!.size()-1){
+                        val jsonObj = jsonComplete.get(i).asJsonObject
+                        try{
+                            val com = userTeamData(jsonObj.getAsJsonPrimitive("createAt").asString,
+                            jsonObj.getAsJsonPrimitive("updateAt").asString,jsonObj.getAsJsonPrimitive("status").asInt,
+                            jsonObj.getAsJsonPrimitive("id").asInt,jsonObj.getAsJsonPrimitive("teamName").asString,
+                            jsonObj.getAsJsonPrimitive("teamContent").asString,
+                            jsonObj.getAsJsonPrimitive("totalCount").asString.substring(1,jsonObj.getAsJsonPrimitive("totalCount").asString.lastIndex-1).split(","),
+                            jsonObj.getAsJsonPrimitive("count").asString.substring(1,jsonObj.getAsJsonPrimitive("count").asString.lastIndex-1).split(","),
+                            jsonObj.getAsJsonPrimitive("teamStatus").asString
+                            )
+                            complete.add(com)
+                        }catch (e : RuntimeException){
+                            Log.d("로그 - complete에러","${e.localizedMessage}")
+                        }
+                    }
+                    val jsonInComplete = response.body()?.incomplete
+                    for(i in 0..jsonInComplete!!.size()-1){
+                        val jsonObj = jsonInComplete.get(i).asJsonObject
+                        try{
+                            val incom = userTeamData(jsonObj.getAsJsonPrimitive("createAt").asString,
+                                jsonObj.getAsJsonPrimitive("updateAt").asString,jsonObj.getAsJsonPrimitive("status").asInt,
+                                jsonObj.getAsJsonPrimitive("id").asInt,jsonObj.getAsJsonPrimitive("teamName").asString,
+                                jsonObj.getAsJsonPrimitive("teamContent").asString,
+                                jsonObj.getAsJsonPrimitive("totalCount").asString.substring(1,jsonObj.getAsJsonPrimitive("totalCount").asString.lastIndex-1).split(","),
+                                jsonObj.getAsJsonPrimitive("count").asString.substring(1,jsonObj.getAsJsonPrimitive("count").asString.lastIndex-1).split(","),
+                                jsonObj.getAsJsonPrimitive("teamStatus").asString
+                            )
+                            incomplete.add(incom)
+                        }catch (e : RuntimeException){
+                            Log.d("로그 - incomplete에러","${e.localizedMessage}")
+                        }
+                    }
+                    val jsonApply = response.body()?.apply
+                    for(i in 0..jsonApply!!.size()-1){
+                        val jsonObj = jsonApply.get(i).asJsonObject
+                        try{
+                            val apply = userTeamData(jsonObj.getAsJsonPrimitive("createAt").asString,
+                                jsonObj.getAsJsonPrimitive("updateAt").asString,jsonObj.getAsJsonPrimitive("status").asInt,
+                                jsonObj.getAsJsonPrimitive("id").asInt,jsonObj.getAsJsonPrimitive("teamName").asString,
+                                jsonObj.getAsJsonPrimitive("teamContent").asString,
+                                jsonObj.getAsJsonPrimitive("totalCount").asString.substring(1,jsonObj.getAsJsonPrimitive("totalCount").asString.lastIndex-1).split(","),
+                                jsonObj.getAsJsonPrimitive("count").asString.substring(1,jsonObj.getAsJsonPrimitive("count").asString.lastIndex-1).split(","),
+                                jsonObj.getAsJsonPrimitive("teamStatus").asString
+                            )
+                            applys.add(apply)
+                        }catch (e : RuntimeException){
+                            Log.d("로그 - apply에러","${e.localizedMessage}")
+                        }
+                    }
+                    lesson = response.body()!!.lesson
+                    outsourcing = response.body()!!.outsourcing
+                    project = response.body()!!.project
+
+                    Log.d("로그 - boards","$boards")
+                    Log.d("로그 - complete","$complete")
+                    Log.d("로그 - incomplete","$incomplete")
+                    Log.d("로그 - applys","$applys")
+                    Log.d("로그 - lesson","$lesson")
+                    Log.d("로그 - outsourcing","$outsourcing")
+                    Log.d("로그 - project","$project")
                 }
             }
-
             override fun onFailure(call: Call<SearchUserAllDataResponse>, t: Throwable) {
                 Log.d("로그 - 서버실패","${t.localizedMessage}")
             }
