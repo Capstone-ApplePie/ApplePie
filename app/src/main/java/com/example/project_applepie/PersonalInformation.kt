@@ -12,10 +12,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.FragmentPersonalInformationBinding
 import com.example.project_applepie.model.boardList
-import com.example.project_applepie.model.dao.inquireUserInfo
 import com.example.project_applepie.model.dao.modiOpen
 import com.example.project_applepie.model.dao.personalAll
-import com.example.project_applepie.model.dao.personalDetailProfile
 import com.example.project_applepie.model.dao.userTeamData
 import com.example.project_applepie.model.myBoard
 import com.example.project_applepie.model.myTeam
@@ -103,6 +101,9 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         var complete : ArrayList<userTeamData> = ArrayList()
         var incomplete : ArrayList<userTeamData> = ArrayList()
         var applys : ArrayList<userTeamData> = ArrayList()
+
+        var uBoards : ArrayList<myBoard> = ArrayList()
+
         var lesson = false
         var outsourcing = false
         var project = false
@@ -114,7 +115,8 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                 if(response.isSuccessful){
                     Log.d("로그 - 성공","${response.body().toString()}")
                     val jsonBoard = response.body()?.boards
-                    for(i in 0..jsonBoard!!.size()-1){
+                    Log.d("로그123 - boards","$jsonBoard")
+                    for(i in 0 until jsonBoard!!.size()){
                         val jsonObj = jsonBoard.get(i).asJsonObject
                         try{
                             var board = boardList(jsonObj.getAsJsonPrimitive("id").asInt,
@@ -122,13 +124,16 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                                 jsonObj.getAsJsonPrimitive("viewCount").asInt,jsonObj.getAsJsonPrimitive("categoryId").asString,
                                 jsonObj.getAsJsonPrimitive("file").asString,jsonObj.getAsJsonPrimitive("deadline").asString,
                                 jsonObj.getAsJsonPrimitive("status").asBoolean)
+                            var userBoard = myBoard(jsonObj.getAsJsonPrimitive("file").asString,
+                                jsonObj.getAsJsonPrimitive("title").asString, jsonObj.getAsJsonPrimitive("id").asInt)
                             boards.add(board)
+                            uBoards.add(userBoard)
                         }catch (e : RuntimeException){
                             Log.d("로그 - boards에러","${e.localizedMessage}")
                         }
                     }
                     val jsonComplete = response.body()?.complete
-                    for(i in 0..jsonComplete!!.size()-1){
+                    for(i in 0 until jsonComplete!!.size()){
                         val jsonObj = jsonComplete.get(i).asJsonObject
                         try{
                             val com = userTeamData(jsonObj.getAsJsonPrimitive("createAt").asString,
@@ -145,7 +150,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                         }
                     }
                     val jsonInComplete = response.body()?.incomplete
-                    for(i in 0..jsonInComplete!!.size()-1){
+                    for(i in 0 until jsonInComplete!!.size()){
                         val jsonObj = jsonInComplete.get(i).asJsonObject
                         try{
                             val incom = userTeamData(jsonObj.getAsJsonPrimitive("createAt").asString,
@@ -162,7 +167,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                         }
                     }
                     val jsonApply = response.body()?.apply
-                    for(i in 0..jsonApply!!.size()-1){
+                    for(i in 0 until jsonApply!!.size()){
                         val jsonObj = jsonApply.get(i).asJsonObject
                         try{
                             val apply = userTeamData(jsonObj.getAsJsonPrimitive("createAt").asString,
@@ -183,18 +188,31 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     project = response.body()!!.project
 
                     Log.d("로그 - boards","$boards")
+                    Log.d("로그 - uBoards","${uBoards}")
                     Log.d("로그 - complete","$complete")
                     Log.d("로그 - incomplete","$incomplete")
                     Log.d("로그 - applys","$applys")
                     Log.d("로그 - lesson","$lesson")
                     Log.d("로그 - outsourcing","$outsourcing")
                     Log.d("로그 - project","$project")
+
+                    // 나의 글 확인
+                    boardAdapter = myBoardAdapter()
+                    boardAdapter.submitList(uBoards)
+                    Log.d("uBoards 확인", "$uBoards")
+                    recruitBinding.rvMyBoard.layoutManager = LinearLayoutManager(view.context,
+                        LinearLayoutManager.VERTICAL,false)
+                    recruitBinding.rvMyBoard.adapter = boardAdapter
                 }
             }
             override fun onFailure(call: Call<SearchUserAllDataResponse>, t: Throwable) {
                 Log.d("로그 - 서버실패","${t.localizedMessage}")
             }
         })
+
+//        for(i in 0 .. boards!!.size){
+//            server.
+//        }
 
         server.searchAllFile(uid).enqueue(object : Callback<personalAll>{
             override fun onResponse(call: Call<personalAll>, response: Response<personalAll>) {
@@ -210,9 +228,9 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             }
         })
 
-        val basicImg = R.drawable.charmander
-        val basicImg2 = R.drawable.bulbasaur
-        val basicImg3 = R.drawable.turtle
+        val basicImg = "https://firebasestorage.googleapis.com/v0/b/applepie-f030c.appspot.com/o/file36-1?alt=media"
+        val basicImg2 = "https://firebasestorage.googleapis.com/v0/b/applepie-f030c.appspot.com/o/file36-1?alt=media"
+        val basicImg3 = "https://firebasestorage.googleapis.com/v0/b/applepie-f030c.appspot.com/o/file36-1?alt=media"
 
         val itemList = ArrayList<recuit>()
 
@@ -228,12 +246,12 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             myTeam(basicImg2,"꼬부기",17),
             myTeam(basicImg3,"이상해씨",17)
         )
-        val itemList3 = arrayListOf(
-            myBoard(basicImg,"이상해씨"),
-            myBoard(basicImg3,"파이리"),
-            myBoard(basicImg2,"꼬부기"),
-            myBoard(basicImg3,"이상해씨")
-        )
+//        val itemList3 = arrayListOf(
+//            myBoard(basicImg,"이상해씨", 10000),
+//            myBoard(basicImg3,"파이리", 10000),
+//            myBoard(basicImg2,"꼬부기", 10000),
+//            myBoard(basicImg3,"이상해씨", 10000)
+//        )
 
         searchAdapter = SearchItemRecyclerViewAdapter(view.context)
         searchAdapter.submitList(itemList)
@@ -241,6 +259,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             LinearLayoutManager.VERTICAL,false)
         recruitBinding.rvRecruit.adapter = searchAdapter
 
+        // 나의 팀 Adapter
         teamAdapter = MyTeamAdapter()
         teamAdapter.submitList(itemList2)
         recruitBinding.rvCreateMyTeam.layoutManager = LinearLayoutManager(view.context,
@@ -255,6 +274,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             }
         })
 
+        // 내가 지원한 팀 Adapter
         valunteerAdapter = MyTeamAdapter()
         valunteerAdapter.submitList(itemList2)
         recruitBinding.rvApplyMyTeam.layoutManager = LinearLayoutManager(view.context,
@@ -269,12 +289,15 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             }
         })
 
+        // 나의 글 Adapter
         boardAdapter = myBoardAdapter()
-        boardAdapter.submitList(itemList3)
+        boardAdapter.submitList(uBoards)
+        Log.d("uBoards 확인", "$uBoards")
         recruitBinding.rvMyBoard.layoutManager = LinearLayoutManager(view.context,
             LinearLayoutManager.VERTICAL,false)
         recruitBinding.rvMyBoard.adapter = boardAdapter
 
+        // 프로필 수정 버튼 클릭 시
         recruitBinding.btnModifyProfile.setOnClickListener {
             val intent = Intent(context,ModifyProfileActivity::class.java)
             startActivity(intent)
@@ -331,7 +354,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             }
         }
 
-        recruitBinding.swAssignment.setOnCheckedChangeListener { buttonView, idChecked ->
+        recruitBinding.swAssignment.setOnCheckedChangeListener { _, idChecked ->
             if(!idChecked){
                 val modiOpen = modiOpen(1, 0)
                 server.modiOpenProfile(pid, modiOpen).enqueue(object : Callback<BasicResponse>{
@@ -416,7 +439,6 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                 }
             })
         }
-
     }
     override fun onDestroy() {
         super.onDestroy()

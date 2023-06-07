@@ -31,12 +31,12 @@ class SearchItemRecyclerViewAdapter(private val context : Context) : RecyclerVie
 
         holder.apply {
             Glide.with(context)
-                .load(searchList.get(position).thumbnail)
+                .load(searchList[position].thumbnail)
                 .into(photoImageView)
         }
 
-        holder.recruitTitle.text = searchList.get(position).title
-        holder.recuitDetail.text = searchList.get(position).detail
+        holder.recruitTitle.text = searchList[position].title
+        holder.recuitDetail.text = searchList[position].detail
 
         if(position < 3){
             holder.recuritBackground.setBackgroundColor(Color.parseColor("#FFE4C4"))

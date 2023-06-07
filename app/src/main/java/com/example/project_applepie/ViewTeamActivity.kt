@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_applepie.databinding.ActivityViewTeamBinding
 import com.example.project_applepie.model.AuerProfile
+import com.example.project_applepie.model.AuerProfile2
 import com.example.project_applepie.model.myTeam
 import com.example.project_applepie.model.recuit
 import com.example.project_applepie.recyclerview.profileRecycle.myVolunteerAdapter
@@ -43,12 +44,13 @@ class ViewTeamActivity : AppCompatActivity() {
         var uid = SharedPref.getUserId(this)
 
 
-        val basicImg = R.drawable.charmander
+//        val basicImg = R.drawable.charmander
         val itemList = arrayListOf(
-            AuerProfile(basicImg,"이상해씨","프론트","간략하게 작성", "1")
+            AuerProfile2("https://firebasestorage.googleapis.com/v0/b/applepie-f030c.appspot.com/o/file36-1?alt=media"
+                ,"이상해씨","프론트","간략하게 작성", 8)
         )
 
-        viewTeamAdapter = viewTeamAdapter()
+        viewTeamAdapter = viewTeamAdapter(this)
         viewTeamAdapter.submitList(itemList)
         vtBinding.rvRecruit.layoutManager = LinearLayoutManager(this,
             LinearLayoutManager.VERTICAL,false)

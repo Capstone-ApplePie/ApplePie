@@ -47,14 +47,14 @@ class RecruitFragment : Fragment() {
 
     // Fragment에서 SharedPreference를 쓸 수 있게 해주는 코드
     private lateinit var homeActivity : HomeActivity
-
-    val itemList : ArrayList<recuit> = ArrayList()
-    val itemList2 : ArrayList<recuit> = ArrayList()
-    val itemList3 : ArrayList<recuit> = ArrayList()
     override fun onAttach(context: Context) {
         super.onAttach(context)
         homeActivity = context as HomeActivity
     }
+
+    val itemList : ArrayList<recuit> = ArrayList()
+    val itemList2 : ArrayList<recuit> = ArrayList()
+    val itemList3 : ArrayList<recuit> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,9 +81,9 @@ class RecruitFragment : Fragment() {
         var arrList2:ArrayList<boardList> = ArrayList()
         var arrList3:ArrayList<boardList> = ArrayList()
 
-        var id = 2 // TODO: 초기에 null값 <-- ??????
+        var id = 15 // TODO: 초기에 null값 <-- ??????
 //        var category = 2
-        var size = 5 // TODO: 테스트 할 때는 값을 크게
+        var size = 20 // TODO: 테스트 할 때는 값을 크게
         val boardModel1 = board(0,size)
         val boardModel2 = board(1,size)
         val boardModel3 = board(2,size)
@@ -114,6 +114,11 @@ class RecruitFragment : Fragment() {
                     Log.d("로그-배열_1_re","$re")
                     itemList.add(re)
                 }
+
+                searchAdapter = SearchItemRecyclerViewAdapter(view.context)
+                searchAdapter.submitList(itemList)
+                recruitBinding.rvRecruit.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
+                recruitBinding.rvRecruit.adapter = searchAdapter
             }
 
             override fun onFailure(call: Call<BoardResponse>, t: Throwable) {
@@ -244,6 +249,7 @@ class RecruitFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+
         searchAdapter.setOnItemClickListener(object : SearchItemRecyclerViewAdapter.OnItemClickListener{
             override fun onItemClick(v: View, data: recuit, pos: Int) {
                 val intent = Intent(context, RecruitTeamActivity::class.java)

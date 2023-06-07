@@ -99,9 +99,10 @@ interface ApiService {
     // 16. 글 수정 <= 글 작성 작성 후 수정 필요
     @PUT(API.MODIFY_BOARD)
     fun modifyBoard(
-        @Path("bid") bid : String
-        //@Body
-    ) : Call<BasicResponse>
+        @Path("bid") bid : String,
+        @Part ("board") board : createBoard,
+        @Part image : MultipartBody.Part?
+    ) : Call<WriteBoardResponse>
 
     // 16 - 2 . 유저의 팀 검색
     @GET(API.SEARCH_USER_TEAM)

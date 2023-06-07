@@ -124,6 +124,12 @@ class TeamFragment : Fragment() {
 //                    Log.d("로그-배열_1_re","$re")
                     itemList1.add(re)
                 }
+
+                searchAdapter = SearchTeamRecyclerViewAdapter()
+                searchAdapter.submitList(itemList1)
+                teamBinding.rvTeam.layoutManager = LinearLayoutManager(view.context,
+                    LinearLayoutManager.VERTICAL,false)
+                teamBinding.rvTeam.adapter = searchAdapter
             }
         })
 
@@ -217,11 +223,6 @@ class TeamFragment : Fragment() {
 
         teamBinding.tabLayoutRecruit.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
-
-                Log.d("로그-배열_1","$itemList1")
-                Log.d("로그-배열_2","$itemList2")
-                Log.d("로그-배열_3","$itemList3")
-
                 when(tab?.position){
                     0 ->{
                         bindAdpater(itemList1,view.context)

@@ -24,6 +24,8 @@ import com.example.project_applepie.model.dao.createBoard
 import com.example.project_applepie.model.dao.createTeam
 import com.example.project_applepie.model.dao.js_createBoard
 import com.example.project_applepie.retrofit.ApiService
+import com.example.project_applepie.retrofit.domain.BasicResponse
+import com.example.project_applepie.retrofit.domain.BoardDetailResponse
 import com.example.project_applepie.retrofit.domain.WriteBoardResponse
 import com.example.project_applepie.sharedpref.SharedPref
 import com.example.project_applepie.utils.Url
@@ -112,9 +114,32 @@ class CreateBoardActivity : AppCompatActivity() {
         ctBinding = ActivityCreateBoardBinding.inflate(layoutInflater)
         setContentView(ctBinding.root)
 
+        // Retrofit 연동
+        val url = Url.BASE_URL
+        val retrofit = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        var server = retrofit.create(ApiService::class.java)
+
         // 상단 뒤로가기 버튼 활성화
         ctBinding.topAppBar.setNavigationOnClickListener { _ ->
             finish()
+        }
+
+        val boardId = intent.getStringExtra("bid")
+        if(boardId != null){
+            server.searchBoardDetails(boardId.toInt()).enqueue(object : Callback<BoardDetailResponse>{
+                override fun onResponse(call: Call<BoardDetailResponse>, response: Response<BoardDetailResponse>
+                ) {
+                    Log.d("단일 글 가져오기 성공", "${response.body()}")
+                }
+
+                override fun onFailure(call: Call<BoardDetailResponse>, t: Throwable) {
+                    Log.d("단일 글 가져오기 실패", "$t")
+                }
+            })
         }
 
         val getTeamCount = resources.getStringArray(R.array.create_team_count)
@@ -219,15 +244,15 @@ class CreateBoardActivity : AppCompatActivity() {
         }
 
         // 사용자 설정 (순서대로) -> 백 / 프론트 / 디자이너 / 기획 / 웹개발
-        ctBinding.actvBackend.setOnItemClickListener{ adapterView, view, position, id ->
+        ctBinding.actvBackend.setOnItemClickListener{ _, _, position, _ ->
             uBackend = position }
-        ctBinding.actvFrontend.setOnItemClickListener { adapterView, view, position, id ->
+        ctBinding.actvFrontend.setOnItemClickListener { _, _, position, _ ->
             uFrontend = position }
-        ctBinding.actvDesigner.setOnItemClickListener { adapterView, view, position, id ->
+        ctBinding.actvDesigner.setOnItemClickListener { _, _, position, _ ->
             uDesigner = position }
-        ctBinding.actvPm.setOnItemClickListener { adapterView, view, position, id ->
+        ctBinding.actvPm.setOnItemClickListener { _, _, position, _ ->
             uPm = position }
-        ctBinding.actvWebDeveloper.setOnItemClickListener { adapterView, view, position, id ->
+        ctBinding.actvWebDeveloper.setOnItemClickListener { _, _, position, _ ->
             uWebDev = position }
 
 
@@ -244,15 +269,6 @@ class CreateBoardActivity : AppCompatActivity() {
 
         // 글 작성 버튼 클릭
         ctBinding.creating.setOnClickListener {
-            // Retrofit 연동
-            val url = Url.BASE_URL
-            val retrofit = Retrofit.Builder()
-                .baseUrl(url)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-            var server = retrofit.create(ApiService::class.java)
-
             val uTitle : String = ctBinding.title.text.toString()
             uContent = ctBinding.writeText.text.toString()
 
@@ -264,33 +280,52 @@ class CreateBoardActivity : AppCompatActivity() {
 //            val jsBody = jsObject.toRequestBody("application/json".toMediaTypeOrNull())
 
 //            val createBoardModel = js_createBoard(body, jsBody)
-            val BoardData  = createBoard("10000",uTitle,uContent,uCategory, uDeadline)
+            val BoardData  = createBoard(uid,uTitle,uContent,uCategory, uDeadline)
 
-            server.writeBoard(BoardData, body).enqueue(object : Callback<WriteBoardResponse>{
-                override fun onFailure(call: Call<WriteBoardResponse>, t: Throwable) {
-                    Log.d("글 작성 실패", "${t.message}")
-                    Log.d("왜 안될까", "$BoardData + $body")
-                }
+            if(boardId == null){
+                server.writeBoard(BoardData, body).enqueue(object : Callback<WriteBoardResponse>{
+                    override fun onFailure(call: Call<WriteBoardResponse>, t: Throwable) {
+                        Log.d("글 작성 실패", "${t.message}")
+                    }
 
-                override fun onResponse(
-                    call: Call<WriteBoardResponse>,
-                    response: Response<WriteBoardResponse>
-                ) {
-                    Log.d("글 작성 성공", "$body, $uid, $uTitle, $uContent, $uCategory, $uDeadline, $BoardData")
-                    Log.d("코드 확인", "${response.body().toString()}")
-                    var nickname = response.body()?.board?.get("nickname")
-                    var files : String = response.body()?.board?.get("files").toString()
-                    files = files.substring(2,files.length-2);
-                    Log.d("로그","닉네임 : $files")
-                    Toast.makeText(this@CreateBoardActivity, "글 생성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@CreateBoardActivity, HomeActivity::class.java)
-                    Glide.with(this@CreateBoardActivity)
-                        .load(files)
-                        .into(ctBinding.imgLoad)
-                    startActivity(intent)
-                    finish()
-                }
-            })
+                    override fun onResponse(call: Call<WriteBoardResponse>, response: Response<WriteBoardResponse>) {
+                        Log.d("글 작성 성공", "$body, $uid, $uTitle, $uContent, $uCategory, $uDeadline, $BoardData")
+                        Log.d("코드 확인", "${response.body().toString()}")
+                        var nickname = response.body()?.board?.get("nickname")
+                        var files : String = response.body()?.board?.get("files").toString()
+                        files = files.substring(2,files.length-2);
+                        Log.d("로그","닉네임 : $files")
+                        Toast.makeText(this@CreateBoardActivity, "글 생성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@CreateBoardActivity, HomeActivity::class.java)
+                        Glide.with(this@CreateBoardActivity)
+                            .load(files)
+                            .into(ctBinding.imgLoad)
+                        startActivity(intent)
+                        finish()
+                    }
+                })
+            }
+            else {
+                server.modifyBoard(boardId, BoardData, body).enqueue(object : Callback<WriteBoardResponse>{
+                    override fun onResponse(call: Call<WriteBoardResponse>, response: Response<WriteBoardResponse>) {
+                        Log.d("글 수정 성공", "$body, $uid, $uTitle, $uContent, $uCategory, $uDeadline, $BoardData")
+                        var files : String = response.body()?.board?.get("files").toString()
+                        files = files.substring(2,files.length-2);
+                        Log.d("로그","닉네임 : $files")
+                        Toast.makeText(this@CreateBoardActivity, "글 수정이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@CreateBoardActivity, HomeActivity::class.java)
+                        Glide.with(this@CreateBoardActivity)
+                            .load(files)
+                            .into(ctBinding.imgLoad)
+                        startActivity(intent)
+                        finish()
+                    }
+
+                    override fun onFailure(call: Call<WriteBoardResponse>, t: Throwable) {
+                        Log.d("글 수정 실패", "${t.message}")
+                    }
+                })
+            }
         }
     }
 }

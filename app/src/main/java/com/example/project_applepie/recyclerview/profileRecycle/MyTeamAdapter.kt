@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.project_applepie.R
 import com.example.project_applepie.model.myTeam
+
 
 class MyTeamAdapter : RecyclerView.Adapter<MyTeamHolder>(){
 
@@ -25,8 +27,8 @@ class MyTeamAdapter : RecyclerView.Adapter<MyTeamHolder>(){
     }
 
     override fun onBindViewHolder(holder: MyTeamHolder, position: Int) {
-        holder.teamImg.setImageResource(searchList.get(position).thumbnail)
-        holder.teamTitle.text = searchList.get(position).title
+        holder.teamImg.load(searchList[position].thumbnail)
+        holder.teamTitle.text = searchList[position].title
 
         holder.teamDelete.setOnClickListener {
             Log.d("로그","삭제")
