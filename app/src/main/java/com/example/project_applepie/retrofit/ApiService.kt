@@ -140,7 +140,7 @@ interface ApiService {
 
     // 25. 팀원 선택
     @POST(API.PICK_MEMBER)
-    fun pickMember(@Body pickMember: pickMember) : Call<pickMember>
+    fun pickMember(@Body pickMember: pickMember) : Call<BasicResponse>
 
     // 26. 팀 삭제
     @DELETE(API.DELETE_TEAM)
