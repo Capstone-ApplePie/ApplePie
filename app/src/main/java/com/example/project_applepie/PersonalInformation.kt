@@ -20,6 +20,7 @@ import com.example.project_applepie.model.myTeam
 import com.example.project_applepie.model.recuit
 import com.example.project_applepie.recyclerview.homeRecycle.SearchItemRecyclerViewAdapter
 import com.example.project_applepie.recyclerview.profileRecycle.MyTeamAdapter
+import com.example.project_applepie.recyclerview.profileRecycle.MyTeamAdapter2
 import com.example.project_applepie.recyclerview.profileRecycle.myBoardAdapter
 import com.example.project_applepie.retrofit.ApiService
 import com.example.project_applepie.retrofit.domain.BasicResponse
@@ -49,7 +50,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 
     private lateinit var searchAdapter : SearchItemRecyclerViewAdapter
     private lateinit var teamAdapter : MyTeamAdapter
-    private lateinit var valunteerAdapter: MyTeamAdapter
+    private lateinit var valunteerAdapter: MyTeamAdapter2
     private lateinit var boardAdapter : myBoardAdapter
     private var _recruitBinding : FragmentPersonalInformationBinding? = null
     private val recruitBinding get() = _recruitBinding!!
@@ -97,6 +98,9 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         val uid = SharedPref.getUserId(homeActivity)
         val pid = SharedPref.getPid(homeActivity)
 
+        Log.d("로그 - uid","$uid")
+        Log.d("로그 - pid","$pid")
+
         var boards : ArrayList<boardList> = ArrayList()
         var complete : ArrayList<userTeamData> = ArrayList()
         var incomplete : ArrayList<userTeamData> = ArrayList()
@@ -116,7 +120,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     Log.d("로그 - 성공","${response.body().toString()}")
                     val jsonBoard = response.body()?.boards
                     Log.d("로그123 - boards","$jsonBoard")
-                    for(i in 0 until jsonBoard!!.size()){
+                    for(i in 0 .. jsonBoard!!.size()-1){
                         val jsonObj = jsonBoard.get(i).asJsonObject
                         try{
                             var board = boardList(jsonObj.getAsJsonPrimitive("id").asInt,
@@ -260,7 +264,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         recruitBinding.rvRecruit.adapter = searchAdapter
 
         // 나의 팀 Adapter
-        teamAdapter = MyTeamAdapter()
+        teamAdapter = MyTeamAdapter(view.context)
         teamAdapter.submitList(itemList2)
         recruitBinding.rvCreateMyTeam.layoutManager = LinearLayoutManager(view.context,
         LinearLayoutManager.VERTICAL,false)
@@ -275,19 +279,12 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         })
 
         // 내가 지원한 팀 Adapter
-        valunteerAdapter = MyTeamAdapter()
+        valunteerAdapter = MyTeamAdapter2(view.context)
         valunteerAdapter.submitList(itemList2)
         recruitBinding.rvApplyMyTeam.layoutManager = LinearLayoutManager(view.context,
             LinearLayoutManager.VERTICAL,false)
         recruitBinding.rvApplyMyTeam.adapter = valunteerAdapter
 
-        valunteerAdapter.setOnItemClickListener(object : MyTeamAdapter.OnItemClickListener{
-            override fun onItemClick(v: View, data: myTeam, pos: Int) {
-                val intent = Intent(context, ViewTeamActivity::class.java)
-                intent.putExtra("data",data)
-                startActivity(intent)
-            }
-        })
 
         // 나의 글 Adapter
         boardAdapter = myBoardAdapter()

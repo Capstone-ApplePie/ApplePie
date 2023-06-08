@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.project_applepie.R
-import com.example.project_applepie.model.dao.cancelTeam
 import com.example.project_applepie.model.dao.cancelVolunteer
 import com.example.project_applepie.model.myTeam
 import com.example.project_applepie.retrofit.ApiService
@@ -22,7 +21,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class MyTeamAdapter(private val context : Context) : RecyclerView.Adapter<MyTeamHolder>(){
+class MyTeamAdapter2(private val context : Context) : RecyclerView.Adapter<MyTeamHolder>(){
 
     private var searchList = ArrayList<myTeam>()
 
@@ -51,23 +50,22 @@ class MyTeamAdapter(private val context : Context) : RecyclerView.Adapter<MyTeam
             .build()
 
         var server = retrofit.create(ApiService::class.java)
-        val req = cancelTeam(searchList[position].id,Integer.parseInt(uid))
+        val req = cancelVolunteer(searchList[position].id,Integer.parseInt(uid))
 
         holder.teamDelete.setOnClickListener {
-            server.cancelTeam(req).enqueue(object : Callback<BasicResponse>{
-                override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>
-                ) {
+            server.cancelVolunteer(req).enqueue(object : Callback<BasicResponse>{
+                override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                     if(response.isSuccessful){
-                        Log.d("로그 - 팀 모집 취소","${response.body().toString()}")
+                        Log.d("로그 - 팀지원 취소","${response.body().toString()}")
                     }
                 }
+
                 override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                     Log.d("로그 - 서버에러","${t.localizedMessage}")
                 }
 
             })
         }
-
 
         if(position!=RecyclerView.NO_POSITION){
             holder.itemView.setOnClickListener {
