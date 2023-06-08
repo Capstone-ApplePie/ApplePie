@@ -9,5 +9,5 @@ data class BoardDetailResponse(
     var code : String,
     var message :String,
     var board : JsonObject,
-    var team : String
+    var team : JsonObject
 )

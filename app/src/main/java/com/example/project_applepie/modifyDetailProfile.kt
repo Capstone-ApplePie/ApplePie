@@ -129,20 +129,20 @@ class modifyDetailProfile : AppCompatActivity() {
         })
 
         // 사용자 입력 정보 받아올 변수 모음 (소개, 희망 분야, 여부, 과목, 여부, 경력, 여부)
-        var uSelfIntroOut : String = "-" // outTitle
-        var uIntroOut : String = "-" // outWriteSelfIntro
-        var uCareer : String = "-" // outWriteCareer
-        var uOpenOut : Int = 0
+        var uSelfIntroOut = "-" // outTitle
+        var uIntroOut = "-" // outWriteSelfIntro
+        var uCareer  = "-" // outWriteCareer
+        var uOpenOut = 0
 
-        var uSelfIntroLes : String = "-"
-        var uIntroLes : String = "-"
-        var uSubject : String ="-"
-        var uOpenLes : Int = 0
+        var uSelfIntroLes = "-"
+        var uIntroLes = "-"
+        var uSubject ="-"
+        var uOpenLes = 0
 
-        var uSelfIntroPro : String = "-"
-        var uIntroPro : String = "-"
-        var uPart : String = "-"
-        var uOpenPro : Int = 0
+        var uSelfIntroPro = "-"
+        var uIntroPro = "-"
+        var uPart = "-"
+        var uOpenPro = 0
 
         // 공개 여부
         mdpBinding.swOutsourcing.setOnCheckedChangeListener{ _, b ->

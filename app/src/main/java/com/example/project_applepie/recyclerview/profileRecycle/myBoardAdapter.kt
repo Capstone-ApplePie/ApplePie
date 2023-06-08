@@ -63,7 +63,7 @@ class myBoardAdapter : RecyclerView.Adapter<myBoardHoler>() {
             server.deleteBoard(boardId, userId).enqueue(object : Callback<BasicResponse>{
                 override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>
                 ) {
-                    searchList.removeAt(fragPos)
+//                    searchList.removeAt(fragPos)
                     Log.d("성공 로그","${response.body()} + $boardId + $uId")
                 }
 

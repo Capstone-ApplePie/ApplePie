@@ -17,8 +17,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
 import com.example.project_applepie.databinding.ActivityCreateBoardBinding
+import com.example.project_applepie.model.dao.CreateTeam
 import com.example.project_applepie.model.dao.createBoard
-import com.example.project_applepie.model.dao.createTeam
 import com.example.project_applepie.model.teamRole
 import com.example.project_applepie.retrofit.ApiService
 import com.example.project_applepie.retrofit.domain.BasicResponse
@@ -290,11 +290,16 @@ class CreateBoardActivity : AppCompatActivity() {
                         val bid = response.body()?.board?.get("id").toString().toInt()
                         val teamName = ctBinding.teamTitle.text.toString()
 
-                        val teamRole : ArrayList<teamRole> = ArrayList()
-                        var tR = teamRole(uPm, uDesigner, uWebDev, uFrontend, uBackend)
-                        teamRole.add(tR)
+//                        val teamRole1 : ArrayList<teamRole> = ArrayList()
+//                        var tR = teamRole(uPm, uDesigner, uWebDev, uFrontend, uBackend)
+//                        teamRole1.add(tR)
 
-                        Log.d("팀 역할 확인", "$teamRole")
+                        val teamRole1 : ArrayList<Int> = ArrayList()
+                        teamRole1.add(uPm)
+                        teamRole1.add(uDesigner)
+                        teamRole1.add(uWebDev)
+                        teamRole1.add(uFrontend)
+                        teamRole1.add(uBackend)
 
                         var files : String = response.body()?.board?.get("files").toString()
                         files = files.substring(2,files.length-2);
@@ -305,7 +310,7 @@ class CreateBoardActivity : AppCompatActivity() {
                             .load(files)
                             .into(ctBinding.imgLoad)
 
-                        val teamData = createTeam(bid, teamName, uContent, teamRole, uRole)
+                        val teamData = CreateTeam(bid, teamName, uContent, teamRole1, uRole)
                         Log.d("teamData 확인", "$teamData")
 
                         server.createTeam(uid, teamData).enqueue(object : Callback<BasicResponse>{
@@ -347,6 +352,7 @@ class CreateBoardActivity : AppCompatActivity() {
 
 
         }
+
     }
 
     // 날짜 버튼 클릭

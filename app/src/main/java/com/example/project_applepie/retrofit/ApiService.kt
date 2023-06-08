@@ -117,11 +117,11 @@ interface ApiService {
     @POST(API.CREATE_TEAM)
     fun createTeam(
         @Path("uid") uid : String,
-        @Body createTeam: createTeam) : Call<BasicResponse>
+        @Body createTeam: CreateTeam) : Call<BasicResponse>
 
     // 18. 팀 수정
     @PUT(API.CREATE_TEAM)
-    fun modifyTeam(@Body createTeam: createTeam) : Call<BasicResponse>
+    fun modifyTeam(@Body createTeam: CreateTeam) : Call<BasicResponse>
 
     // 20. 팀원으로 지원
     @POST(API.APPLY_VOLUNTEER)
