@@ -125,7 +125,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                                 jsonObj.getAsJsonPrimitive("file").asString,jsonObj.getAsJsonPrimitive("deadline").asString,
                                 jsonObj.getAsJsonPrimitive("status").asBoolean)
                             var userBoard = myBoard(jsonObj.getAsJsonPrimitive("file").asString,
-                                jsonObj.getAsJsonPrimitive("title").asString, jsonObj.getAsJsonPrimitive("id").asInt)
+                                jsonObj.getAsJsonPrimitive("title").asString, jsonObj.getAsJsonPrimitive("id").asInt, uid)
                             boards.add(board)
                             uBoards.add(userBoard)
                         }catch (e : RuntimeException){
@@ -188,7 +188,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     project = response.body()!!.project
 
                     Log.d("로그 - boards","$boards")
-                    Log.d("로그 - uBoards","${uBoards}")
+                    Log.d("로그 - uBoards","$uBoards")
                     Log.d("로그 - complete","$complete")
                     Log.d("로그 - incomplete","$incomplete")
                     Log.d("로그 - applys","$applys")

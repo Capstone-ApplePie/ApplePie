@@ -20,7 +20,7 @@ object API{
     const val DELETE_BOARD : String = "/boards/{bid}" // 글 삭제
     const val MODIFY_BOARD : String = "/boards/{bid}" // 글 수정
     const val SEARCH_USER_TEAM : String = "/teams/board/{uid}" // 유저 팀 검색
-    const val CREATE_TEAM : String = "/teams"
+    const val CREATE_TEAM : String = "/teams/{uid}"
     const val APPLY_VOLUNTEER : String = "/teams/volunteer"
     const val SEARCH_VOLUNTEER : String = "/teams/volunteer/{uid}"
     const val CANCEL_VOLUNTEER : String = "/teams/volunteer"

@@ -93,10 +93,15 @@ interface ApiService {
     fun searchBoardDetails(@Path("bid") bid : Int) :Call<BoardDetailResponse>
 
     // 15. 글 삭제
-    @DELETE(API.DELETE_BOARD)
-    fun deleteBoard(@Path("bid") bid : String) : Call<BasicResponse>
+//    @DELETE(API.DELETE_BOARD)
+    @Headers("Content-Type: application/json")
+    @HTTP(method = "DELETE", path = "/boards/{bid}", hasBody = true)
+    fun deleteBoard(@Path("bid") bid : String, @Body userId: userIden) : Call<BasicResponse>
+//    fun deleteBoard(@Path("bid") bid : String, @Query("userId") userId: String) : Call<BasicResponse>
+
 
     // 16. 글 수정 <= 글 작성 작성 후 수정 필요
+    @Multipart
     @PUT(API.MODIFY_BOARD)
     fun modifyBoard(
         @Path("bid") bid : String,
@@ -110,7 +115,9 @@ interface ApiService {
 
     // 17. 팀 생성
     @POST(API.CREATE_TEAM)
-    fun createTeam(@Body createTeam: createTeam) : Call<BasicResponse>
+    fun createTeam(
+        @Path("uid") uid : String,
+        @Body createTeam: createTeam) : Call<BasicResponse>
 
     // 18. 팀 수정
     @PUT(API.CREATE_TEAM)

@@ -10,7 +10,6 @@ import com.example.project_applepie.model.*
 import com.example.project_applepie.model.dao.pickMember
 import com.example.project_applepie.model.dao.searchTeamMember
 import com.example.project_applepie.model.dao.searchVolunteer
-import com.example.project_applepie.recyclerview.profileRecycle.MyTeamAdapter
 import com.example.project_applepie.recyclerview.profileRecycle.myVolunteerAdapter
 import com.example.project_applepie.recyclerview.profileRecycle.viewTeamAdapter
 import com.example.project_applepie.retrofit.ApiService

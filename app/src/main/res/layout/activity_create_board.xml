@@ -32,10 +32,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="팀 모집명"
+                android:text="팀 모집 제목"
                 android:textSize="16sp"
                 android:textColor="@color/black"
                 android:layout_marginStart="12dp"
@@ -60,9 +61,37 @@
                     android:maxLines="1"
                     android:maxLength="20"
                     />
-
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="팀명"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_ct_teamTitle"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:counterEnabled="true"
+                app:counterMaxLength="20">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/teamTitle"
+                    android:layout_width="match_parent"
+                    android:hint="최대 20자까지 입력해주세요"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:maxLength="20"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -160,6 +189,33 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
             </com.google.android.material.divider.MaterialDivider>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="나의 역할"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="12dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/userRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="16dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                <AutoCompleteTextView
+                    android:id="@+id/actv_userRole"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="none"
+                    tools:text="기획자" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

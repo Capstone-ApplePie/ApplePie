@@ -5,25 +5,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.project_applepie.App
+import com.example.project_applepie.CreateBoardActivity
 import com.example.project_applepie.PersonalInformation
 import com.example.project_applepie.R
-import com.example.project_applepie.model.AuerProfile
 import com.example.project_applepie.model.dao.createBoard
+import com.example.project_applepie.model.dao.userIden
 import com.example.project_applepie.model.myBoard
 import com.example.project_applepie.retrofit.ApiService
 import com.example.project_applepie.retrofit.domain.BasicResponse
+import com.example.project_applepie.sharedpref.SharedPref
 import com.example.project_applepie.utils.Url
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.coroutines.coroutineContext
 
 class myBoardAdapter : RecyclerView.Adapter<myBoardHoler>() {
 
@@ -44,6 +43,7 @@ class myBoardAdapter : RecyclerView.Adapter<myBoardHoler>() {
         holder.boardImg.load(searchList[position].thumbnail)
         holder.boardName.text = searchList[position].title
         val boardId = searchList[position].id.toString()
+        val uId = searchList[position].uId
         var fragPos = position
 
         // 서버 연동 코드
@@ -55,13 +55,16 @@ class myBoardAdapter : RecyclerView.Adapter<myBoardHoler>() {
 
         var server = retrofit.create(ApiService::class.java)
 
+        // 사용자의 uid
+
         holder.boardDelte.setOnClickListener{
-            Log.d("로그","삭제, $boardId")
-            server.deleteBoard(boardId).enqueue(object : Callback<BasicResponse>{
+            Log.d("로그","삭제, $boardId, $uId")
+            val userId = userIden(uId)
+            server.deleteBoard(boardId, userId).enqueue(object : Callback<BasicResponse>{
                 override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>
                 ) {
                     searchList.removeAt(fragPos)
-                    Log.d("성공 로그","$fragPos 번 삭제")
+                    Log.d("성공 로그","${response.body()} + $boardId + $uId")
                 }
 
                 override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
@@ -70,7 +73,7 @@ class myBoardAdapter : RecyclerView.Adapter<myBoardHoler>() {
             })
         }
         holder.boardModify.setOnClickListener{
-            val intent = Intent(holder.itemView?.context, createBoard::class.java)
+            val intent = Intent(holder.itemView?.context, CreateBoardActivity::class.java)
             intent.putExtra("bid", boardId)
             ContextCompat.startActivity(holder.itemView.context, intent, null)
             Log.d("로그","수정, $boardId")

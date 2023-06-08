@@ -12,17 +12,14 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ArrayAdapter
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import coil.load
 import com.bumptech.glide.Glide
 import com.example.project_applepie.databinding.ActivityCreateBoardBinding
-import com.example.project_applepie.model.dao.WriteBoardBoard
 import com.example.project_applepie.model.dao.createBoard
 import com.example.project_applepie.model.dao.createTeam
-import com.example.project_applepie.model.dao.js_createBoard
+import com.example.project_applepie.model.teamRole
 import com.example.project_applepie.retrofit.ApiService
 import com.example.project_applepie.retrofit.domain.BasicResponse
 import com.example.project_applepie.retrofit.domain.BoardDetailResponse
@@ -30,19 +27,11 @@ import com.example.project_applepie.retrofit.domain.WriteBoardResponse
 import com.example.project_applepie.sharedpref.SharedPref
 import com.example.project_applepie.utils.Url
 import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.gson.JsonElement
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.ResponseBody
-import org.json.JSONArray
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -114,6 +103,8 @@ class CreateBoardActivity : AppCompatActivity() {
         ctBinding = ActivityCreateBoardBinding.inflate(layoutInflater)
         setContentView(ctBinding.root)
 
+        checkPermission.launch(permissionList)
+
         // Retrofit 연동
         val url = Url.BASE_URL
         val retrofit = Retrofit.Builder()
@@ -128,12 +119,46 @@ class CreateBoardActivity : AppCompatActivity() {
             finish()
         }
 
+        // 변수 설정
+        val uid = SharedPref.getUserId(this@CreateBoardActivity)
+        var uCategory : Int = 1
+        var uDeadline : String = ""
+        var uRole : Int = 0
+        var uBackend : Int = 0
+        var uFrontend : Int = 0
+        var uPm : Int = 0
+        var uDesigner : Int = 0
+        var uWebDev : Int = 0
+        var uContent : String = "" // TODO: 글자 제한 같은 세부사항 생각 필요
+
         val boardId = intent.getStringExtra("bid")
         if(boardId != null){
             server.searchBoardDetails(boardId.toInt()).enqueue(object : Callback<BoardDetailResponse>{
                 override fun onResponse(call: Call<BoardDetailResponse>, response: Response<BoardDetailResponse>
                 ) {
                     Log.d("단일 글 가져오기 성공", "${response.body()}")
+                    // 저장된 데이터 집어 넣기
+                    val uTitle : String = response.body()?.board?.get("title").toString()
+                    ctBinding.title.setText(uTitle.replace("\"",""))
+
+                    val userCategory = response.body()?.board?.get("category").toString()
+                    val usCat = userCategory.replace("\"","")
+                    if(usCat == "OUTSOURCING"){
+                        ctBinding.toggleButton.check(R.id.button1)
+                    }
+                    else if(usCat == "LESSON"){
+                        ctBinding.toggleButton.check(R.id.button2)
+                    }
+                    else {
+                        ctBinding.toggleButton.check(R.id.button3)
+                    }
+
+                    val userDeadline = response.body()?.board?.get("deadline").toString()
+                    uDeadline = userDeadline.replace("\"","")
+                    ctBinding.tvBirth.setText(uDeadline)
+
+                    uContent = response.body()?.board?.get("content").toString()
+                    ctBinding.writeText.setText(uContent.replace("\"",""))
                 }
 
                 override fun onFailure(call: Call<BoardDetailResponse>, t: Throwable) {
@@ -150,7 +175,9 @@ class CreateBoardActivity : AppCompatActivity() {
         ctBinding.actvPm.setAdapter(arrayAdapter)
         ctBinding.actvWebDeveloper.setAdapter(arrayAdapter)
 
-        checkPermission.launch(permissionList)
+        val getUserRole = resources.getStringArray(R.array.select_role)
+        val arrayAdapter2 = ArrayAdapter(this, R.layout.dropdown_item, getUserRole)
+        ctBinding.actvUserRole.setAdapter(arrayAdapter2)
 
         // 사진 가져오기 (1)
         ctBinding.btnUpload.setOnClickListener {
@@ -163,43 +190,6 @@ class CreateBoardActivity : AppCompatActivity() {
                 imageResult.launch(ctIntent)
             }
         }
-
-        // 날짜 버튼 클릭
-//        ctBinding.btnDeadline.setOnClickListener {
-//            //calendar Constraint Builder 선택할수있는 날짜 구간설정
-//            val calendarConstraintBulder = CalendarConstraints.Builder()
-//            //오늘 이전만 선택가능하게 하는 코드
-//            calendarConstraintBulder.setValidator(DateValidatorPointBackward.now())
-//
-//            val builder = MaterialDatePicker.Builder.datePicker()
-//                .setTitleText("생일을 선택해주세요")
-//                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-//                .setCalendarConstraints(calendarConstraintBulder.build())
-//            val datePicker = builder.build()
-//
-//            datePicker.addOnPositiveButtonClickListener {
-//                val calendar = Calendar.getInstance()
-//                calendar.time = Date(it)
-//                val calendarMilli = calendar.timeInMillis
-//                ctBinding.tvBirth.setText("${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(
-//                    Calendar.YEAR)}")
-//                // 나이 계산
-//                Log.d("날짜 테스트", calendar.toString())
-//            }
-//            datePicker.show(supportFragmentManager,datePicker.toString())
-//        }
-
-        // 변수 설정
-        val uid = SharedPref.getUserId(this@CreateBoardActivity)
-        var uCategory : Int = 1
-        var uDeadline : String = ""
-        var uBackend : Int = 0
-        var uFrontend : Int = 0
-        var uPm : Int = 0
-        var uDesigner : Int = 0
-        var uWebDev : Int = 0
-        var uContent : String = "" // TODO: 글자 제한 같은 세부사항 생각 필요
-
 
         //날짜 버튼 클릭
         ctBinding.btnDeadline.setOnClickListener {
@@ -243,7 +233,7 @@ class CreateBoardActivity : AppCompatActivity() {
             datePicker.show(supportFragmentManager,datePicker.toString())
         }
 
-        // 사용자 설정 (순서대로) -> 백 / 프론트 / 디자이너 / 기획 / 웹개발
+        // 사용자 설정 (순서대로) -> 백 / 프론트 / 디자이너 / 기획 / 웹개발 / 역할
         ctBinding.actvBackend.setOnItemClickListener{ _, _, position, _ ->
             uBackend = position }
         ctBinding.actvFrontend.setOnItemClickListener { _, _, position, _ ->
@@ -254,9 +244,13 @@ class CreateBoardActivity : AppCompatActivity() {
             uPm = position }
         ctBinding.actvWebDeveloper.setOnItemClickListener { _, _, position, _ ->
             uWebDev = position }
+        ctBinding.actvUserRole.setOnItemClickListener{ _, _, position, _ ->
+            uRole = position }
 
-
-        ctBinding.toggleButton.check(R.id.button2)
+        // 수정이 아니라 생성인 경우 기본값 = "과제/과외"
+        if(boardId == null){
+            ctBinding.toggleButton.check(R.id.button2)
+        }
         ctBinding.button1.setOnClickListener {
             uCategory = 0 // TODO: 회사가 아니면 선택 불가능하도록
         }
@@ -292,6 +286,16 @@ class CreateBoardActivity : AppCompatActivity() {
                         Log.d("글 작성 성공", "$body, $uid, $uTitle, $uContent, $uCategory, $uDeadline, $BoardData")
                         Log.d("코드 확인", "${response.body().toString()}")
                         var nickname = response.body()?.board?.get("nickname")
+
+                        val bid = response.body()?.board?.get("id").toString().toInt()
+                        val teamName = ctBinding.teamTitle.text.toString()
+
+                        val teamRole : ArrayList<teamRole> = ArrayList()
+                        var tR = teamRole(uPm, uDesigner, uWebDev, uFrontend, uBackend)
+                        teamRole.add(tR)
+
+                        Log.d("팀 역할 확인", "$teamRole")
+
                         var files : String = response.body()?.board?.get("files").toString()
                         files = files.substring(2,files.length-2);
                         Log.d("로그","닉네임 : $files")
@@ -300,6 +304,20 @@ class CreateBoardActivity : AppCompatActivity() {
                         Glide.with(this@CreateBoardActivity)
                             .load(files)
                             .into(ctBinding.imgLoad)
+
+                        val teamData = createTeam(bid, teamName, uContent, teamRole, uRole)
+                        Log.d("teamData 확인", "$teamData")
+
+                        server.createTeam(uid, teamData).enqueue(object : Callback<BasicResponse>{
+                            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                                Log.d("팀 생성 확인", "성공, ${response.body()}")
+                            }
+
+                            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                                Log.d("팀 생성 확인", "실패, $t")
+                            }
+                        })
+
                         startActivity(intent)
                         finish()
                     }
@@ -311,7 +329,7 @@ class CreateBoardActivity : AppCompatActivity() {
                         Log.d("글 수정 성공", "$body, $uid, $uTitle, $uContent, $uCategory, $uDeadline, $BoardData")
                         var files : String = response.body()?.board?.get("files").toString()
                         files = files.substring(2,files.length-2);
-                        Log.d("로그","닉네임 : $files")
+                        Log.d("로그","글 수정 성공: ${response.body()}")
                         Toast.makeText(this@CreateBoardActivity, "글 수정이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@CreateBoardActivity, HomeActivity::class.java)
                         Glide.with(this@CreateBoardActivity)
@@ -326,8 +344,35 @@ class CreateBoardActivity : AppCompatActivity() {
                     }
                 })
             }
+
+
         }
     }
+
+    // 날짜 버튼 클릭
+//        ctBinding.btnDeadline.setOnClickListener {
+//            //calendar Constraint Builder 선택할수있는 날짜 구간설정
+//            val calendarConstraintBulder = CalendarConstraints.Builder()
+//            //오늘 이전만 선택가능하게 하는 코드
+//            calendarConstraintBulder.setValidator(DateValidatorPointBackward.now())
+//
+//            val builder = MaterialDatePicker.Builder.datePicker()
+//                .setTitleText("생일을 선택해주세요")
+//                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+//                .setCalendarConstraints(calendarConstraintBulder.build())
+//            val datePicker = builder.build()
+//
+//            datePicker.addOnPositiveButtonClickListener {
+//                val calendar = Calendar.getInstance()
+//                calendar.time = Date(it)
+//                val calendarMilli = calendar.timeInMillis
+//                ctBinding.tvBirth.setText("${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(
+//                    Calendar.YEAR)}")
+//                // 나이 계산
+//                Log.d("날짜 테스트", calendar.toString())
+//            }
+//            datePicker.show(supportFragmentManager,datePicker.toString())
+//        }
 }
 
 // 사진 전송을 위한 절대경로 변환 https://onedaycodeing.tistory.com/168
