@@ -16,6 +16,7 @@ import com.example.project_applepie.model.recuit
 import com.example.project_applepie.recyclerview.homeRecycle.SearchItemRecyclerViewAdapter
 import com.example.project_applepie.retrofit.ApiService
 import com.example.project_applepie.retrofit.domain.BoardResponse
+import com.example.project_applepie.sharedpref.SharedPref
 import com.example.project_applepie.utils.Url
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
@@ -81,6 +82,10 @@ class RecruitFragment : Fragment() {
         var arrList2:ArrayList<boardList> = ArrayList()
         var arrList3:ArrayList<boardList> = ArrayList()
 
+        // 사용자의 uid & pid를 가져옴
+        val uid = SharedPref.getUserId(homeActivity)
+        val pid = SharedPref.getPid(homeActivity)
+
         var id = 15 // TODO: 초기에 null값 <-- ??????
 //        var category = 2
         var size = 20 // TODO: 테스트 할 때는 값을 크게
@@ -110,7 +115,7 @@ class RecruitFragment : Fragment() {
                 }
                 Log.d("로그1 arr test","$arrList1")
                 for(i in arrList1){
-                    val re = recuit(i.file,i.title,i.content,i.id)
+                    val re = recuit(i.file,i.title,i.content,i.id, uid)
                     Log.d("로그-배열_1_re","$re")
                     itemList.add(re)
                 }
@@ -148,7 +153,7 @@ class RecruitFragment : Fragment() {
                     }
                 }
                 for(i in arrList2){
-                    val re = recuit(i.file,i.title,i.content,i.id)
+                    val re = recuit(i.file,i.title,i.content,i.id, uid)
                     itemList2.add(re)
                 }
                 Log.d("로그2 arr test","$arrList2")
@@ -182,7 +187,7 @@ class RecruitFragment : Fragment() {
                     }
                 }
                 for(i in arrList3){
-                    val re = recuit(i.file,i.title,i.content,i.id)
+                    val re = recuit(i.file,i.title,i.content,i.id, uid)
                     itemList3.add(re)
                 }
                 Log.d("로그3 arr test","$arrList3")
@@ -254,6 +259,7 @@ class RecruitFragment : Fragment() {
             override fun onItemClick(v: View, data: recuit, pos: Int) {
                 val intent = Intent(context, RecruitTeamActivity::class.java)
                 intent.putExtra("data",data);
+//                Log.d("이거 동작", "안함")
                 startActivity(intent)
             }
         })
@@ -271,6 +277,7 @@ class RecruitFragment : Fragment() {
             override fun onItemClick(v: View, data: recuit, pos: Int) {
                 val intent = Intent(context, RecruitTeamActivity::class.java)
                 intent.putExtra("data",data);
+//                Log.d("요게 동작", "하는 거였어") // 정답
                 startActivity(intent)
             }
         })

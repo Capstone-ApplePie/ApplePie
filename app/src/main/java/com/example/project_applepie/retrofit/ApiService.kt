@@ -136,7 +136,8 @@ interface ApiService {
     fun userAllData(@Path("uid") uid : String) : Call<SearchUserAllDataResponse>
 
     //24. 팀 취소
-    @DELETE(API.CANCEL_TEAM)
+    @Headers("Content-Type: application/json")
+    @HTTP(method = "DELETE", path = "/teams", hasBody = true)
     fun cancelTeam(@Body cancelTeam: cancelTeam) : Call<BasicResponse>
 
     // 23. 지원 리스트 조회

@@ -1,5 +1,6 @@
 package com.example.project_applepie.recyclerview.profileRecycle
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,14 +10,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.project_applepie.CreateBoardActivity
-import com.example.project_applepie.PersonalInformation
 import com.example.project_applepie.R
-import com.example.project_applepie.model.dao.createBoard
 import com.example.project_applepie.model.dao.userIden
 import com.example.project_applepie.model.myBoard
+import com.example.project_applepie.model.recuit
 import com.example.project_applepie.retrofit.ApiService
 import com.example.project_applepie.retrofit.domain.BasicResponse
-import com.example.project_applepie.sharedpref.SharedPref
 import com.example.project_applepie.utils.Url
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,15 +23,16 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class myBoardAdapter : RecyclerView.Adapter<myBoardHoler>() {
+class MyBoardAdapter(private val context : Context) : RecyclerView.Adapter<myBoardHoler>() {
 
-    private var searchList = ArrayList<myBoard>()
+    private var searchList = ArrayList<recuit>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): myBoardHoler {
-        val searchMyBoard = myBoardHoler(LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.layout_my_board,parent,false))
-        return searchMyBoard
+        return myBoardHoler(
+            LayoutInflater
+                .from(parent.context)
+                .inflate(R.layout.layout_my_board, parent, false)
+        )
     }
 
     override fun getItemCount(): Int {
@@ -86,11 +86,11 @@ class myBoardAdapter : RecyclerView.Adapter<myBoardHoler>() {
         }
     }
 
-    fun submitList(searchList : ArrayList<myBoard>){
+    fun submitList(searchList : ArrayList<recuit>){
         this.searchList = searchList
     }
     interface OnItemClickListener{
-        fun onItemClick(v: View, data: myBoard, pos : Int)
+        fun onItemClick(v: View, data: recuit, pos : Int)
     }
     private var listener : OnItemClickListener? = null
     fun setOnItemClickListener(listener : OnItemClickListener) {

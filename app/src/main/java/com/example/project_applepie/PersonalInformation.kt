@@ -19,9 +19,9 @@ import com.example.project_applepie.model.myBoard
 import com.example.project_applepie.model.myTeam
 import com.example.project_applepie.model.recuit
 import com.example.project_applepie.recyclerview.homeRecycle.SearchItemRecyclerViewAdapter
+import com.example.project_applepie.recyclerview.profileRecycle.MyBoardAdapter
 import com.example.project_applepie.recyclerview.profileRecycle.MyTeamAdapter
 import com.example.project_applepie.recyclerview.profileRecycle.MyTeamAdapter2
-import com.example.project_applepie.recyclerview.profileRecycle.myBoardAdapter
 import com.example.project_applepie.retrofit.ApiService
 import com.example.project_applepie.retrofit.domain.BasicResponse
 import com.example.project_applepie.retrofit.domain.SearchUserAllDataResponse
@@ -51,7 +51,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
     private lateinit var searchAdapter : SearchItemRecyclerViewAdapter
     private lateinit var teamAdapter : MyTeamAdapter
     private lateinit var valunteerAdapter: MyTeamAdapter2
-    private lateinit var boardAdapter : myBoardAdapter
+    private lateinit var boardAdapter : MyBoardAdapter
     private var _recruitBinding : FragmentPersonalInformationBinding? = null
     private val recruitBinding get() = _recruitBinding!!
 
@@ -98,15 +98,15 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         val uid = SharedPref.getUserId(homeActivity)
         val pid = SharedPref.getPid(homeActivity)
 
-        Log.d("로그 - uid","$uid")
-        Log.d("로그 - pid","$pid")
+//        Log.d("로그 - uid","$uid")
+//        Log.d("로그 - pid","$pid")
 
         var boards : ArrayList<boardList> = ArrayList()
         var complete : ArrayList<userTeamData> = ArrayList()
         var incomplete : ArrayList<userTeamData> = ArrayList()
         var applys : ArrayList<userTeamData> = ArrayList()
 
-        var uBoards : ArrayList<myBoard> = ArrayList()
+        var uBoards : ArrayList<recuit> = ArrayList()
 
         var lesson = false
         var outsourcing = false
@@ -119,8 +119,8 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                 if(response.isSuccessful){
                     Log.d("로그 - 성공","${response.body().toString()}")
                     val jsonBoard = response.body()?.boards
-                    Log.d("로그123 - boards","$jsonBoard")
-                    for(i in 0 .. jsonBoard!!.size()-1){
+//                    Log.d("로그123 - boards","$jsonBoard")
+                    for(i in 0 until jsonBoard!!.size()){
                         val jsonObj = jsonBoard.get(i).asJsonObject
                         try{
                             var board = boardList(jsonObj.getAsJsonPrimitive("id").asInt,
@@ -128,8 +128,9 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                                 jsonObj.getAsJsonPrimitive("viewCount").asInt,jsonObj.getAsJsonPrimitive("categoryId").asString,
                                 jsonObj.getAsJsonPrimitive("file").asString,jsonObj.getAsJsonPrimitive("deadline").asString,
                                 jsonObj.getAsJsonPrimitive("status").asBoolean)
-                            var userBoard = myBoard(jsonObj.getAsJsonPrimitive("file").asString,
-                                jsonObj.getAsJsonPrimitive("title").asString, jsonObj.getAsJsonPrimitive("id").asInt, uid)
+                            var userBoard = recuit(jsonObj.getAsJsonPrimitive("file").asString,
+                                jsonObj.getAsJsonPrimitive("title").asString, jsonObj.getAsJsonPrimitive("content").asString,
+                                jsonObj.getAsJsonPrimitive("id").asInt, uid)
                             boards.add(board)
                             uBoards.add(userBoard)
                         }catch (e : RuntimeException){
@@ -156,8 +157,9 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     val jsonInComplete = response.body()?.incomplete
                     for(i in 0 until jsonInComplete!!.size()){
                         val jsonObj = jsonInComplete.get(i).asJsonObject
+                        Log.d("뭐지", "$jsonObj")
                         try{
-                            val incom = userTeamData(jsonObj.getAsJsonPrimitive("createAt").asString,
+                            val inCom = userTeamData(jsonObj.getAsJsonPrimitive("createAt").asString,
                                 jsonObj.getAsJsonPrimitive("updateAt").asString,jsonObj.getAsJsonPrimitive("status").asInt,
                                 jsonObj.getAsJsonPrimitive("id").asInt,jsonObj.getAsJsonPrimitive("teamName").asString,
                                 jsonObj.getAsJsonPrimitive("teamContent").asString,
@@ -165,7 +167,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                                 jsonObj.getAsJsonPrimitive("count").asString.substring(1,jsonObj.getAsJsonPrimitive("count").asString.lastIndex-1).split(","),
                                 jsonObj.getAsJsonPrimitive("teamStatus").asString
                             )
-                            incomplete.add(incom)
+                            incomplete.add(inCom)
                         }catch (e : RuntimeException){
                             Log.d("로그 - incomplete에러","${e.localizedMessage}")
                         }
@@ -201,7 +203,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     Log.d("로그 - project","$project")
 
                     // 나의 글 확인
-                    boardAdapter = myBoardAdapter()
+                    boardAdapter = MyBoardAdapter(view.context)
                     boardAdapter.submitList(uBoards)
                     Log.d("uBoards 확인", "$uBoards")
                     recruitBinding.rvMyBoard.layoutManager = LinearLayoutManager(view.context,
@@ -287,12 +289,20 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 
 
         // 나의 글 Adapter
-        boardAdapter = myBoardAdapter()
+        boardAdapter = MyBoardAdapter(view.context)
         boardAdapter.submitList(uBoards)
-        Log.d("uBoards 확인", "$uBoards")
         recruitBinding.rvMyBoard.layoutManager = LinearLayoutManager(view.context,
             LinearLayoutManager.VERTICAL,false)
         recruitBinding.rvMyBoard.adapter = boardAdapter
+
+        boardAdapter.setOnItemClickListener(object : MyBoardAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: recuit, pos: Int) {
+                val intent = Intent(context, ViewVolunteerAcitviy::class.java)
+                intent.putExtra("data",data)
+                startActivity(intent)
+            }
+        })
+
 
         // 프로필 수정 버튼 클릭 시
         recruitBinding.btnModifyProfile.setOnClickListener {
@@ -446,13 +456,9 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 //        val btnSequence = _recruitBinding.container.children
     }
 
-    // Fragment 클릭 이벤트 (적용이 안돼서 노력중...)
+
     override fun onClick(v: View) {
-        when(v.id){
-            R.id.userLogOut -> {
-                Log.d("check", "check")
-            }
-        }
+
     }
 
 
