@@ -106,11 +106,18 @@ class PersonalInformation : Fragment(), View.OnClickListener {
         var incomplete : ArrayList<userTeamData> = ArrayList()
         var applys : ArrayList<userTeamData> = ArrayList()
 
-        var uBoards : ArrayList<recuit> = ArrayList()
+        var uTeam : ArrayList<myTeam> = ArrayList()
+        var uVolunteer : ArrayList<myTeam> = ArrayList()
+        var uBoards : ArrayList<myBoard> = ArrayList()
+        var uHistory : ArrayList<recuit> = ArrayList()
 
         var lesson = false
         var outsourcing = false
         var project = false
+
+        val basicImg = "https://firebasestorage.googleapis.com/v0/b/applepie-f030c.appspot.com/o/file36-1?alt=media"
+        val basicImg2 = "https://firebasestorage.googleapis.com/v0/b/applepie-f030c.appspot.com/o/file36-1?alt=media"
+        val basicImg3 = "https://firebasestorage.googleapis.com/v0/b/applepie-f030c.appspot.com/o/file36-1?alt=media"
 
         //사용자 정보 모두 가져오기
         server.userAllData(uid).enqueue(object : Callback<SearchUserAllDataResponse>{
@@ -128,11 +135,9 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                                 jsonObj.getAsJsonPrimitive("viewCount").asInt,jsonObj.getAsJsonPrimitive("categoryId").asString,
                                 jsonObj.getAsJsonPrimitive("file").asString,jsonObj.getAsJsonPrimitive("deadline").asString,
                                 jsonObj.getAsJsonPrimitive("status").asBoolean)
-                            var userBoard = recuit(jsonObj.getAsJsonPrimitive("file").asString,
-                                jsonObj.getAsJsonPrimitive("title").asString, jsonObj.getAsJsonPrimitive("content").asString,
-                                jsonObj.getAsJsonPrimitive("id").asInt, uid)
+                            var userBoard = myTeam(basicImg,board.title,board.id)
                             boards.add(board)
-                            uBoards.add(userBoard)
+                            uTeam.add(userBoard)
                         }catch (e : RuntimeException){
                             Log.d("로그 - boards에러","${e.localizedMessage}")
                         }
@@ -149,6 +154,8 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                             jsonObj.getAsJsonPrimitive("count").asString.substring(1,jsonObj.getAsJsonPrimitive("count").asString.lastIndex-1).split(","),
                             jsonObj.getAsJsonPrimitive("teamStatus").asString
                             )
+                            val vol = myTeam(basicImg,com.teamName,com.id)
+                            uTeam.add(vol)
                             complete.add(com)
                         }catch (e : RuntimeException){
                             Log.d("로그 - complete에러","${e.localizedMessage}")
@@ -184,6 +191,8 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                                 jsonObj.getAsJsonPrimitive("count").asString.substring(1,jsonObj.getAsJsonPrimitive("count").asString.lastIndex-1).split(","),
                                 jsonObj.getAsJsonPrimitive("teamStatus").asString
                             )
+                            val app = myTeam(basicImg,apply.teamName,apply.id)
+                            uVolunteer.add(app)
                             applys.add(apply)
                         }catch (e : RuntimeException){
                             Log.d("로그 - apply에러","${e.localizedMessage}")
@@ -202,13 +211,58 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     Log.d("로그 - outsourcing","$outsourcing")
                     Log.d("로그 - project","$project")
 
-                    // 나의 글 확인
+                    //활동이력
+                    searchAdapter = SearchItemRecyclerViewAdapter(view.context)
+                    searchAdapter.submitList(uHistory)
+                    recruitBinding.rvRecruit.layoutManager = LinearLayoutManager(view.context,
+                        LinearLayoutManager.VERTICAL,false)
+                    recruitBinding.rvRecruit.adapter = searchAdapter
+
+                    // 나의 팀 Adapter
+                    teamAdapter = MyTeamAdapter(view.context)
+                    teamAdapter.submitList(uTeam)
+                    recruitBinding.rvCreateMyTeam.layoutManager = LinearLayoutManager(view.context,
+                        LinearLayoutManager.VERTICAL,false)
+                    recruitBinding.rvCreateMyTeam.adapter = teamAdapter
+
+                    teamAdapter.setOnItemClickListener(object : MyTeamAdapter.OnItemClickListener{
+                        override fun onItemClick(v: View, data: myTeam, pos: Int) {
+                            val intent = Intent(context, ViewVolunteerAcitviy::class.java)
+                            intent.putExtra("data",data)
+                            startActivity(intent)
+                        }
+                    })
+
+                    // 내가 지원한 팀 Adapter
+                    valunteerAdapter = MyTeamAdapter2(view.context)
+                    valunteerAdapter.submitList(uVolunteer)
+                    recruitBinding.rvApplyMyTeam.layoutManager = LinearLayoutManager(view.context,
+                        LinearLayoutManager.VERTICAL,false)
+                    recruitBinding.rvApplyMyTeam.adapter = valunteerAdapter
+
+
+                    // 나의 글 Adapter
                     boardAdapter = MyBoardAdapter(view.context)
+                    boardAdapter.submitList(uBoards)
+                    recruitBinding.rvMyBoard.layoutManager = LinearLayoutManager(view.context,
+                        LinearLayoutManager.VERTICAL,false)
+                    recruitBinding.rvMyBoard.adapter = boardAdapter
+
+                    boardAdapter.setOnItemClickListener(object : MyBoardAdapter.OnItemClickListener{
+                        override fun onItemClick(v: View, data: myBoard, pos: Int) {
+                            val intent = Intent(context, ViewVolunteerAcitviy::class.java)
+                            intent.putExtra("data",data)
+                            startActivity(intent)
+                        }
+                    })
+
+                    // 나의 글 확인
+                    /*boardAdapter = MyBoardAdapter(view.context)
                     boardAdapter.submitList(uBoards)
                     Log.d("uBoards 확인", "$uBoards")
                     recruitBinding.rvMyBoard.layoutManager = LinearLayoutManager(view.context,
                         LinearLayoutManager.VERTICAL,false)
-                    recruitBinding.rvMyBoard.adapter = boardAdapter
+                    recruitBinding.rvMyBoard.adapter = boardAdapter*/
                 }
             }
             override fun onFailure(call: Call<SearchUserAllDataResponse>, t: Throwable) {
@@ -234,10 +288,6 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             }
         })
 
-        val basicImg = "https://firebasestorage.googleapis.com/v0/b/applepie-f030c.appspot.com/o/file36-1?alt=media"
-        val basicImg2 = "https://firebasestorage.googleapis.com/v0/b/applepie-f030c.appspot.com/o/file36-1?alt=media"
-        val basicImg3 = "https://firebasestorage.googleapis.com/v0/b/applepie-f030c.appspot.com/o/file36-1?alt=media"
-
         val itemList = ArrayList<recuit>()
 
         /*val itemList = arrayListOf(
@@ -246,62 +296,18 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             recuit(basicImg2,"꼬부기","꼬부기-어니부기-거북왕"),
             recuit(basicImg3,"이상해씨","이상해씨-이상해풀-이상해꽃")
         )*/
-        val itemList2 = arrayListOf(
+        /*val itemList2 = arrayListOf(
             myTeam(basicImg,"이상해씨",17),
             myTeam(basicImg3,"파이리",17),
             myTeam(basicImg2,"꼬부기",17),
             myTeam(basicImg3,"이상해씨",17)
-        )
+        )*/
 //        val itemList3 = arrayListOf(
 //            myBoard(basicImg,"이상해씨", 10000),
 //            myBoard(basicImg3,"파이리", 10000),
 //            myBoard(basicImg2,"꼬부기", 10000),
 //            myBoard(basicImg3,"이상해씨", 10000)
 //        )
-
-        searchAdapter = SearchItemRecyclerViewAdapter(view.context)
-        searchAdapter.submitList(itemList)
-        recruitBinding.rvRecruit.layoutManager = LinearLayoutManager(view.context,
-            LinearLayoutManager.VERTICAL,false)
-        recruitBinding.rvRecruit.adapter = searchAdapter
-
-        // 나의 팀 Adapter
-        teamAdapter = MyTeamAdapter(view.context)
-        teamAdapter.submitList(itemList2)
-        recruitBinding.rvCreateMyTeam.layoutManager = LinearLayoutManager(view.context,
-        LinearLayoutManager.VERTICAL,false)
-        recruitBinding.rvCreateMyTeam.adapter = teamAdapter
-
-        teamAdapter.setOnItemClickListener(object : MyTeamAdapter.OnItemClickListener{
-            override fun onItemClick(v: View, data: myTeam, pos: Int) {
-                val intent = Intent(context, ViewVolunteerAcitviy::class.java)
-                intent.putExtra("data",data)
-                startActivity(intent)
-            }
-        })
-
-        // 내가 지원한 팀 Adapter
-        valunteerAdapter = MyTeamAdapter2(view.context)
-        valunteerAdapter.submitList(itemList2)
-        recruitBinding.rvApplyMyTeam.layoutManager = LinearLayoutManager(view.context,
-            LinearLayoutManager.VERTICAL,false)
-        recruitBinding.rvApplyMyTeam.adapter = valunteerAdapter
-
-
-        // 나의 글 Adapter
-        boardAdapter = MyBoardAdapter(view.context)
-        boardAdapter.submitList(uBoards)
-        recruitBinding.rvMyBoard.layoutManager = LinearLayoutManager(view.context,
-            LinearLayoutManager.VERTICAL,false)
-        recruitBinding.rvMyBoard.adapter = boardAdapter
-
-        boardAdapter.setOnItemClickListener(object : MyBoardAdapter.OnItemClickListener{
-            override fun onItemClick(v: View, data: recuit, pos: Int) {
-                val intent = Intent(context, ViewVolunteerAcitviy::class.java)
-                intent.putExtra("data",data)
-                startActivity(intent)
-            }
-        })
 
 
         // 프로필 수정 버튼 클릭 시

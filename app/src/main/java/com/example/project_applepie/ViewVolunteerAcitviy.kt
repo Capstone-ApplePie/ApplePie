@@ -33,7 +33,7 @@ class ViewVolunteerAcitviy : AppCompatActivity() {
         setContentView(vvBinding.root)
 
         val data = intent.getSerializableExtra("data") as myTeam?
-        val teamId = searchVolunteer(data!!.id)
+        val teamId = searchVolunteer(data)
         val uid = SharedPref.getUserId(this)
 
         val url = Url.BASE_URL

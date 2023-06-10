@@ -51,7 +51,7 @@ class MyTeamAdapter(private val context : Context) : RecyclerView.Adapter<MyTeam
             .build()
 
         var server = retrofit.create(ApiService::class.java)
-        val req = cancelTeam(searchList[position].id,Integer.parseInt(uid))
+        val req = cancelTeam(searchList[position].id!!,Integer.parseInt(uid))
 
         holder.teamDelete.setOnClickListener {
             server.cancelTeam(req).enqueue(object : Callback<BasicResponse>{
