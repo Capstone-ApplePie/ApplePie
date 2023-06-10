@@ -108,7 +108,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 
         var uTeam : ArrayList<myTeam> = ArrayList()
         var uVolunteer : ArrayList<myTeam> = ArrayList()
-        var uBoards : ArrayList<myBoard> = ArrayList()
+        var uBoards : ArrayList<recuit> = ArrayList()
         var uHistory : ArrayList<recuit> = ArrayList()
 
         var lesson = false
@@ -135,9 +135,11 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                                 jsonObj.getAsJsonPrimitive("viewCount").asInt,jsonObj.getAsJsonPrimitive("categoryId").asString,
                                 jsonObj.getAsJsonPrimitive("file").asString,jsonObj.getAsJsonPrimitive("deadline").asString,
                                 jsonObj.getAsJsonPrimitive("status").asBoolean)
-                            var userBoard = myTeam(basicImg,board.title,board.id)
+                            var userTeam = myTeam(basicImg,board.title,board.id)
+                            var userBoard = recuit(basicImg,board.title,board.content,board.id,uid)
                             boards.add(board)
-                            uTeam.add(userBoard)
+//                            uTeam.add(userTeam)
+                            uBoards.add(userBoard)
                         }catch (e : RuntimeException){
                             Log.d("로그 - boards에러","${e.localizedMessage}")
                         }
@@ -202,14 +204,14 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     outsourcing = response.body()!!.outsourcing
                     project = response.body()!!.project
 
-                    Log.d("로그 - boards","$boards")
-                    Log.d("로그 - uBoards","$uBoards")
-                    Log.d("로그 - complete","$complete")
-                    Log.d("로그 - incomplete","$incomplete")
-                    Log.d("로그 - applys","$applys")
-                    Log.d("로그 - lesson","$lesson")
-                    Log.d("로그 - outsourcing","$outsourcing")
-                    Log.d("로그 - project","$project")
+//                    Log.d("로그 - boards","$boards")
+//                    Log.d("로그 - uBoards","$uBoards")
+//                    Log.d("로그 - complete","$complete")
+//                    Log.d("로그 - incomplete","$incomplete")
+//                    Log.d("로그 - applys","$applys")
+//                    Log.d("로그 - lesson","$lesson")
+//                    Log.d("로그 - outsourcing","$outsourcing")
+//                    Log.d("로그 - project","$project")
 
                     //활동이력
                     searchAdapter = SearchItemRecyclerViewAdapter(view.context)
@@ -220,21 +222,38 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 
                     // 나의 팀 Adapter
                     teamAdapter = MyTeamAdapter(view.context)
-                    teamAdapter.submitList(uTeam)
-                    recruitBinding.rvCreateMyTeam.layoutManager = LinearLayoutManager(view.context,
-                        LinearLayoutManager.VERTICAL,false)
-                    recruitBinding.rvCreateMyTeam.adapter = teamAdapter
+                    if(uTeam == null){
+                        teamAdapter.submitList(uTeam)
+                        recruitBinding.rvCreateMyTeam.layoutManager = LinearLayoutManager(view.context,
+                            LinearLayoutManager.VERTICAL,false)
+                        recruitBinding.rvCreateMyTeam.adapter = teamAdapter
 
-                    teamAdapter.setOnItemClickListener(object : MyTeamAdapter.OnItemClickListener{
-                        override fun onItemClick(v: View, data: myTeam, pos: Int) {
-                            val intent = Intent(context, ViewVolunteerAcitviy::class.java)
-                            intent.putExtra("data",data)
-                            startActivity(intent)
-                        }
-                    })
+                        teamAdapter.setOnItemClickListener(object : MyTeamAdapter.OnItemClickListener{
+                            override fun onItemClick(v: View, data: myTeam, pos: Int) {
+                                val intent = Intent(context, ViewVolunteerAcitviy::class.java)
+                                intent.putExtra("data",data)
+                                startActivity(intent)
+                            }
+                        })
+                    }
+                    else {
+                        Log.d("땜빵 성공","$uTeam")
+                        val cryingImg = R.drawable.crying.toString()
+                        val emptyTitle = "생성한 팀이 없습니다!"
+                        val emptyId = 0
+                        val emptyTeam = myTeam(cryingImg, emptyTitle, emptyId)
+                        uTeam.add(emptyTeam)
+                        teamAdapter.submitList(uTeam)
+                        recruitBinding.rvCreateMyTeam.layoutManager = LinearLayoutManager(view.context,
+                            LinearLayoutManager.VERTICAL,false)
+                        recruitBinding.rvCreateMyTeam.adapter = teamAdapter
+                    }
 
                     // 내가 지원한 팀 Adapter
                     valunteerAdapter = MyTeamAdapter2(view.context)
+                    if(uVolunteer == null){
+
+                    }
                     valunteerAdapter.submitList(uVolunteer)
                     recruitBinding.rvApplyMyTeam.layoutManager = LinearLayoutManager(view.context,
                         LinearLayoutManager.VERTICAL,false)
@@ -249,8 +268,9 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     recruitBinding.rvMyBoard.adapter = boardAdapter
 
                     boardAdapter.setOnItemClickListener(object : MyBoardAdapter.OnItemClickListener{
-                        override fun onItemClick(v: View, data: myBoard, pos: Int) {
-                            val intent = Intent(context, ViewVolunteerAcitviy::class.java)
+                        override fun onItemClick(v: View, data: recuit, pos: Int) {
+                            Log.d("내 글클릭 테스트", "테스트, $data")
+                            val intent = Intent(context, RecruitTeamActivity::class.java)
                             intent.putExtra("data",data)
                             startActivity(intent)
                         }

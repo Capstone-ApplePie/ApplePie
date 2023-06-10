@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MyBoardAdapter(private val context : Context) : RecyclerView.Adapter<myBoardHoler>() {
 
-    private var searchList = ArrayList<myBoard>()
+    private var searchList = ArrayList<recuit>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): myBoardHoler {
         return myBoardHoler(
@@ -86,11 +86,11 @@ class MyBoardAdapter(private val context : Context) : RecyclerView.Adapter<myBoa
         }
     }
 
-    fun submitList(searchList : ArrayList<myBoard>){
+    fun submitList(searchList : ArrayList<recuit>){
         this.searchList = searchList
     }
     interface OnItemClickListener{
-        fun onItemClick(v: View, data: myBoard, pos : Int)
+        fun onItemClick(v: View, data: recuit, pos : Int)
     }
     private var listener : OnItemClickListener? = null
     fun setOnItemClickListener(listener : OnItemClickListener) {

@@ -42,22 +42,6 @@ class modifyDetailProfile : AppCompatActivity() {
 
         val pid = SharedPref.getPid(this@modifyDetailProfile)
 
-        // 사용자 입력 정보 받아올 변수 모음 (소개, 희망 분야, 여부, 과목, 여부, 경력, 여부)
-        var briefIntroOut = "-" // outTitle
-        var introOut : String = "-" // outWriteSelfIntro
-        var careerOut : String = "-" // outWriteCareer
-        var openOut : Int = 0
-
-        var briefIntroLes : String = "-"
-        var introLes : String = "-"
-        var subjectLes : String ="-"
-        var openLes : Int = 0
-
-        var briefIntroPro : String = "-"
-        var introPro : String = "-"
-        var partPro : String = "-"
-        var openPro : Int = 0
-
         // 사용자가 처음 입력한 세부 프로필 정보 불러오기
         server.searchProfileDetails(pid).enqueue(object : Callback<personalDetailProfile>{
             override fun onResponse(call: Call<personalDetailProfile>, response: Response<personalDetailProfile>) {
@@ -129,19 +113,19 @@ class modifyDetailProfile : AppCompatActivity() {
         })
 
         // 사용자 입력 정보 받아올 변수 모음 (소개, 희망 분야, 여부, 과목, 여부, 경력, 여부)
-        var uSelfIntroOut = "-" // outTitle
-        var uIntroOut = "-" // outWriteSelfIntro
-        var uCareer  = "-" // outWriteCareer
+//        var uSelfIntroOut = "-" // outTitle
+//        var uIntroOut = "-" // outWriteSelfIntro
+//        var uCareer  = "-" // outWriteCareer
         var uOpenOut = 0
 
-        var uSelfIntroLes = "-"
-        var uIntroLes = "-"
-        var uSubject ="-"
+//        var uSelfIntroLes = "-"
+//        var uIntroLes = "-"
+//        var uSubject ="-"
         var uOpenLes = 0
 
-        var uSelfIntroPro = "-"
-        var uIntroPro = "-"
-        var uPart = "-"
+//        var uSelfIntroPro = "-"
+//        var uIntroPro = "-"
+//        var uPart = "-"
         var uOpenPro = 0
 
         // 공개 여부
@@ -171,17 +155,17 @@ class modifyDetailProfile : AppCompatActivity() {
         }
 
         mdpBinding.modifyDetailProfile.setOnClickListener {
-            uSelfIntroOut = mdpBinding.outTitle.text.toString()
-            uIntroOut = mdpBinding.outWriteCareer.text.toString() // 서로 바뀜 outWriteCareer
-            uCareer = mdpBinding.outWriteSelfIntro.text.toString()
+            val uSelfIntroOut = mdpBinding.outTitle.text.toString()
+            val uIntroOut = mdpBinding.outWriteCareer.text.toString() // 서로 바뀜 outWriteCareer
+            val uCareer = mdpBinding.outWriteSelfIntro.text.toString()
 
-            uSelfIntroLes = mdpBinding.lesTitle.text.toString()
-            uIntroLes = mdpBinding.lesWriteSub.text.toString() // lesWriteSub
-            uSubject = mdpBinding.lesWriteText.text.toString()
+            val uSelfIntroLes = mdpBinding.lesTitle.text.toString()
+            val uIntroLes = mdpBinding.lesWriteSub.text.toString() // lesWriteSub
+            val uSubject = mdpBinding.lesWriteText.text.toString()
 
-            uSelfIntroPro = mdpBinding.proTitle.text.toString()
-            uIntroPro = mdpBinding.proWritePart.text.toString() // proWritePart
-            uPart = mdpBinding.proWriteText.text.toString()
+            val uSelfIntroPro = mdpBinding.proTitle.text.toString()
+            val uIntroPro = mdpBinding.proWritePart.text.toString() // proWritePart
+            val uPart = mdpBinding.proWriteText.text.toString()
 
             val mdpModelOut = js_CDP(0, uSelfIntroOut, uIntroOut, uCareer, uOpenOut)
             val mdpModelLes = js_CDP(1, uSelfIntroLes, uIntroLes, uSubject, uOpenLes)
