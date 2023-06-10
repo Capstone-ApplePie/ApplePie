@@ -15,7 +15,6 @@ import com.example.project_applepie.model.boardList
 import com.example.project_applepie.model.dao.modiOpen
 import com.example.project_applepie.model.dao.personalAll
 import com.example.project_applepie.model.dao.userTeamData
-import com.example.project_applepie.model.myBoard
 import com.example.project_applepie.model.myTeam
 import com.example.project_applepie.model.recuit
 import com.example.project_applepie.recyclerview.homeRecycle.SearchItemRecyclerViewAdapter
@@ -152,12 +151,12 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                             jsonObj.getAsJsonPrimitive("updateAt").asString,jsonObj.getAsJsonPrimitive("status").asInt,
                             jsonObj.getAsJsonPrimitive("id").asInt,jsonObj.getAsJsonPrimitive("teamName").asString,
                             jsonObj.getAsJsonPrimitive("teamContent").asString,
-                            jsonObj.getAsJsonPrimitive("totalCount").asString.substring(1,jsonObj.getAsJsonPrimitive("totalCount").asString.lastIndex-1).split(","),
-                            jsonObj.getAsJsonPrimitive("count").asString.substring(1,jsonObj.getAsJsonPrimitive("count").asString.lastIndex-1).split(","),
+                            jsonObj.get("totalCount"),
+                            jsonObj.get("count"),
                             jsonObj.getAsJsonPrimitive("teamStatus").asString
                             )
-                            val vol = myTeam(basicImg,com.teamName,com.id)
-                            uTeam.add(vol)
+                            val vol = recuit(basicImg,com.teamName,com.teamContent,com.id,uid)
+                            uHistory.add(vol)
                             complete.add(com)
                         }catch (e : RuntimeException){
                             Log.d("로그 - complete에러","${e.localizedMessage}")
@@ -172,10 +171,12 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                                 jsonObj.getAsJsonPrimitive("updateAt").asString,jsonObj.getAsJsonPrimitive("status").asInt,
                                 jsonObj.getAsJsonPrimitive("id").asInt,jsonObj.getAsJsonPrimitive("teamName").asString,
                                 jsonObj.getAsJsonPrimitive("teamContent").asString,
-                                jsonObj.getAsJsonPrimitive("totalCount").asString.substring(1,jsonObj.getAsJsonPrimitive("totalCount").asString.lastIndex-1).split(","),
-                                jsonObj.getAsJsonPrimitive("count").asString.substring(1,jsonObj.getAsJsonPrimitive("count").asString.lastIndex-1).split(","),
+                                jsonObj.get("totalCount"),
+                                jsonObj.get("count"),
                                 jsonObj.getAsJsonPrimitive("teamStatus").asString
                             )
+                            val ut = myTeam(basicImg,inCom.teamName,inCom.id)
+                            uTeam.add(ut)
                             incomplete.add(inCom)
                         }catch (e : RuntimeException){
                             Log.d("로그 - incomplete에러","${e.localizedMessage}")
@@ -189,8 +190,8 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                                 jsonObj.getAsJsonPrimitive("updateAt").asString,jsonObj.getAsJsonPrimitive("status").asInt,
                                 jsonObj.getAsJsonPrimitive("id").asInt,jsonObj.getAsJsonPrimitive("teamName").asString,
                                 jsonObj.getAsJsonPrimitive("teamContent").asString,
-                                jsonObj.getAsJsonPrimitive("totalCount").asString.substring(1,jsonObj.getAsJsonPrimitive("totalCount").asString.lastIndex-1).split(","),
-                                jsonObj.getAsJsonPrimitive("count").asString.substring(1,jsonObj.getAsJsonPrimitive("count").asString.lastIndex-1).split(","),
+                                jsonObj.get("totalCount"),
+                                jsonObj.get("count"),
                                 jsonObj.getAsJsonPrimitive("teamStatus").asString
                             )
                             val app = myTeam(basicImg,apply.teamName,apply.id)
@@ -222,27 +223,15 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 
                     // 나의 팀 Adapter
                     teamAdapter = MyTeamAdapter(view.context)
-                    if(uTeam == null){
-                        teamAdapter.submitList(uTeam)
-                        recruitBinding.rvCreateMyTeam.layoutManager = LinearLayoutManager(view.context,
-                            LinearLayoutManager.VERTICAL,false)
-                        recruitBinding.rvCreateMyTeam.adapter = teamAdapter
-
-                        teamAdapter.setOnItemClickListener(object : MyTeamAdapter.OnItemClickListener{
-                            override fun onItemClick(v: View, data: myTeam, pos: Int) {
-                                val intent = Intent(context, ViewVolunteerAcitviy::class.java)
-                                intent.putExtra("data",data)
-                                startActivity(intent)
-                            }
-                        })
-                    }
-                    else {
+                    if(uTeam.isEmpty()){
                         Log.d("땜빵 성공","$uTeam")
                         val cryingImg = R.drawable.crying.toString()
                         val emptyTitle = "생성한 팀이 없습니다!"
                         val emptyId = 0
                         val emptyTeam = myTeam(cryingImg, emptyTitle, emptyId)
                         uTeam.add(emptyTeam)
+                    }
+                    else {
                         teamAdapter.submitList(uTeam)
                         recruitBinding.rvCreateMyTeam.layoutManager = LinearLayoutManager(view.context,
                             LinearLayoutManager.VERTICAL,false)

@@ -33,8 +33,11 @@ class ViewVolunteerAcitviy : AppCompatActivity() {
         setContentView(vvBinding.root)
 
         val data = intent.getSerializableExtra("data") as myTeam?
-        val teamId = searchVolunteer(data)
+        val teamId = searchVolunteer(data?.id)
         val uid = SharedPref.getUserId(this)
+
+        Log.d("로그 - uid","$uid")
+        Log.d("로그 - teamId","$teamId")
 
         val url = Url.BASE_URL
         val retrofit = Retrofit.Builder()
@@ -80,7 +83,6 @@ class ViewVolunteerAcitviy : AppCompatActivity() {
 
                 }
             }
-
             override fun onFailure(call: Call<SearchVolunteerResponse>, t: Throwable) {
                 Log.d("에러 - retrofit","${t.localizedMessage}")
             }

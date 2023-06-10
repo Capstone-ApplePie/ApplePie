@@ -144,7 +144,7 @@ interface ApiService {
     @POST(API.SEARCH_VOLUNTEER)
     fun searchVolunteer(
         @Path("uid") uid: String,
-        @Body volunteerId : searchVolunteer
+        @Body searchVolunteer : searchVolunteer
     ) : Call<SearchVolunteerResponse>
 
     // 25. 팀원 선택
