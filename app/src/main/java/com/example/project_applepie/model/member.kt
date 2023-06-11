@@ -5,5 +5,5 @@ data class member(
     var updateAt : String,
     var status : Int,
     var id : Int,
-    var volunteer : List<volunteerList>
+    var volunteer : List<VolunteerList>
 )

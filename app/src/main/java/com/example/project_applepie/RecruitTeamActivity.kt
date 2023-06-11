@@ -68,7 +68,7 @@ class RecruitTeamActivity : AppCompatActivity() {
         rtBinding.actvRole.setAdapter(arrayAdapter)
 
         //드롭박스 선택 인원수 확인
-        rtBinding.actvRole.setOnItemClickListener { adapterView, view, i, l ->
+        rtBinding.actvRole.setOnItemClickListener { _, _, i, _ ->
             role = i;
             Log.d("로그","역할 선택 : $i")
         }

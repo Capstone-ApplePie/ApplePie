@@ -91,7 +91,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        var server = retrofit.create(ApiService::class.java)
+        val server = retrofit.create(ApiService::class.java)
 
         // 사용자의 uid & pid를 가져옴
         val uid = SharedPref.getUserId(homeActivity)
@@ -100,15 +100,15 @@ class PersonalInformation : Fragment(), View.OnClickListener {
 //        Log.d("로그 - uid","$uid")
 //        Log.d("로그 - pid","$pid")
 
-        var boards : ArrayList<boardList> = ArrayList()
-        var complete : ArrayList<userTeamData> = ArrayList()
-        var incomplete : ArrayList<userTeamData> = ArrayList()
-        var applys : ArrayList<userTeamData> = ArrayList()
+        val boards : ArrayList<boardList> = ArrayList()
+        val complete : ArrayList<userTeamData> = ArrayList()
+        val incomplete : ArrayList<userTeamData> = ArrayList()
+        val applys : ArrayList<userTeamData> = ArrayList()
 
-        var uTeam : ArrayList<myTeam> = ArrayList()
-        var uVolunteer : ArrayList<myTeam> = ArrayList()
-        var uBoards : ArrayList<recuit> = ArrayList()
-        var uHistory : ArrayList<recuit> = ArrayList()
+        val uTeam : ArrayList<myTeam> = ArrayList()
+        val uVolunteer : ArrayList<myTeam> = ArrayList()
+        val uBoards : ArrayList<recuit> = ArrayList()
+        val uHistory : ArrayList<recuit> = ArrayList()
 
         var lesson = false
         var outsourcing = false
@@ -165,7 +165,7 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     val jsonInComplete = response.body()?.incomplete
                     for(i in 0 until jsonInComplete!!.size()){
                         val jsonObj = jsonInComplete.get(i).asJsonObject
-                        Log.d("뭐지", "$jsonObj")
+//                        Log.d("뭐지", "$jsonObj")
                         try{
                             val inCom = userTeamData(jsonObj.getAsJsonPrimitive("createAt").asString,
                                 jsonObj.getAsJsonPrimitive("updateAt").asString,jsonObj.getAsJsonPrimitive("status").asInt,
@@ -224,64 +224,95 @@ class PersonalInformation : Fragment(), View.OnClickListener {
                     // 나의 팀 Adapter
                     teamAdapter = MyTeamAdapter(view.context)
                     if(uTeam.isEmpty()){
-                        Log.d("땜빵 성공","$uTeam")
-                        val cryingImg = R.drawable.crying.toString()
+                        Log.d("나의 팀 땜빵 성공","$uTeam")
+                        val cryingImg = (R.drawable.crying).toString()
                         val emptyTitle = "생성한 팀이 없습니다!"
                         val emptyId = 0
                         val emptyTeam = myTeam(cryingImg, emptyTitle, emptyId)
                         uTeam.add(emptyTeam)
+                        teamAdapter.submitList(uTeam)
+                        recruitBinding.rvCreateMyTeam.layoutManager = LinearLayoutManager(view.context,
+                            LinearLayoutManager.VERTICAL,false)
+                        recruitBinding.rvCreateMyTeam.adapter = teamAdapter
                     }
                     else {
                         teamAdapter.submitList(uTeam)
                         recruitBinding.rvCreateMyTeam.layoutManager = LinearLayoutManager(view.context,
                             LinearLayoutManager.VERTICAL,false)
                         recruitBinding.rvCreateMyTeam.adapter = teamAdapter
+                        teamAdapter.setOnItemClickListener(object : MyTeamAdapter.OnItemClickListener{
+                            override fun onItemClick(v: View, data: myTeam, pos: Int) {
+                                Log.d("나의 팀 테스트", "테스트, $data")
+                                val intent = Intent(context, ViewVolunteerAcitviy::class.java)
+                                intent.putExtra("data",data)
+                                startActivity(intent)
+                            }
+                        })
                     }
 
                     // 내가 지원한 팀 Adapter
                     valunteerAdapter = MyTeamAdapter2(view.context)
-                    if(uVolunteer == null){
-
+                    if(uVolunteer.isEmpty()){
+                        Log.d("내가 지원한 팀 땜빵 성공","$uTeam")
+                        val cryingImg = (R.drawable.crying).toString()
+                        val emptyTitle = "지원한 팀이 없습니다!"
+                        val emptyId = 0
+                        val emptyVol = myTeam(cryingImg, emptyTitle, emptyId)
+                        uVolunteer.add(emptyVol)
+                        valunteerAdapter.submitList(uVolunteer)
+                        recruitBinding.rvApplyMyTeam.layoutManager = LinearLayoutManager(view.context,
+                            LinearLayoutManager.VERTICAL,false)
+                        recruitBinding.rvApplyMyTeam.adapter = valunteerAdapter
                     }
-                    valunteerAdapter.submitList(uVolunteer)
-                    recruitBinding.rvApplyMyTeam.layoutManager = LinearLayoutManager(view.context,
-                        LinearLayoutManager.VERTICAL,false)
-                    recruitBinding.rvApplyMyTeam.adapter = valunteerAdapter
+                    else {
+                        valunteerAdapter.submitList(uVolunteer)
+                        recruitBinding.rvApplyMyTeam.layoutManager = LinearLayoutManager(view.context,
+                            LinearLayoutManager.VERTICAL,false)
+                        recruitBinding.rvApplyMyTeam.adapter = valunteerAdapter
 
+                        valunteerAdapter.setOnItemClickListener(object : MyTeamAdapter2.OnItemClickListener{
+                            override fun onItemClick(v: View, data: myTeam, pos: Int) {
+                                Log.d("내가 지원한 팀 테스트", "테스트, $data")
+                                val intent = Intent(context, ViewTeamActivity::class.java)
+                                intent.putExtra("data",data)
+                                startActivity(intent)
+                            }
+                        })
+                    }
 
                     // 나의 글 Adapter
                     boardAdapter = MyBoardAdapter(view.context)
-                    boardAdapter.submitList(uBoards)
-                    recruitBinding.rvMyBoard.layoutManager = LinearLayoutManager(view.context,
-                        LinearLayoutManager.VERTICAL,false)
-                    recruitBinding.rvMyBoard.adapter = boardAdapter
+                    if(uBoards.isEmpty()){
+                        Log.d("나의 글 땜빵 성공","$uBoards")
+                        val cryingImg = (R.drawable.crying).toString()
+                        val emptyTitle = "생성한 글이 없습니다!"
+                        val emptyContent = "-"
+                        val emptyId = 0
+                        val emptyUid = "0"
+                        val emptyBoard = recuit(cryingImg, emptyTitle, emptyContent, emptyId, emptyUid)
+                        uBoards.add(emptyBoard)
+                    }
+                    else {
+                        boardAdapter.submitList(uBoards)
+                        recruitBinding.rvMyBoard.layoutManager = LinearLayoutManager(view.context,
+                            LinearLayoutManager.VERTICAL,false)
+                        recruitBinding.rvMyBoard.adapter = boardAdapter
 
-                    boardAdapter.setOnItemClickListener(object : MyBoardAdapter.OnItemClickListener{
-                        override fun onItemClick(v: View, data: recuit, pos: Int) {
-                            Log.d("내 글클릭 테스트", "테스트, $data")
-                            val intent = Intent(context, RecruitTeamActivity::class.java)
-                            intent.putExtra("data",data)
-                            startActivity(intent)
-                        }
-                    })
-
-                    // 나의 글 확인
-                    /*boardAdapter = MyBoardAdapter(view.context)
-                    boardAdapter.submitList(uBoards)
-                    Log.d("uBoards 확인", "$uBoards")
-                    recruitBinding.rvMyBoard.layoutManager = LinearLayoutManager(view.context,
-                        LinearLayoutManager.VERTICAL,false)
-                    recruitBinding.rvMyBoard.adapter = boardAdapter*/
+                        boardAdapter.setOnItemClickListener(object : MyBoardAdapter.OnItemClickListener{
+                            override fun onItemClick(v: View, data: recuit, pos: Int) {
+                                Log.d("내 글클릭 테스트", "테스트, $data")
+                                val intent = Intent(context, RecruitTeamActivity::class.java)
+                                intent.putExtra("data",data)
+                                startActivity(intent)
+                            }
+                        })
+                    }
                 }
             }
             override fun onFailure(call: Call<SearchUserAllDataResponse>, t: Throwable) {
                 Log.d("로그 - 서버실패","${t.localizedMessage}")
             }
         })
-
-//        for(i in 0 .. boards!!.size){
-//            server.
-//        }
 
         server.searchAllFile(uid).enqueue(object : Callback<personalAll>{
             override fun onResponse(call: Call<personalAll>, response: Response<personalAll>) {

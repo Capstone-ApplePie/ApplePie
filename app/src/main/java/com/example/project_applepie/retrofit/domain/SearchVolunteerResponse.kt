@@ -1,6 +1,6 @@
 package com.example.project_applepie.retrofit.domain
 
-import com.example.project_applepie.model.volunteerList
+import com.example.project_applepie.model.VolunteerList
 import com.google.gson.JsonArray
 
 data class SearchVolunteerResponse(
