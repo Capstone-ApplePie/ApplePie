@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.project_applepie.databinding.ActivityRecruitTeamBinding
 import com.example.project_applepie.model.boardDetailBoard
@@ -46,7 +47,7 @@ class RecruitTeamActivity : AppCompatActivity() {
             ) {
                 if(response.isSuccessful){
                     val deadline = response.body()?.board?.get("deadline")
-                    val dead = deadline.toString().substring(1,deadline.toString().lastIndex-1)
+                    val dead = deadline.toString().substring(1,deadline.toString().lastIndex)
                     Log.d("로그 - 서버성공","deadline : $deadline")
                     rtBinding.tvDeadline.text = "모집마감 : ~ " + dead
                 }
@@ -74,12 +75,14 @@ class RecruitTeamActivity : AppCompatActivity() {
         }
 
         rtBinding.btnApply.setOnClickListener {
-            val av = applyVolunteer(bid, Integer.parseInt(uid), role, "")
+            val av = applyVolunteer(bid, Integer.parseInt(uid), role, "반갑습니다")
             server.applyVolunteer(av).enqueue(object : Callback<BasicResponse>{
                 override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>
                 ) {
                     if(response.isSuccessful){
                         Log.d("로그 - 성공","${response.body().toString()}")
+                        Toast.makeText(this@RecruitTeamActivity, "신청이 완료되었습니다!", Toast.LENGTH_LONG).show()
+                        finish()
                     }
                 }
 

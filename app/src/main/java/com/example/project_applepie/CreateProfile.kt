@@ -261,7 +261,7 @@ class CreateProfile : AppCompatActivity() {
 
     private fun validEmail(): String? {
         val emailText = cpBinding.writeGit.text.toString()
-        if(!emailText.matches("^[|w]+@[|w]+.[|w]+$".toRegex())){
+        if(!emailText.matches("^[a-zA-X0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+$".toRegex())){
             createProfile_emailPass = 1
             return "잘못된 이메일 형식입니다."
         }

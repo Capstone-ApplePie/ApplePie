@@ -79,14 +79,15 @@ class ViewVolunteerAcitviy : AppCompatActivity() {
                             val jsonObj = jsonArr.get(i).asJsonObject
                             try{
                                 var vol = VolunteerList(jsonObj.getAsJsonPrimitive("volunteerId").asString,
-                                    jsonObj.getAsJsonPrimitive("role").asString, jsonObj.getAsJsonPrimitive("volunteerStatus").asString)
+                                    jsonObj.getAsJsonPrimitive("nickname").asString, jsonObj.getAsJsonPrimitive("role").asString,
+                                    jsonObj.getAsJsonPrimitive("volunteerStatus").asString, jsonObj.getAsJsonPrimitive("details").asString)
 
 //                                val emptyImage = "https://firebasestorage.googleapis.com/v0/b/applepie-f030c.appspot.com/o/file36-1?alt=media"
                                 val emptyImage = R.drawable.user
 //                                val memName = jsonObj.getAsJsonPrimitive("nickname").asString
-                                val volName = "-"
+                                val volName = jsonObj.getAsJsonPrimitive("nickname").asString
                                 val volRole = jsonObj.getAsJsonPrimitive("role").asString
-                                val emptyDetail = "지원한 사람"
+                                val emptyDetail = jsonObj.getAsJsonPrimitive("details").asString
                                 val volId = jsonObj.getAsJsonPrimitive("volunteerId").asString
                                 val volMem = AuerProfile(emptyImage, volName, volRole, emptyDetail, volId)
                                 volunteers.add(vol)

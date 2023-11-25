@@ -318,6 +318,10 @@ class PersonalInformation : Fragment(), View.OnClickListener {
             override fun onResponse(call: Call<personalAll>, response: Response<personalAll>) {
                 if(response.isSuccessful){
                     Log.d("전체 조회 로그 - 성공","${response.body().toString()}")
+                    Log.d("전체 데이터 로그 - 성공","${response.body()?.data?.get("nickname")?.toString()}")
+                    var Uid = response.body()?.data?.get("nickname")?.toString()
+                    Uid = Uid?.replace('"',' ')
+                    if(Uid != null){ recruitBinding.textView.text = Uid }
                 }else{
                     Log.d("전체 로그 - 실패","${response.body().toString()}")
                 }

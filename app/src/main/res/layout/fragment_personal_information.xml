@@ -36,7 +36,8 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:text="ID-34693469"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
+                    android:textColor="@color/black"
                     app:layout_constraintStart_toEndOf="@+id/imageView"
                     app:layout_constraintTop_toTopOf="@+id/imageView"></TextView>
 
@@ -45,21 +46,23 @@
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="23dp"
+                    android:layout_marginStart="316dp"
+                    android:layout_marginTop="108dp"
                     android:text="로그아웃"
                     android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@+id/btn_deleteAccount"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_deleteAccount" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/btn_deleteAccount"
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="56dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="16dp"
                     android:text="회원탈퇴"
                     android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.932"
                     app:layout_constraintStart_toEndOf="@+id/textView"
                     app:layout_constraintTop_toTopOf="@+id/imageView" />
 
@@ -68,22 +71,26 @@
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="108dp"
                     android:text="프로필 수정"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toStartOf="@+id/btn_modify_intro"
-                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/btn_modify_intro"
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="23dp"
+                    android:layout_marginTop="108dp"
                     android:text="자기소개 수정"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toStartOf="@+id/userLogOut"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_deleteAccount" />
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
